@@ -19,3 +19,8 @@
 .idea/vcs.xml
 build/tmp/bootWar/MANIFEST.MF
 build/tmp/war/MANIFEST.MF
+*.bin
+build/classes/java/main/ar/edu/unq/grupoh/criptop2p/Criptop2pApplication.class
+build/classes/java/main/ar/edu/unq/grupoh/criptop2p/ServletInitializer.class
+build/resources/main/application.properties
+.gradle/file-system.probe
