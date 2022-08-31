@@ -1,8 +1,6 @@
 package ar.edu.unq.grupoh.criptop2p.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
@@ -15,6 +13,9 @@ public class User {
     public static final String passRegex = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[#?!@$%^&*-]).{6,}$";
     public static final String digitsRegex = "[0-9]+";
 
+    @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    private Long id;
     @NotBlank(message = "Name cannot be null")
     @Size(min = 3,max = 30)
     private String name; //3-30
@@ -37,8 +38,19 @@ public class User {
     @Pattern(regexp = digitsRegex, message = "The walletAddress field should only have digits")
     private String addressWallet ; //8 digitos
 
-    @Id
-    private Long id;
+    public User() {
+    }
+
+    public User(String name, String lastname, String email, String address, String password, String cvu, String addressWallet) {
+
+        this.name = name;
+        this.lastname = lastname;
+        this.email = email;
+        this.address = address;
+        this.password = password;
+        this.cvu = cvu;
+        this.addressWallet = addressWallet;
+    }
 
     public void setId(Long id) {
         this.id = id;
@@ -48,17 +60,59 @@ public class User {
         return id;
     }
 
-    public User() {
+    public String getName() {
+        return name;
     }
 
-    public User(String name, String lastname, String email, String address, String password, String cvu, String addressWallet, Long id) {
+    public void setName(String name) {
         this.name = name;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
         this.lastname = lastname;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getCvu() {
+        return cvu;
+    }
+
+    public void setCvu(String cvu) {
         this.cvu = cvu;
+    }
+
+    public String getAddressWallet() {
+        return addressWallet;
+    }
+
+    public void setAddressWallet(String addressWallet) {
         this.addressWallet = addressWallet;
-        this.id = id;
     }
 }
