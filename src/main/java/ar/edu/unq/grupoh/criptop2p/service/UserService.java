@@ -1,5 +1,7 @@
 package ar.edu.unq.grupoh.criptop2p.service;
 
+import ar.edu.unq.grupoh.criptop2p.dto.UserRequest;
+import ar.edu.unq.grupoh.criptop2p.exceptions.UserNotFoundException;
 import ar.edu.unq.grupoh.criptop2p.model.User;
 import ar.edu.unq.grupoh.criptop2p.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,23 +13,25 @@ import java.util.List;
 @Service
 public class UserService {
 
+    @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public User saveUser(UserRequest model) {
+        User newUser = User.build(0,model.getName(),model.getLastname(),model.getEmail(),model.getAddress(),model.getPassword(),
+                            model.getCvu(),model.getAddressWallet());
+        return this.userRepository.save(newUser);
     }
 
-    public User save(User model) {
-        return this.userRepository.save(model);
-    }
-
-    public User findByID(Long id) {
-        return this.userRepository.findById(id).get();
-    }
-
-    @Transactional
     public List<User> findAll() {
         return this.userRepository.findAll();
+    }
+
+    public User getUser(int id) throws UserNotFoundException {
+        User user= userRepository.findByUserId(id);
+        if(user!=null){
+            return user;
+        }else{
+            throw new UserNotFoundException("user not found with id : "+id);
+        }
     }
 }
