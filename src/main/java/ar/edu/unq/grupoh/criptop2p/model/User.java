@@ -25,5 +25,14 @@ public class User {
     private String password; //1 minuscula,1 mayuscula , 1 caracter especial , Min 6
     private String cvu; //22 digitos
     private String addressWallet ; //8 digitos
+    private int amountOperations; // La cantidad de concretaciones de intenciones
+    private int points;
 
+    public void addPoint(int x){
+        this.points += x;
+    }
+
+    public void addOperation() {
+        this.amountOperations ++;
+    }
 }

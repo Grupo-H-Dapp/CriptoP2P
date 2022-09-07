@@ -18,7 +18,7 @@ public class UserService {
 
     public User saveUser(UserRequest model) {
         User newUser = User.build(0,model.getName(),model.getLastname(),model.getEmail(),model.getAddress(),model.getPassword(),
-                            model.getCvu(),model.getAddressWallet());
+                            model.getCvu(),model.getAddressWallet(),0,0);
         return this.userRepository.save(newUser);
     }
 
@@ -31,7 +31,7 @@ public class UserService {
         if(user!=null){
             return user;
         }else{
-            throw new UserNotFoundException("user not found with id : "+id);
+            throw new UserNotFoundException("User with id : "+id + "not found");
         }
     }
 }
