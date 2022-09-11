@@ -19,17 +19,17 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping()
+    @GetMapping(produces = "application/json")
     public ResponseEntity<List<User>> allCars() {
         return ResponseEntity.ok().body(userService.findAll());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(value = "/{id}" , produces = "application/json")
     public ResponseEntity<User> getUser(@PathVariable int id) throws UserNotFoundException {
         return ResponseEntity.ok(userService.getUser(id));
     }
 
-    @PostMapping()
+    @PostMapping(produces = "application/json")
     public ResponseEntity<User> saveUser(@RequestBody @Valid UserRequest userRequest){
         return new ResponseEntity<>(userService.saveUser(userRequest), HttpStatus.CREATED);
     }
