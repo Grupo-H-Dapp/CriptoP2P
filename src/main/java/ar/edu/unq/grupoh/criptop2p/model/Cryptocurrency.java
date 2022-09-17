@@ -1,9 +1,9 @@
 package ar.edu.unq.grupoh.criptop2p.model;
 
-import ar.edu.unq.grupoh.criptop2p.model.enums.Criptos;
+import ar.edu.unq.grupoh.criptop2p.model.enums.CriptosNames;
 
 public class Cryptocurrency {
 
-    private Criptos crypto;
+    private CriptosNames crypto;
     private Double price;
 }

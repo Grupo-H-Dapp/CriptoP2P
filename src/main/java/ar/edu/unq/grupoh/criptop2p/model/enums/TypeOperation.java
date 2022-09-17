@@ -1,5 +1,5 @@
 package ar.edu.unq.grupoh.criptop2p.model.enums;
 
-public enum Operation {
+public enum TypeOperation {
     BUY , SELL
 }
