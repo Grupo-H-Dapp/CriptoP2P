@@ -17,7 +17,7 @@ sonarqube {
 
 group = 'ar.edu.unq.grupoh'
 version = '0.0.1-SNAPSHOT'
-archivesBaseName = "criptop2p"
+//archivesBaseName = "criptop2p"
 sourceCompatibility = '17'
 
 repositories {
