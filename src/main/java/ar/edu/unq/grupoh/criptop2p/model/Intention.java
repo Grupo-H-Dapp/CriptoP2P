@@ -17,4 +17,25 @@ public class Intention {
     private User user;
     private TypeOperation typeOperation; //COMPRA O VENTA
 
+    public Intention(LocalDateTime dateTime, CriptosNames crypto, Double quantity, Double price, Double amountArg, User user, TypeOperation typeOperation) {
+        this.dateTime = dateTime;
+        this.crypto = crypto;
+        this.quantity = quantity;
+        this.price = price;
+        this.amountArg = amountArg;
+        this.user = user;
+        this.typeOperation = typeOperation;
+    }
+
+    public Intention(CriptosNames crypto, Double quantity, Double price, Double amountArg, User user, TypeOperation typeOperation) {
+        this.crypto = crypto;
+        this.quantity = quantity;
+        this.price = price;
+        this.amountArg = amountArg;
+        this.user = user;
+        this.typeOperation = typeOperation;
+    }
+
+
 }
+

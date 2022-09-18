@@ -30,9 +30,14 @@ public class User {
 
     public void addPoint(int x){
         this.points += x;
+        this.amountOperations ++;
     }
 
     public void addOperation() {
         this.amountOperations ++;
+    }
+
+    public void substractPoints(){
+        this.points -= 20;
     }
 }

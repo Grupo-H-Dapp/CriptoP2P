@@ -19,7 +19,7 @@ POST createOperation
  idUsuarioInteresado : 2,
 ...
 }
-POST procesarOperation
+POST procesarActionOperation
 {
  idOperaccion  : 1,
  idUsarioAccion : 2,
