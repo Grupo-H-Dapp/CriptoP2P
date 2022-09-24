@@ -40,4 +40,16 @@ public class User {
     public void substractPoints(){
         this.points -= 20;
     }
+
+    public User(String name, String lastname, String email, String address, String password, String cvu, String addressWallet, int amountOperations, int points) {
+        this.name = name;
+        this.lastname = lastname;
+        this.email = email;
+        this.address = address;
+        this.password = password;
+        this.cvu = cvu;
+        this.addressWallet = addressWallet;
+        this.amountOperations = amountOperations;
+        this.points = points;
+    }
 }

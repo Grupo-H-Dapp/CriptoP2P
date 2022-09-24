@@ -8,6 +8,7 @@ import ar.edu.unq.grupoh.criptop2p.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,7 +20,7 @@ public class UserService {
 
     public User saveUser(UserRequest model) throws UserAlreadyExistException {
         Optional<User> userToAdd = userRepository.findByEmail(model.getEmail());
-        if(userToAdd.isPresent()){
+        if(userToAdd.isEmpty()){
             User newUser = User.build(0,model.getName(),model.getLastname(),model.getEmail(),model.getAddress(),model.getPassword(),
                     model.getCvu(),model.getAddressWallet(),0,0);
             return this.userRepository.save(newUser);
@@ -27,9 +28,23 @@ public class UserService {
             throw new UserAlreadyExistException(model.getEmail());
         }
     }
-
-    public Optional<User> updateUser(User user , int id){
-        return this.userRepository.findById(id);
+    public User updateUser(@Valid UserRequest user,int id) {
+        return userRepository.findById(id).map(newUser -> {
+            newUser.setName(user.getName());
+            newUser.setLastname(user.getLastname());
+            newUser.setEmail(user.getEmail());
+            newUser.setAddress(user.getAddress());
+            newUser.setPassword(user.getPassword());
+            newUser.setCvu(user.getCvu());
+            newUser.setAddressWallet(user.getAddressWallet());
+            newUser.setAmountOperations(user.getAmountOperations());
+            newUser.setPoints(user.getPoints());
+            return userRepository.save(newUser);
+        }).orElseGet(() -> {
+            User newUser = new User(user.getName(),user.getLastname(),user.getEmail(),user.getAddress(),user.getPassword(),user.getCvu()
+                    ,user.getAddressWallet(),user.getAmountOperations(), user.getPoints());
+            return userRepository.save(newUser);
+        });
     }
 
     public List<User> findAll() {
@@ -48,5 +63,13 @@ public class UserService {
     public void deleteUser(int id) throws UserNotFoundException {
         this.userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
         this.userRepository.deleteById(id);
+    }
+
+    public Optional<User> getUserByEmail(String email) {
+        return this.userRepository.findByEmail(email);
+    }
+
+    public Optional<User> getUserById(int id){
+        return userRepository.findById(id);
     }
 }

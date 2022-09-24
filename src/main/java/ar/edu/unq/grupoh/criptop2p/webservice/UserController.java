@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
@@ -35,14 +36,18 @@ public class UserController {
         return new ResponseEntity<>(userService.saveUser(userRequest), HttpStatus.CREATED);
     }
 
-    @PutMapping(value = "/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<?> updateUser(@RequestBody @Valid UserRequest newUser,@PathVariable int id){
-        return ResponseEntity.ok(null);
+        Optional<User> user = this.userService.getUserById(id);
+        HttpStatus code = user.isPresent() ? HttpStatus.OK : HttpStatus.CREATED;
+        User updateUser = this.userService.updateUser(newUser,id);
+        return new ResponseEntity<>(updateUser,code);
     }
 
+    //Devolver un mensaje lindo
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable int id) throws UserNotFoundException {
         this.userService.deleteUser(id);
-        return new ResponseEntity<>(HttpStatus.ACCEPTED);
+        return new ResponseEntity<>("El usuario con el id " + id + " a sido eliminado" ,HttpStatus.ACCEPTED);
     }
 }
