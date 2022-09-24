@@ -61,7 +61,9 @@ public class UserService {
     }
 
     public void deleteUser(int id) throws UserNotFoundException {
-        this.userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+        if(this.userRepository.findById(id).isEmpty()){
+            throw new UserNotFoundException(id);
+        }
         this.userRepository.deleteById(id);
     }
 
