@@ -55,6 +55,17 @@ public class Operation {
         throw new RuntimeException("La operacion no puede avanzar"); // no esta esperando o cancelada
     }
 
+    public void doCancel(User userAction) {
+        if (userAction == this.getIntention().getUser() || userAction == this.getSecondUser()){
+            this.stateOperation = StateOperation.CANCELED;
+            userAction.substractPoints();
+        }
+    }
+
+    public void doCancelSystem(){
+        this.stateOperation = StateOperation.CANCELED;
+    }
+
     private void givePointsCompleted() {
         LocalDateTime endedTime = LocalDateTime.now();
         long timePassed = Duration.between(this.getDateTime(), endedTime).toMinutes();
@@ -72,16 +83,5 @@ public class Operation {
 
     private Double priceMarket(CriptosNames crypto) {
         return 0.0; // Ver como obtenemos el valor de la crypto
-    }
-
-    public void doCancel(User userAction) {
-        if (userAction == this.getIntention().getUser() || userAction == this.getSecondUser()){
-            this.stateOperation = StateOperation.CANCELED;
-            userAction.substractPoints();
-        }
-    }
-
-    public void doCancelSystem(){
-        this.stateOperation = StateOperation.CANCELED;
     }
 }

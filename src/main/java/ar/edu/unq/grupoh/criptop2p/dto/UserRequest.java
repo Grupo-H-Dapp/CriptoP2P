@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
 import javax.validation.constraints.*;
 
 @Data
@@ -17,6 +18,7 @@ public class UserRequest {
     @Size(min = 3,max = 30 , message = "Lastname must be between 3 and 30 characters long")
     private String lastname; //3-30
     @Email(message = "Email should be a valid email")
+    @Column(unique=true)
     private String email; //email format
     @NotBlank(message = "Address cannot be null")
     @Size(min = 3,max = 30 , message = "Address must be between 3 and 30 characters long")

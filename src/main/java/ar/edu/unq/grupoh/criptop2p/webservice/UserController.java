@@ -1,6 +1,7 @@
 package ar.edu.unq.grupoh.criptop2p.webservice;
 
 import ar.edu.unq.grupoh.criptop2p.dto.UserRequest;
+import ar.edu.unq.grupoh.criptop2p.exceptions.UserAlreadyExistException;
 import ar.edu.unq.grupoh.criptop2p.exceptions.UserNotFoundException;
 import ar.edu.unq.grupoh.criptop2p.model.User;
 import ar.edu.unq.grupoh.criptop2p.service.UserService;
@@ -20,7 +21,7 @@ public class UserController {
     private UserService userService;
 
     @GetMapping(produces = "application/json")
-    public ResponseEntity<List<User>> allCars() {
+    public ResponseEntity<List<User>> allUsers() {
         return ResponseEntity.ok().body(userService.findAll());
     }
 
@@ -30,7 +31,18 @@ public class UserController {
     }
 
     @PostMapping(produces = "application/json")
-    public ResponseEntity<User> saveUser(@RequestBody @Valid UserRequest userRequest){
+    public ResponseEntity<User> saveUser(@RequestBody @Valid UserRequest userRequest) throws UserAlreadyExistException {
         return new ResponseEntity<>(userService.saveUser(userRequest), HttpStatus.CREATED);
+    }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<?> updateUser(@RequestBody @Valid UserRequest newUser,@PathVariable int id){
+        return ResponseEntity
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable int id) throws UserNotFoundException {
+        this.userService.deleteUser(id);
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 }
