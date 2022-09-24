@@ -33,4 +33,6 @@ public class UserRequest {
     @Size(min = 8,max = 8 , message = "Wallet must be between 8 digits long")
     @Pattern(regexp = "[0-9]+", message = "The walletAddress field should only have digits")
     private String addressWallet ; //8 digitos
+    private int amountOperations; // La cantidad de concretaciones de intenciones
+    private int points;
 }
