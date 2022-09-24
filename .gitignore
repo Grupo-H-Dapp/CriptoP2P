@@ -26,3 +26,4 @@ build/resources/main/application.properties
 .gradle/file-system.probe
 build
 .idea/uiDesigner.xml
+.idea/jpa-buddy.xml
