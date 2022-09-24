@@ -6,7 +6,7 @@ import ar.edu.unq.grupoh.criptop2p.model.User;
 import ar.edu.unq.grupoh.criptop2p.model.enums.Action;
 import org.springframework.stereotype.Service;
 
-@Service
+/*@Service
 public class OperationService {
 
     public Operation crearOperation(Intention intention, User secondUser){
@@ -28,4 +28,4 @@ public class OperationService {
             }
         }
     }
-}
+}*/
