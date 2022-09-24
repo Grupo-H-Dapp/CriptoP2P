@@ -8,7 +8,6 @@ import ar.edu.unq.grupoh.criptop2p.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,7 +28,7 @@ public class UserService {
         }
     }
 
-    public User updateUser(User user , int id){
+    public Optional<User> updateUser(User user , int id){
         return this.userRepository.findById(id);
     }
 

@@ -37,7 +37,7 @@ public class UserController {
 
     @PutMapping(value = "/{id}")
     public ResponseEntity<?> updateUser(@RequestBody @Valid UserRequest newUser,@PathVariable int id){
-        return ResponseEntity
+        return ResponseEntity.ok(null);
     }
 
     @DeleteMapping(value = "/{id}")
