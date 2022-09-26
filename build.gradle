@@ -58,15 +58,14 @@ tasks.named('test') {
 }
 
 tasks.jacocoTestReport {
-	dependsOn test
-
-	afterEvaluate {
-		classDirectories.setFrom(files(classDirectories.files.collect {
-			fileTree(dir: it, exclude: [
-					"ar.edu.unq.grupoh.criptop2p.ServletInitializer",
- 					"ar.edu.unq.grupoh.criptop2p.configuration",
-					"ar.edu.unq.grupoh.criptop2p.Criptop2pApplication"
-			])
-		}))
+	dependsOn test {
+		classDirectories.setFrom(
+				fileTree(dir: "build/classes/java/main")
+						.filter({ file -> !file.name.contains('Criptop2pApplication') })
+						.filter({ file -> !file.name.contains('SwaggerConfig') })
+						.filter({ file -> !file.name.contains('ServletInitializer') })
+						.filter({ file -> !file.name.contains('Request') })
+						.filter({ file -> !file.name.contains('Controller') })
+						.filter({ file -> !file.name.contains('Exception') }))
 	}
 }
