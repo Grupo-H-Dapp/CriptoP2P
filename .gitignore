@@ -24,5 +24,11 @@ build/classes/java/main/ar/edu/unq/grupoh/criptop2p/Criptop2pApplication.class
 build/classes/java/main/ar/edu/unq/grupoh/criptop2p/ServletInitializer.class
 build/resources/main/application.properties
 .gradle/file-system.probe
+<<<<<<< Updated upstream
+=======
+*.class
+build/reports/tests/test/js/report.js
+>>>>>>> Stashed changes
 build
 .idea/uiDesigner.xml
+.idea/jpa-buddy.xml
