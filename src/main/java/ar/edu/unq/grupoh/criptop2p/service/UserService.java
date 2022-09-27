@@ -29,17 +29,17 @@ public class UserService {
         }
     }
     public User updateUser(@Valid UserRequest user,int id) {
-        return userRepository.findById(id).map(newUser -> {
-            newUser.setName(user.getName());
-            newUser.setLastname(user.getLastname());
-            newUser.setEmail(user.getEmail());
-            newUser.setAddress(user.getAddress());
-            newUser.setPassword(user.getPassword());
-            newUser.setCvu(user.getCvu());
-            newUser.setAddressWallet(user.getAddressWallet());
-            newUser.setAmountOperations(user.getAmountOperations());
-            newUser.setPoints(user.getPoints());
-            return userRepository.save(newUser);
+        return userRepository.findById(id).map(userFound -> {
+            userFound.setName(user.getName());
+            userFound.setLastname(user.getLastname());
+            userFound.setEmail(user.getEmail());
+            userFound.setAddress(user.getAddress());
+            userFound.setPassword(user.getPassword());
+            userFound.setCvu(user.getCvu());
+            userFound.setAddressWallet(user.getAddressWallet());
+            userFound.setAmountOperations(user.getAmountOperations());
+            userFound.setPoints(user.getPoints());
+            return userRepository.save(userFound);
         }).orElseGet(() -> {
             User newUser = new User(user.getName(),user.getLastname(),user.getEmail(),user.getAddress(),user.getPassword(),user.getCvu()
                     ,user.getAddressWallet(),user.getAmountOperations(), user.getPoints());
