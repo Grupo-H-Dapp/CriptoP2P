@@ -38,10 +38,7 @@ public class UserController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateUser(@RequestBody @Valid UserRequest newUser,@PathVariable int id) throws UserNotFoundException {
-        Optional<User> user = this.userService.getUserById(id); // caso donde el id es de alguien no existente
-/*        if(user.isEmpty()){
-            throw new UserNotFoundException(id);
-        }*/
+        Optional<User> user = this.userService.getUserById(id);
         HttpStatus code = user.isPresent() ? HttpStatus.OK : HttpStatus.CREATED;
         User updateUser = this.userService.updateUser(newUser,id);
         return new ResponseEntity<>(updateUser,code);

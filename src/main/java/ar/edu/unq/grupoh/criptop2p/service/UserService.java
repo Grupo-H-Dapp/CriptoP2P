@@ -4,6 +4,7 @@ import ar.edu.unq.grupoh.criptop2p.dto.UserRequest;
 import ar.edu.unq.grupoh.criptop2p.exceptions.UserAlreadyExistException;
 import ar.edu.unq.grupoh.criptop2p.exceptions.UserNotFoundException;
 import ar.edu.unq.grupoh.criptop2p.model.User;
+import ar.edu.unq.grupoh.criptop2p.model.UserBuilder;
 import ar.edu.unq.grupoh.criptop2p.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,8 +42,7 @@ public class UserService {
             userFound.setPoints(user.getPoints());
             return userRepository.save(userFound);
         }).orElseGet(() -> {
-            User newUser = new User(user.getName(),user.getLastname(),user.getEmail(),user.getAddress(),user.getPassword(),user.getCvu()
-                    ,user.getAddressWallet(),user.getAmountOperations(), user.getPoints());
+            User newUser = new UserBuilder().withName(user.getName()).withLastname(user.getLastname()).withEmail(user.getEmail()).withAddress(user.getAddress()).withPassword(user.getPassword()).withCvu(user.getCvu()).withAddressWallet(user.getAddressWallet()).withAmountOperations(user.getAmountOperations()).withPoints(user.getPoints()).createUser();
             return userRepository.save(newUser);
         });
     }
