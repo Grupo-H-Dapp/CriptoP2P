@@ -33,6 +33,55 @@ public class UserRequest {
     @Size(min = 8,max = 8 , message = "Wallet must be between 8 digits long")
     @Pattern(regexp = "[0-9]+", message = "The walletAddress field should only have digits")
     private String addressWallet ; //8 digitos
-    private int amountOperations; // La cantidad de concretaciones de intenciones
-    private int points;
+
+    public static UserRequestBuilder builder() {
+        return new UserRequestBuilder();
+    }
+
+    public static final class UserRequestBuilder {
+        private UserRequest userRequest;
+
+        private UserRequestBuilder() {
+            userRequest = new UserRequest();
+        }
+
+        public UserRequestBuilder name(String name) {
+            userRequest.setName(name);
+            return this;
+        }
+
+        public UserRequestBuilder surname(String lastName) {
+            userRequest.setLastname(lastName);
+            return this;
+        }
+
+        public UserRequestBuilder email(String email) {
+            userRequest.setEmail(email);
+            return this;
+        }
+
+        public UserRequestBuilder address(String address) {
+            userRequest.setAddress(address);
+            return this;
+        }
+
+        public UserRequestBuilder password(String password) {
+            userRequest.setPassword(password);
+            return this;
+        }
+
+        public UserRequestBuilder cvu(String cvu) {
+            userRequest.setCvu(cvu);
+            return this;
+        }
+
+        public UserRequestBuilder walletAddress(String walletAddress) {
+            userRequest.setAddressWallet(walletAddress);
+            return this;
+        }
+
+        public UserRequest build() {
+            return userRequest;
+        }
+    }
 }
