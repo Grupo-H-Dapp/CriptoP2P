@@ -1,6 +1,7 @@
 package ar.edu.unq.grupoh.criptop2p.model;
 
 import ar.edu.unq.grupoh.criptop2p.model.enums.CriptosNames;
+import ar.edu.unq.grupoh.criptop2p.model.enums.IntentionStatus;
 import ar.edu.unq.grupoh.criptop2p.model.enums.TypeOperation;
 import lombok.Data;
 import lombok.Getter;
@@ -41,6 +42,9 @@ public class Intention {
     @Getter @Setter
     @Column(nullable = false)
     private TypeOperation typeOperation; //COMPRA O VENTA
+    @Getter @Setter
+    @Column(nullable = false)
+    private IntentionStatus status;
 
     public Intention(LocalDateTime dateTime, CriptosNames crypto, Double quantity, Double price, Double amountArg, User user, TypeOperation typeOperation) {
         this.dateTime = dateTime;
