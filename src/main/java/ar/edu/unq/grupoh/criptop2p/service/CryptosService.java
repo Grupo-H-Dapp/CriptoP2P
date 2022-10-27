@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
+import java.time.chrono.ChronoLocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -46,6 +47,18 @@ public class CryptosService {
 //                .filter(crypto -> crypto.getDate())
 //                //.collect(Collectors.collectingAndThen(Collectors.maxBy(Comparator.comparing(Cryptocurrency::getDate)), Optional::get));
 //    }
+    @Transactional
+    public List<Cryptocurrency> cryptoBetweenDay(CriptosNames cryptoName) {
+        LocalDateTime end = LocalDateTime.now();
+        LocalDateTime start2 = end.minusMinutes(1);
+        System.out.println("Start " + start2);
+        System.out.println("End " +end);
+        List<Cryptocurrency> cryptos = findByCrypto(cryptoName)
+                .stream()
+                .filter(cryptoCurrency -> cryptoCurrency.getDate().isBefore(ChronoLocalDateTime.from(end)) && cryptoCurrency.getDate().isAfter(ChronoLocalDateTime.from(start2)))
+                .collect(Collectors.toList());
+        return cryptos;
+    }
 
     @Transactional
     public Cryptocurrency getCryptoCurrency(CriptosNames cryptoName) {

@@ -42,6 +42,16 @@ public class CryptosController {
         }
     }
 
+    @GetMapping("/cryptocurrency/{cryptoName}/day")
+    public ResponseEntity<List<Cryptocurrency>> lastForDay(@PathVariable("cryptoName") CriptosNames cryptoName){
+        try {
+            List<Cryptocurrency> cryptoCurrency = cryptosService.cryptoBetweenDay(cryptoName);
+            return ResponseEntity.status(HttpStatus.OK).body(cryptoCurrency);
+        }catch(Exception exception){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
     @PostMapping("/cryptocurrency/update")
     public ResponseEntity<List<Cryptocurrency>> updateAllCryptos(){
         try {
