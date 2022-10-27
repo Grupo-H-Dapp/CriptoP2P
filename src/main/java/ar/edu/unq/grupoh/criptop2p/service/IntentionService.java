@@ -3,7 +3,6 @@ package ar.edu.unq.grupoh.criptop2p.service;
 import ar.edu.unq.grupoh.criptop2p.exceptions.IntentionException;
 import ar.edu.unq.grupoh.criptop2p.model.Intention;
 import ar.edu.unq.grupoh.criptop2p.repositories.IntentionRepository;
-import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,7 +36,7 @@ public class IntentionService {
         return transactions;
     }
 
-    public Intention saveTransaction(Intention transaction) {
+    public Intention saveTransaction(Intention transaction){
         return this.intentionRepository.save(transaction);
     }
 }

@@ -33,4 +33,13 @@ public class IntentionDTO {
     @Getter @Setter
     @NotBlank(message = "The user must be specified")
     private User user;
+
+    public IntentionDTO(TypeOperation typeIntention, double amount, float price, CriptosNames cryptoName, User user) {
+        this.typeIntention = typeIntention;
+        this.amount = amount;
+        this.price = price;
+        this.cryptoName = cryptoName;
+        this.user = user;
+    }
+
 }
