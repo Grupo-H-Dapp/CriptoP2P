@@ -24,32 +24,32 @@ public class OperationTest {
                 .withWallet("12345678")
                 .build();
     }
-    @Test
-    void caseWhereIntentionIsSell() throws UserException {
-        User pepe = User.builder().withCvu("1234567891234567891233").build();
-        User dardo = User.builder().withCvu("1234567891234567891255").build();
-        Intention i1 = new Intention(ALICEUSDT,0.1,1.5,100.0,pepe, TypeOperation.SELL);
-        Operation op1 = new Operation(i1,dardo);
-        assertEquals(pepe.getCvu(),op1.getDireccionEnvio());
-    }
-
-    @Test
-    void caseWhereIntentionIsSellAndFails() throws UserException {
-        User pepe = User.builder().withWallet("12345678").build();
-        User dardo = User.builder().withWallet("87654321").build();
-        Intention i1 = new Intention(ALICEUSDT,0.1,1.5,100.0,pepe, TypeOperation.SELL);
-        Operation op1 = new Operation(i1,dardo);
-        assertNotEquals(pepe.getAddressWallet(),op1.getDireccionEnvio());
-    }
-
-    @Test
-    void caseWhereIntentionIsBuy() throws UserException {
-        User pepe = User.builder().withWallet("12345678").build();
-        User dardo = User.builder().withWallet("87654321").build();
-        Intention i1 = new Intention(ALICEUSDT,0.1,1.5,100.0,pepe, TypeOperation.BUY);
-        Operation op1 = new Operation(i1,dardo);
-        assertEquals(pepe.getAddressWallet(),op1.getDireccionEnvio());
-    }
+//    @Test
+//    void caseWhereIntentionIsSell() throws UserException {
+//        User pepe = User.builder().withCvu("1234567891234567891233").build();
+//        User dardo = User.builder().withCvu("1234567891234567891255").build();
+//        Intention i1 = new Intention(ALICEUSDT,0.1,1.5,100.0,pepe, TypeOperation.SELL);
+//        Operation op1 = new Operation(i1,dardo);
+//        assertEquals(pepe.getCvu(),op1.getDireccionEnvio());
+//    }
+//
+//    @Test
+//    void caseWhereIntentionIsSellAndFails() throws UserException {
+//        User pepe = User.builder().withWallet("12345678").build();
+//        User dardo = User.builder().withWallet("87654321").build();
+//        Intention i1 = new Intention(ALICEUSDT,0.1,1.5,100.0,pepe, TypeOperation.SELL);
+//        Operation op1 = new Operation(i1,dardo);
+//        assertNotEquals(pepe.getAddressWallet(),op1.getDireccionEnvio());
+//    }
+//
+//    @Test
+//    void caseWhereIntentionIsBuy() throws UserException {
+//        User pepe = User.builder().withWallet("12345678").build();
+//        User dardo = User.builder().withWallet("87654321").build();
+//        Intention i1 = new Intention(ALICEUSDT,0.1,1.5,100.0,pepe, TypeOperation.BUY);
+//        Operation op1 = new Operation(i1,dardo);
+//        assertEquals(pepe.getAddressWallet(),op1.getDireccionEnvio());
+//    }
 
 
 }
