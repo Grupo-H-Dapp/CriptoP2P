@@ -39,20 +39,10 @@ public class CryptosService {
                 .collect(Collectors.collectingAndThen(Collectors.maxBy(Comparator.comparing(Cryptocurrency::getDate)), Optional::get));
     }
 
-//    @Transactional(readOnly = true)
-//    public Cryptocurrency findCryptoValueByName24hr(CriptosNames cryptoName) {
-//        return cryptoCurrencyRepository.findAll()
-//                .stream()
-//                .filter(crypto -> crypto.getCrypto() == cryptoName)
-//                .filter(crypto -> crypto.getDate())
-//                //.collect(Collectors.collectingAndThen(Collectors.maxBy(Comparator.comparing(Cryptocurrency::getDate)), Optional::get));
-//    }
     @Transactional
     public List<Cryptocurrency> cryptoBetweenDay(CriptosNames cryptoName) {
         LocalDateTime end = LocalDateTime.now();
-        LocalDateTime start2 = end.minusMinutes(1);
-        System.out.println("Start " + start2);
-        System.out.println("End " +end);
+        LocalDateTime start2 = end.minusMinutes(4); //end.minusHours(24) Para que sea cada 24hr
         List<Cryptocurrency> cryptos = findByCrypto(cryptoName)
                 .stream()
                 .filter(cryptoCurrency -> cryptoCurrency.getDate().isBefore(ChronoLocalDateTime.from(end)) && cryptoCurrency.getDate().isAfter(ChronoLocalDateTime.from(start2)))
@@ -79,7 +69,7 @@ public class CryptosService {
 
 
     @Transactional
-    @Scheduled(cron = "0 0/2 * * * *")
+    @Scheduled(cron = "0 0/5 * * * *") // cron = "0 0/10 * * * *" para que sea cada 10m
     public List<Cryptocurrency> updateAllCryptos() {
         List<Cryptocurrency> cryptoCurrencyList = new ArrayList<>();
         BinanceResponse[] binanceCryptoDTOS = getAllCryptoPrice(List.of(CriptosNames.values()));
