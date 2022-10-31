@@ -1,4 +1,4 @@
-package ar.edu.unq.grupoh.criptop2p;
+package ar.edu.unq.grupoh.criptop2p.test.model;
 
 
 import ar.edu.unq.grupoh.criptop2p.exceptions.UserException;

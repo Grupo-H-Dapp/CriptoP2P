@@ -24,14 +24,14 @@ public class Validator {
     }
 
     public static void addressMatches(String address) throws UserException{
-        if (!(Pattern.compile("^.{3,30}").matcher(address).matches())){
+        if (!(Pattern.compile("^.{10,30}").matcher(address).matches())){
             throw new UserException("Address not valid");
         }
     }
 
     public static void walletMatches(String wallet) throws UserException{
         if (!(Pattern.compile("[0-9]{8}").matcher(wallet).matches())){
-            throw new UserException("Wallet not valid");
+            throw new UserException("Wallet Adress not valid");
         }
     }
 
