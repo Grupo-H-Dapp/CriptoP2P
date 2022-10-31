@@ -69,11 +69,25 @@ public class UserService {
         this.userRepository.deleteById(id);
     }
 
-    public Optional<User> getUserByEmail(String email) {
-        return this.userRepository.findByEmail(email);
+    public User getUserByEmail(String email) throws UserNotFoundException {
+        Optional<User> user = this.userRepository.findByEmail(email);
+        if (user.isPresent()) {
+            return user.get();
+        } else {
+            throw new UserNotFoundException(email);
+        }
     }
 
-    public Optional<User> getUserById(int id){
-        return userRepository.findById(id);
+    public User getUserById(int id) throws UserNotFoundException {
+        Optional<User> user = userRepository.findById(id);
+        if (user.isPresent()) {
+            return user.get();
+        } else {
+            throw new UserNotFoundException(id);
+        }
+    }
+
+    public void deleteAllUsers() {
+        this.userRepository.deleteAll();
     }
 }

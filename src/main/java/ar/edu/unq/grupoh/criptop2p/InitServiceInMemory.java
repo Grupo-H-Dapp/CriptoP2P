@@ -21,7 +21,7 @@ public class InitServiceInMemory {
 
     protected final Log logger = LogFactory.getLog(getClass());
 
-    @Value("${spring.datasource.driverClassName:NONE}")
+    @Value("${database:NONE}")
     private String className;
 
     @Autowired
@@ -31,7 +31,7 @@ public class InitServiceInMemory {
 
     @PostConstruct
     public void initialize() throws UserException, UserAlreadyExistException {
-        if (className.equals("org.h2.Driver")) {
+        if (className.equals("prod")) {
             logger.info("Init Data Using H2 DB");
             fireInitialData();
         }

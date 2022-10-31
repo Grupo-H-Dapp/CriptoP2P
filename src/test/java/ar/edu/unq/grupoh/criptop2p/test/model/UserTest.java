@@ -33,7 +33,7 @@ public class UserTest {
     void createOneUserWithEmailWrong() {
         UserException exception = assertThrows(
                 UserException.class,
-                () -> User.builder().withEmail("anything").build()
+                () -> User.builder().withEmail("anything")
         );
         assertEquals("Email not valid", exception.getMessage());
     }
@@ -42,7 +42,7 @@ public class UserTest {
     void createOneUserWithPasswordWrong() {
         UserException exception = assertThrows(
                 UserException.class,
-                () -> User.builder().withPassword("123").build()
+                () -> User.builder().withPassword("123")
         );
         assertEquals("Password not valid", exception.getMessage());
     }
@@ -51,7 +51,7 @@ public class UserTest {
     void createOneUserWithNameWrong() {
         UserException exception = assertThrows(
                 UserException.class,
-                () -> User.builder().withName("1").build()
+                () -> User.builder().withName("1")
         );
         assertEquals("Name or Lastname not valid", exception.getMessage());
     }
@@ -60,7 +60,7 @@ public class UserTest {
     void createOneUserWithLastNameWrong() {
         UserException exception = assertThrows(
                 UserException.class,
-                () -> User.builder().withLastname("12345678910234567891231444111223").build()
+                () -> User.builder().withLastname("12345678910234567891231444111223")
         );
         assertEquals("Name or Lastname not valid", exception.getMessage());
     }
@@ -69,7 +69,7 @@ public class UserTest {
     void createOneUserWithAddressWrong() {
         UserException exception = assertThrows(
                 UserException.class,
-                () -> User.builder().withAddress("123456").build()
+                () -> User.builder().withAddress("123456")
         );
         assertEquals("Address not valid", exception.getMessage());
     }
@@ -78,7 +78,7 @@ public class UserTest {
     void createOneUserWithWalletAddressWrong() {
         UserException exception = assertThrows(
                 UserException.class,
-                () -> User.builder().withWallet("walletAdress").build()
+                () -> User.builder().withWallet("walletAdress")
         );
         assertEquals("Wallet Adress not valid", exception.getMessage());
     }
@@ -87,7 +87,7 @@ public class UserTest {
     void createOneUserWithCVUWrong() {
         UserException exception = assertThrows(
                 UserException.class,
-                () -> User.builder().withCvu("CVU Adress").build()
+                () -> User.builder().withCvu("CVU Adress")
         );
         assertEquals("Cvu not valid", exception.getMessage());
     }
