@@ -27,9 +27,9 @@ public class UserController {
         return ResponseEntity.ok().body(userService.findAll());
     }
 
-    @GetMapping(value = "/{id}" , produces = "application/json")
-    public ResponseEntity<User> getUser(@PathVariable int id) throws UserNotFoundException {
-        return ResponseEntity.ok(userService.getUser(id));
+    @GetMapping(value = "/{email}" , produces = "application/json")
+    public ResponseEntity<User> getUser(@PathVariable String email) throws UserNotFoundException {
+        return ResponseEntity.ok(userService.getUserByEmail(email));
     }
 
     @PostMapping(produces = "application/json")
@@ -38,7 +38,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateUser(@RequestBody @Valid UserRequest newUser,@PathVariable int id) throws UserNotFoundException {
+    public ResponseEntity<?> updateUser(@RequestBody @Valid UserRequest newUser,@PathVariable int id) {
         HttpStatus code = HttpStatus.OK;
         try {
             User user = this.userService.getUserById(id);
