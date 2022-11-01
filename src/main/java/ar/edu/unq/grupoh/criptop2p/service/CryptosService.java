@@ -42,10 +42,20 @@ public class CryptosService {
     @Transactional
     public List<Cryptocurrency> cryptoBetweenDay(CriptosNames cryptoName) {
         LocalDateTime end = LocalDateTime.now();
-        LocalDateTime start2 = end.minusMinutes(4); //end.minusHours(24) Para que sea cada 24hr
+        LocalDateTime start2 = end.minusHours(24) ;//Para que sea cada 24hr //end.minusMinutes(4);
         List<Cryptocurrency> cryptos = findByCrypto(cryptoName)
                 .stream()
                 .filter(cryptoCurrency -> cryptoCurrency.getDate().isBefore(ChronoLocalDateTime.from(end)) && cryptoCurrency.getDate().isAfter(ChronoLocalDateTime.from(start2)))
+                .collect(Collectors.toList());
+        return cryptos;
+    }
+
+    @Transactional
+    public List<Cryptocurrency> cryptoBetween(String cryptoName, LocalDateTime start, LocalDateTime end) {
+        CriptosNames crypto = CriptosNames.valueOf(cryptoName);
+        List<Cryptocurrency> cryptos = findByCrypto(crypto)
+                .stream()
+                .filter(cryptoCurrency -> cryptoCurrency.getDate().isBefore(ChronoLocalDateTime.from(end)) && cryptoCurrency.getDate().isAfter(ChronoLocalDateTime.from(start)))
                 .collect(Collectors.toList());
         return cryptos;
     }

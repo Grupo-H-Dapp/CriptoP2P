@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -56,6 +57,16 @@ public class CryptosController {
     public ResponseEntity<List<Cryptocurrency>> updateAllCryptos(){
         try {
             List<Cryptocurrency> cryptoCurrencies = cryptosService.updateAllCryptos();
+            return ResponseEntity.status(HttpStatus.OK).body(cryptoCurrencies);
+        } catch(Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping("/cryptocurrency/{crypto}/between")
+    public ResponseEntity<List<Cryptocurrency>> cryptoCurrencyBetween(@PathVariable String crypto, @Valid @RequestBody DateRangeDto dateRange){
+        try {
+            List<Cryptocurrency> cryptoCurrencies = cryptosService.cryptoBetween(crypto, dateRange.getStartDate(), dateRange.getEndDate());
             return ResponseEntity.status(HttpStatus.OK).body(cryptoCurrencies);
         } catch(Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
