@@ -109,11 +109,11 @@ public class UserServiceTest {
         this.userService.deleteUser(userAnonimuous.getUserId());
     }
     @Test
-    void saveTwoSameUser() {
+    void saveTwoSameUser() throws  UserException, UserAlreadyExistException, UserNotFoundException {
+        this.saveUserAnonimuous();
         UserAlreadyExistException exception = assertThrows(
                 UserAlreadyExistException.class,
                 () -> {
-                    this.saveUserAnonimuous();
                     this.saveUserAnonimuous();
                 }
         );

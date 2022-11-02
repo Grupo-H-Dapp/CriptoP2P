@@ -96,13 +96,21 @@ public class CryptosService {
     }
 
     private BinanceResponse getBinanceResponse(CriptosNames cryptoName) {
-        String url = "https://api1.binance.com/api/v3/ticker/price?symbol=" + cryptoName.name();
-        return restTemplate.getForObject(url, BinanceResponse.class);
+        try {
+            String url = "https://api1.binance.com/api/v3/ticker/price?symbol=" + cryptoName.name();
+            return restTemplate.getForObject(url, BinanceResponse.class);
+        } catch (NullPointerException ex) {
+            return new BinanceResponse(cryptoName.name(),0.00f);
+        }
     }
 
     private USDResponse getUSDResponse() {
-        String url = "https://api-dolar-argentina.herokuapp.com/api/dolaroficial";
-        return restTemplate.getForObject(url, USDResponse.class);
+        try {
+            String url = "https://api-dolar-argentina.herokuapp.com/api/dolaroficial";
+            return restTemplate.getForObject(url, USDResponse.class);
+        } catch (NullPointerException ex) {
+        return new USDResponse(0.00f,0.00f);
+    }
     }
 
     private List<Cryptocurrency> findByCrypto(CriptosNames cryptoName){
