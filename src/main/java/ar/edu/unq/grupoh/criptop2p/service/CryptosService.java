@@ -40,7 +40,7 @@ public class CryptosService {
     }
 
     @Transactional
-    public List<Cryptocurrency> cryptoBetweenDay(CriptosNames cryptoName) {
+    public List<Cryptocurrency> cryptoLast24hours(CriptosNames cryptoName) {
         LocalDateTime end = LocalDateTime.now();
         LocalDateTime start2 = end.minusHours(24) ;//Para que sea cada 24hr //end.minusMinutes(4);
         List<Cryptocurrency> cryptos = findByCrypto(cryptoName)

@@ -43,10 +43,10 @@ public class CryptosController {
         }
     }
 
-    @GetMapping("/cryptocurrency/{cryptoName}/day")
-    public ResponseEntity<List<Cryptocurrency>> lastForDay(@PathVariable("cryptoName") CriptosNames cryptoName){
+    @GetMapping("/cryptocurrency/{cryptoName}/24hs")
+    public ResponseEntity<List<Cryptocurrency>> cryptoLast24hours(@PathVariable("cryptoName") CriptosNames cryptoName){
         try {
-            List<Cryptocurrency> cryptoCurrency = cryptosService.cryptoBetweenDay(cryptoName);
+            List<Cryptocurrency> cryptoCurrency = cryptosService.cryptoLast24hours(cryptoName);
             return ResponseEntity.status(HttpStatus.OK).body(cryptoCurrency);
         }catch(Exception exception){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

@@ -18,9 +18,7 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -53,6 +51,5 @@ public class CryptoControllerTest {
                 Cryptocurrency[].class);
         List<Cryptocurrency> cryptos = Arrays.stream(response).toList();
         assertEquals(2, cryptos.size());
-
     }
 }
