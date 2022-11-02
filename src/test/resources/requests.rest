@@ -1,0 +1,16 @@
+@url = http://localhost:8080
+### GET Usuarios
+GET {{url}}/users
+
+### POST 
+POST {{url}}/users
+Content-Type: application/json
+
+{
+    "name":"miguel",
+    "lastname":"miguel@1",
+    "cvu":"1234567891234567891234",
+    "address":"street 123",
+    "addressWallet":"12345678",
+    "email":"miguel@gmail.com"
+}
