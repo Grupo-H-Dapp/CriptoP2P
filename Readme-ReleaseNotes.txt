@@ -12,6 +12,7 @@ NOTES:
 * Falta la funcionalidad para informar a un usuario el volumen operado de cripto activos entre dos fechas
 * Falta funcionalidad de procesar una intencion
 * Falta comprobar la funcionalidad de realizar transaciones
+* Se agrego un tag correspondiente a la entrega 1
 
 KNOWN ISSUES:
 * AntiPatter DTO
