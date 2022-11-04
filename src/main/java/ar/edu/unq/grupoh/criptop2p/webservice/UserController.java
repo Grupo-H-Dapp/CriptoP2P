@@ -2,6 +2,7 @@ package ar.edu.unq.grupoh.criptop2p.webservice;
 
 import ar.edu.unq.grupoh.criptop2p.dto.UserRequest;
 import ar.edu.unq.grupoh.criptop2p.exceptions.UserAlreadyExistException;
+import ar.edu.unq.grupoh.criptop2p.exceptions.UserException;
 import ar.edu.unq.grupoh.criptop2p.exceptions.UserNotFoundException;
 import ar.edu.unq.grupoh.criptop2p.model.User;
 import ar.edu.unq.grupoh.criptop2p.service.UserService;
@@ -26,23 +27,24 @@ public class UserController {
         return ResponseEntity.ok().body(userService.findAll());
     }
 
-    @GetMapping(value = "/{id}" , produces = "application/json")
-    public ResponseEntity<User> getUser(@PathVariable int id) throws UserNotFoundException {
-        return ResponseEntity.ok(userService.getUser(id));
+    @GetMapping(value = "/{email}" , produces = "application/json")
+    public ResponseEntity<User> getUser(@PathVariable String email) throws UserNotFoundException {
+        return ResponseEntity.ok(userService.getUserByEmail(email));
     }
 
     @PostMapping(produces = "application/json")
-    public ResponseEntity<User> saveUser(@RequestBody @Valid UserRequest userRequest) throws UserAlreadyExistException {
+    public ResponseEntity<User> saveUser(@RequestBody @Valid UserRequest userRequest) throws UserAlreadyExistException, UserException {
         return new ResponseEntity<>(userService.saveUser(userRequest), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateUser(@RequestBody @Valid UserRequest newUser,@PathVariable int id) throws UserNotFoundException {
-        Optional<User> user = this.userService.getUserById(id); // caso donde el id es de alguien no existente
-/*        if(user.isEmpty()){
-            throw new UserNotFoundException(id);
-        }*/
-        HttpStatus code = user.isPresent() ? HttpStatus.OK : HttpStatus.CREATED;
+    public ResponseEntity<?> updateUser(@RequestBody @Valid UserRequest newUser,@PathVariable int id) {
+        HttpStatus code = HttpStatus.OK;
+        try {
+            User user = this.userService.getUserById(id);
+        } catch (UserNotFoundException ex) {
+            code = HttpStatus.CREATED;
+        }
         User updateUser = this.userService.updateUser(newUser,id);
         return new ResponseEntity<>(updateUser,code);
     }
