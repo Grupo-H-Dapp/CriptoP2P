@@ -1,14 +1,10 @@
 package ar.edu.unq.grupoh.criptop2p;
 
 import ar.edu.unq.grupoh.criptop2p.exceptions.UserException;
-import ar.edu.unq.grupoh.criptop2p.model.Intention;
-import ar.edu.unq.grupoh.criptop2p.model.Operation;
 import ar.edu.unq.grupoh.criptop2p.model.User;
-import ar.edu.unq.grupoh.criptop2p.model.enums.TypeOperation;
-import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import static ar.edu.unq.grupoh.criptop2p.model.enums.CriptosNames.ALICEUSDT;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class OperationTest {

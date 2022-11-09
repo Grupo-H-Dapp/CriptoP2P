@@ -1,17 +1,18 @@
 package ar.edu.unq.grupoh.criptop2p.model;
 
+import ar.edu.unq.grupoh.criptop2p.model.enums.Action;
 import ar.edu.unq.grupoh.criptop2p.model.enums.CriptosNames;
-import ar.edu.unq.grupoh.criptop2p.model.enums.StateOperation;
 import ar.edu.unq.grupoh.criptop2p.model.enums.TypeOperation;
+import ar.edu.unq.grupoh.criptop2p.model.state.StateTransaction;
+import ar.edu.unq.grupoh.criptop2p.model.state.WaitingTransferMoney;
 import lombok.Data;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-
-import static ar.edu.unq.grupoh.criptop2p.model.enums.StateOperation.WAITING_CONFIRM;
+import static ar.edu.unq.grupoh.criptop2p.model.enums.Action.TRANSFER_MONEY;
 
 @Data
-public class Operation {
+public class Transaction {
     private LocalDateTime dateTime;
     private Intention intention;
     private User secondUser;
@@ -19,37 +20,37 @@ public class Operation {
     private CriptosNames crypto;
     private Double quantity;
     private Double price; //PRECIO NOMINAL
-    private StateOperation stateOperation;
+    private StateTransaction stateTransaction;
 
-    public Operation(Intention intention, User secondUser) {
+    public Transaction(Intention intention, User secondUser) {
         this.intention = intention;
         this.secondUser = secondUser;
         this.direccionEnvio = intention.getTypeOperation() == TypeOperation.SELL ? intention.getUser().getCvu() : intention.getUser().getAddressWallet();
         this.crypto = intention.getCrypto();
         this.quantity = intention.getQuantity();
         this.price = intention.getPrice();
-        this.stateOperation = StateOperation.ONGOING;
+        this.stateTransaction = new WaitingTransferMoney();
     }
-
+/*
     public void doTransfer(User userAction) {
-        if(stateOperation == StateOperation.ONGOING){
+        if(stateOperation == ar.edu.unq.grupoh.criptop2p.model.enums.StateTransaction.ONGOING){
             if(userAction == this.getIntention().getUser()){
                 throw new RuntimeException("No se puede transferir a si mismo");
             }
-            this.stateOperation = StateOperation.WAITING_CONFIRM;
+            this.stateOperation = ar.edu.unq.grupoh.criptop2p.model.enums.StateTransaction.WAITING_CONFIRM;
         }
         throw new RuntimeException("La transaccion no esta activa"); // no esta esperando o cancelada
     }
 
     public void doConfirm(User userAction) {
-        if(stateOperation == StateOperation.WAITING_CONFIRM){
+        if(stateOperation == ar.edu.unq.grupoh.criptop2p.model.enums.StateTransaction.WAITING_CONFIRM){
             if(! (userAction == this.getIntention().getUser())){
                 throw new RuntimeException("El usuario no es el que tiene que confirmar");
             } else if (this.validateDiffPrice()) {
-                this.stateOperation = StateOperation.COMPLETED;
+                this.stateOperation = ar.edu.unq.grupoh.criptop2p.model.enums.StateTransaction.COMPLETED;
                 this.givePointsCompleted();
             } else {
-                this.stateOperation = StateOperation.CANCELED;
+                this.stateOperation = ar.edu.unq.grupoh.criptop2p.model.enums.StateTransaction.CANCELED;
             }
         }
         throw new RuntimeException("La operacion no puede avanzar"); // no esta esperando o cancelada
@@ -57,14 +58,14 @@ public class Operation {
 
     public void doCancel(User userAction) {
         if (userAction == this.getIntention().getUser() || userAction == this.getSecondUser()){
-            this.stateOperation = StateOperation.CANCELED;
+            this.stateOperation = ar.edu.unq.grupoh.criptop2p.model.enums.StateTransaction.CANCELED;
             userAction.substractPoints();
         }
     }
 
     public void doCancelSystem(){
-        this.stateOperation = StateOperation.CANCELED;
-    }
+        this.stateOperation = ar.edu.unq.grupoh.criptop2p.model.enums.StateTransaction.CANCELED;
+    }*/
 
     private void givePointsCompleted() {
         LocalDateTime endedTime = LocalDateTime.now();
@@ -83,5 +84,9 @@ public class Operation {
 
     private Double priceMarket(CriptosNames crypto) {
         return 0.0; // Ver como obtenemos el valor de la crypto
+    }
+
+    public void changeState(Action action, User user) {
+        this.stateTransaction.change(action,user,this);
     }
 }
