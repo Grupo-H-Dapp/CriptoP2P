@@ -1,5 +1,6 @@
 package ar.edu.unq.grupoh.criptop2p.model;
 
+import ar.edu.unq.grupoh.criptop2p.exceptions.TransactionStatusException;
 import ar.edu.unq.grupoh.criptop2p.model.enums.Action;
 import ar.edu.unq.grupoh.criptop2p.model.enums.CriptosNames;
 import ar.edu.unq.grupoh.criptop2p.model.enums.TypeOperation;
@@ -86,7 +87,7 @@ public class Transaction {
         return 0.0; // Ver como obtenemos el valor de la crypto
     }
 
-    public void changeState(Action action, User user) {
+    public void changeState(Action action, User user) throws TransactionStatusException {
         this.stateTransaction.change(action,user,this);
     }
 }

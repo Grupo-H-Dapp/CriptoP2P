@@ -56,5 +56,9 @@ public class Intention {
         this.typeOperation = typeOperation;
     }
 
+    public void completeIntention(){
+        this.status = IntentionStatus.ENDED;
+    }
+
 }
 

@@ -1,5 +1,6 @@
 package ar.edu.unq.grupoh.criptop2p.service;
 
+import ar.edu.unq.grupoh.criptop2p.exceptions.TransactionStatusException;
 import ar.edu.unq.grupoh.criptop2p.exceptions.UserNotFoundException;
 import ar.edu.unq.grupoh.criptop2p.model.Transaction;
 import ar.edu.unq.grupoh.criptop2p.model.User;
@@ -26,7 +27,7 @@ public class TransactionService {
         transaction: 1
      }
      */
-    public void procesarActionOperation(Action action, Integer usuario, Long transaction) throws UserNotFoundException {
+    public void procesarActionOperation(Action action, Integer usuario, Long transaction) throws UserNotFoundException, TransactionStatusException {
 
         User user = this.userService.getUserById(usuario);
         Optional<Transaction> transaction1 = this.transactionRepository.findById(transaction);
