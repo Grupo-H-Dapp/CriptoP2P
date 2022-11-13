@@ -3,9 +3,9 @@ package ar.edu.unq.grupoh.criptop2p.model;
 import ar.edu.unq.grupoh.criptop2p.exceptions.TransactionStatusException;
 import ar.edu.unq.grupoh.criptop2p.model.enums.Action;
 import ar.edu.unq.grupoh.criptop2p.model.enums.CriptosNames;
+import ar.edu.unq.grupoh.criptop2p.model.enums.StatesTransaction;
 import ar.edu.unq.grupoh.criptop2p.model.enums.TypeOperation;
 import ar.edu.unq.grupoh.criptop2p.model.state.StateTransaction;
-import ar.edu.unq.grupoh.criptop2p.model.state.WaitingTransferMoney;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -48,7 +48,7 @@ public class Transaction {
     @Column(nullable = false)
     private Float price; //PRECIO NOMINAL
     @Getter @Setter
-    private StateTransaction stateTransaction;
+    private StatesTransaction stateTransaction;
 
     public Transaction(Intention intention, User secondUser) {
         this.intention = intention;
@@ -57,8 +57,10 @@ public class Transaction {
         this.crypto = intention.getCrypto();
         this.quantity = intention.getQuantity();
         this.price = intention.getPrice();
-        this.stateTransaction = new WaitingTransferMoney();
+        this.stateTransaction = StatesTransaction.WAITING_TRANSFER_MONEY;
     }
+
+
 
     public void givePointsCompleted() {
         LocalDateTime endedTime = LocalDateTime.now();
@@ -72,9 +74,6 @@ public class Transaction {
         return 0.0; // Ver como obtenemos el valor de la crypto
     }
 
-    public void changeState(Action action, User user,Cryptocurrency cryptocurrency) throws TransactionStatusException {
-        this.stateTransaction.change(action,user,this,cryptocurrency);
-    }
 
     public boolean isInPriceRange(Cryptocurrency cryptoCurrency){
         return cryptoCurrency.validateDiffPrice(intention.getPrice());

@@ -7,6 +7,7 @@ import ar.edu.unq.grupoh.criptop2p.model.Cryptocurrency;
 import ar.edu.unq.grupoh.criptop2p.model.Transaction;
 import ar.edu.unq.grupoh.criptop2p.model.User;
 import ar.edu.unq.grupoh.criptop2p.model.enums.Action;
+import ar.edu.unq.grupoh.criptop2p.model.enums.StatesTransaction;
 import ar.edu.unq.grupoh.criptop2p.repositories.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,7 +35,14 @@ public class TransactionService {
         User user = this.userService.getUserById(usuario);
         Transaction transaction1 = this.transactionRepository.findById(transaction).orElseThrow(() -> new TransactionException("The operation does not exist"));
         Cryptocurrency cryptocurrency = this.cryptosService.getCryptoCurrency(transaction1.getCrypto());
-        transaction1.changeState(action,user,cryptocurrency);
-
+        if (action == Action.CANCEL && (transaction1.getStateTransaction() != StatesTransaction.COMPLETED && transaction1.getStateTransaction() != StatesTransaction.CANCELED)){
+            transaction1.setStateTransaction(StatesTransaction.CANCELED);
+            user.substractPoints();
+            //userService.saveUser(user);
+            transactionRepository.save(transaction1);
+        }else {
+            transaction1.getStateTransaction().onChange(user, transaction1, cryptocurrency, action);
+            transactionRepository.save(transaction1);
+        }
     }
 }
