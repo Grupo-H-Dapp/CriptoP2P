@@ -9,7 +9,6 @@ public class Completed extends StateTransaction {
 
     @Override
     public void change(Action action, User user, Transaction transaction) throws TransactionStatusException {
-        transaction.getIntention().completeIntention();
         throw new TransactionStatusException("La transaccion ya esta Completada , no se aceptan mas acciones");
     }
 }

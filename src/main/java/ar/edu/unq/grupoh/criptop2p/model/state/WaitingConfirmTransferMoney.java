@@ -29,8 +29,8 @@ public class WaitingConfirmTransferMoney extends StateTransaction{
     public void change(Action action, User user, Transaction transaction) throws TransactionStatusException {
         switch (action) {
             case CANCEL:
+                user.substractPoints();
                 transaction.setStateTransaction(new Canceled());
-                //TODO Penalizar al usuario o a los dos
                 break;
             case CONFIRM_MONEY:
                 checkValidation(user,transaction);

@@ -20,6 +20,7 @@ public class WaitingConfirmTransferCrypto extends StateTransaction {
     public void checkValidation(User user, Transaction transaction) throws TransactionStatusException {
         if (checkUserBasedOnTypeIntention(user,transaction)) {
             transaction.setStateTransaction(new Completed());
+            transaction.givePointsCompleted();
         } else {
             throw new TransactionStatusException("Usuario invalido para la accion");
         }
@@ -28,8 +29,8 @@ public class WaitingConfirmTransferCrypto extends StateTransaction {
     public void change(Action action, User user, Transaction transaction) throws TransactionStatusException {
         switch (action) {
             case CANCEL:
+                user.substractPoints();
                 transaction.setStateTransaction(new Canceled());
-                //TODO Penalizar al usuario o a los dos
                 break;
             case CONFIRM_CRYPTO:
                 checkValidation(user,transaction);

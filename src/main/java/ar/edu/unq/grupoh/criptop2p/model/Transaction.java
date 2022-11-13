@@ -17,7 +17,7 @@ public class Transaction {
     private LocalDateTime dateTime;
     private Intention intention;
     private User secondUser;
-    private String direccionEnvio; //intention == venta ? intention.user.cvu : intention.user.addressWallet
+    private String direccionEnvio;
     private CriptosNames crypto;
     private Double quantity;
     private Double price; //PRECIO NOMINAL
@@ -32,7 +32,31 @@ public class Transaction {
         this.price = intention.getPrice();
         this.stateTransaction = new WaitingTransferMoney();
     }
-/*
+
+    public void givePointsCompleted() {
+        LocalDateTime endedTime = LocalDateTime.now();
+        long timePassed = Duration.between(this.getDateTime(), endedTime).toMinutes();
+        int points = timePassed <= 30 ? 10 : 5;
+        this.getSecondUser().setPoints(points);
+        this.getIntention().getUser().setPoints(points);
+    }
+
+    private boolean validateDiffPrice() {
+        Double min = this.getPrice() * 0.95 ;
+        Double max = this.getPrice() * 1.05 ;
+        Double marketPrice = this.priceMarket(this.getCrypto()) ;
+        return (min <= marketPrice) && (marketPrice <= max);//true en el caso que este en el margen
+    }
+
+    private Double priceMarket(CriptosNames crypto) {
+        return 0.0; // Ver como obtenemos el valor de la crypto
+    }
+
+    public void changeState(Action action, User user) throws TransactionStatusException {
+        this.stateTransaction.change(action,user,this);
+    }
+
+    /*
     public void doTransfer(User userAction) {
         if(stateOperation == ar.edu.unq.grupoh.criptop2p.model.enums.StateTransaction.ONGOING){
             if(userAction == this.getIntention().getUser()){
@@ -67,27 +91,4 @@ public class Transaction {
     public void doCancelSystem(){
         this.stateOperation = ar.edu.unq.grupoh.criptop2p.model.enums.StateTransaction.CANCELED;
     }*/
-
-    private void givePointsCompleted() {
-        LocalDateTime endedTime = LocalDateTime.now();
-        long timePassed = Duration.between(this.getDateTime(), endedTime).toMinutes();
-        int points = timePassed <= 30 ? 10 : 5;
-        this.getSecondUser().setPoints(points);
-        this.getIntention().getUser().setPoints(points);
-    }
-
-    private boolean validateDiffPrice() {
-        Double min = this.getPrice() * 0.95 ;
-        Double max = this.getPrice() * 1.05 ;
-        Double marketPrice = this.priceMarket(this.getCrypto()) ;
-        return (min <= marketPrice) && (marketPrice <= max);//true en el caso que este en el margen
-    }
-
-    private Double priceMarket(CriptosNames crypto) {
-        return 0.0; // Ver como obtenemos el valor de la crypto
-    }
-
-    public void changeState(Action action, User user) throws TransactionStatusException {
-        this.stateTransaction.change(action,user,this);
-    }
 }
