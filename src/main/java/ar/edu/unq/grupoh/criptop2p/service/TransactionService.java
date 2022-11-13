@@ -3,6 +3,7 @@ package ar.edu.unq.grupoh.criptop2p.service;
 import ar.edu.unq.grupoh.criptop2p.exceptions.TransactionException;
 import ar.edu.unq.grupoh.criptop2p.exceptions.TransactionStatusException;
 import ar.edu.unq.grupoh.criptop2p.exceptions.UserNotFoundException;
+import ar.edu.unq.grupoh.criptop2p.model.Cryptocurrency;
 import ar.edu.unq.grupoh.criptop2p.model.Transaction;
 import ar.edu.unq.grupoh.criptop2p.model.User;
 import ar.edu.unq.grupoh.criptop2p.model.enums.Action;
@@ -19,6 +20,9 @@ public class TransactionService {
     @Autowired
     private UserService userService;
     @Autowired
+    private CryptosService cryptosService;
+
+    @Autowired
     private TransactionRepository transactionRepository;
 
     public Transaction saveTransaction(Transaction transaction){
@@ -28,8 +32,9 @@ public class TransactionService {
     @Transactional
     public void processActionOperation(Action action, Integer usuario, Long transaction) throws UserNotFoundException, TransactionStatusException, TransactionException {
         User user = this.userService.getUserById(usuario);
-        Transaction transaction1 = this.transactionRepository.findById(transaction).orElseThrow(() -> new TransactionException("The operation does not exist"));;
-        transaction1.changeState(action,user);
+        Transaction transaction1 = this.transactionRepository.findById(transaction).orElseThrow(() -> new TransactionException("The operation does not exist"));
+        Cryptocurrency cryptocurrency = this.cryptosService.getCryptoCurrency(transaction1.getCrypto());
+        transaction1.changeState(action,user,cryptocurrency);
 
     }
 }

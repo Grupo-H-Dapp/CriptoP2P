@@ -7,20 +7,47 @@ import ar.edu.unq.grupoh.criptop2p.model.enums.TypeOperation;
 import ar.edu.unq.grupoh.criptop2p.model.state.StateTransaction;
 import ar.edu.unq.grupoh.criptop2p.model.state.WaitingTransferMoney;
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import javax.persistence.*;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import static ar.edu.unq.grupoh.criptop2p.model.enums.Action.TRANSFER_MONEY;
 
-@Data
+@Entity
+@Table(name = "transaction")
+@NoArgsConstructor
 public class Transaction {
+    @Getter @Setter
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Getter @Setter
+    @Column(nullable = false)
     private LocalDateTime dateTime;
+    @Getter @Setter
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "intention_id")
     private Intention intention;
+    @Getter @Setter
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
     private User secondUser;
+    @Getter @Setter
+    @Column(nullable = false)
     private String direccionEnvio;
+    @Getter @Setter
+    @Column(nullable = false)
     private CriptosNames crypto;
+    @Getter @Setter
+    @Column(nullable = false)
     private Double quantity;
-    private Double price; //PRECIO NOMINAL
+    @Getter @Setter
+    @Column(nullable = false)
+    private Float price; //PRECIO NOMINAL
+    @Getter @Setter
     private StateTransaction stateTransaction;
 
     public Transaction(Intention intention, User secondUser) {
@@ -41,19 +68,20 @@ public class Transaction {
         this.getIntention().getUser().setPoints(points);
     }
 
-    private boolean validateDiffPrice() {
-        Double min = this.getPrice() * 0.95 ;
-        Double max = this.getPrice() * 1.05 ;
-        Double marketPrice = this.priceMarket(this.getCrypto()) ;
-        return (min <= marketPrice) && (marketPrice <= max);//true en el caso que este en el margen
-    }
-
     private Double priceMarket(CriptosNames crypto) {
         return 0.0; // Ver como obtenemos el valor de la crypto
     }
 
-    public void changeState(Action action, User user) throws TransactionStatusException {
-        this.stateTransaction.change(action,user,this);
+    public void changeState(Action action, User user,Cryptocurrency cryptocurrency) throws TransactionStatusException {
+        this.stateTransaction.change(action,user,this,cryptocurrency);
+    }
+
+    public boolean isInPriceRange(Cryptocurrency cryptoCurrency){
+        return cryptoCurrency.validateDiffPrice(intention.getPrice());
+    }
+
+    public void completeIntention(){
+        this.intention.completeIntention();
     }
 
     /*

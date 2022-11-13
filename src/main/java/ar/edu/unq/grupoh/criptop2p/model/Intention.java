@@ -12,7 +12,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "transactionIntention")
+@Table(name = "intention")
 @NoArgsConstructor
 public class Intention {
 
@@ -31,7 +31,7 @@ public class Intention {
     private Double quantity;
     @Getter @Setter
     @Column(nullable = false)
-    private Double price; //PRECIO NOMINAL
+    private Float price; //PRECIO NOMINAL
     @Getter @Setter
     @Column(nullable = false)
     private Double amountArg;
@@ -46,7 +46,7 @@ public class Intention {
     @Column(nullable = false)
     private IntentionStatus status;
 
-    public Intention(LocalDateTime dateTime, CriptosNames crypto, Double quantity, Double price, Double amountArg, User user, TypeOperation typeOperation) {
+    public Intention(LocalDateTime dateTime, CriptosNames crypto, Double quantity, Float price, Double amountArg, User user, TypeOperation typeOperation) {
         this.dateTime = dateTime;
         this.crypto = crypto;
         this.quantity = quantity;

@@ -33,6 +33,12 @@ public class Cryptocurrency {
         this.date = LocalDateTime.now();
     }
 
+    public boolean validateDiffPrice(float price) {
+        Float min = this.getPrice() * 0.95F ;
+        Float max = this.getPrice() * 1.05F ;
+        return (min <= price) && (price <= max);//true en el caso que este en el margen
+    }
+
     public static final class Builder {
         private final Cryptocurrency cryptoCurrency = new Cryptocurrency();
 
