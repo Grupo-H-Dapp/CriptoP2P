@@ -25,6 +25,7 @@ public class Intention {
     private LocalDateTime dateTime;*/
     @Getter @Setter
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private CriptosNames crypto;
     @Getter @Setter
     @Column(nullable = false)
@@ -41,9 +42,11 @@ public class Intention {
     private User user;
     @Getter @Setter
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private TypeOperation typeOperation; //COMPRA O VENTA
     @Getter @Setter
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private IntentionStatus status;
 
     public Intention(CriptosNames crypto, Double quantity, Float price, Double amountArg, User user, TypeOperation typeOperation) {

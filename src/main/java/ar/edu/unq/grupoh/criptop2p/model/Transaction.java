@@ -33,13 +33,14 @@ public class Transaction {
     private Intention intention;
     @Getter @Setter
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "users_id")
+    @JoinColumn(name = "secondUser")
     private User secondUser;
     @Getter @Setter
     @Column(nullable = false)
     private String direccionEnvio;
     @Getter @Setter
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private CriptosNames crypto;
     @Getter @Setter
     @Column(nullable = false)
@@ -48,6 +49,7 @@ public class Transaction {
     @Column(nullable = false)
     private Float price; //PRECIO NOMINAL
     @Getter @Setter
+    @Enumerated(EnumType.STRING)
     private StatesTransaction stateTransaction;
 
     public Transaction(Intention intention, User secondUser) {

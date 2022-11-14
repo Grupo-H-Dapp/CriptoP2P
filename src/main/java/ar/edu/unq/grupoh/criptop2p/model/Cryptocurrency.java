@@ -20,6 +20,7 @@ public class Cryptocurrency {
     private Long id;
     @Getter @Setter
     @NotNull
+    @Enumerated(EnumType.STRING)
     private CriptosNames crypto;
     @Getter @Setter
     @NotNull

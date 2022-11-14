@@ -52,12 +52,12 @@ public class InitServiceInMemory {
                 .withCvu("1234567891234567891233").withWallet("12345678").build();
         User userDardo = User.builder().withName("Dardo").withLastname("Fuseneco").withAddress("9876543219").withEmail("dardoF@gmail.com").withPassword("asdsadsadD#")
                 .withCvu("1234567891234567891255").withWallet("87654321").build();
-        User pepeDB = userService.saveUser(modelMapper.map(userPepe, UserRequest.class));
-        User dardoDB =userService.saveUser(modelMapper.map(userDardo, UserRequest.class));
-        Intention i1 = Intention.builder().withUser(pepeDB).withCryptoCurrency(CriptosNames.ALICEUSDT).withQuantity(0.10).withTypeTransaction(TypeOperation.BUY)
+        userPepe = userService.saveUser(modelMapper.map(userPepe, UserRequest.class));
+        userDardo =userService.saveUser(modelMapper.map(userDardo, UserRequest.class));
+        Intention i1 = Intention.builder().withUser(userPepe).withCryptoCurrency(CriptosNames.ALICEUSDT).withQuantity(0.10).withTypeTransaction(TypeOperation.BUY)
                 .withAmountArg(100.0).withPrice(10.0f).build();
         intentionService.saveIntention(i1);
-        Transaction t1 = Transaction.builder().withIntention(i1).withUserSecondUser(dardoDB).build();
+        Transaction t1 = Transaction.builder().withIntention(i1).withUserSecondUser(userDardo).build();
         transactionService.saveTransaction(t1);
     }
 }

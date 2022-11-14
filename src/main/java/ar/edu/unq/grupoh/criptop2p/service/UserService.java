@@ -6,6 +6,7 @@ import ar.edu.unq.grupoh.criptop2p.exceptions.UserException;
 import ar.edu.unq.grupoh.criptop2p.exceptions.UserNotFoundException;
 import ar.edu.unq.grupoh.criptop2p.model.User;
 import ar.edu.unq.grupoh.criptop2p.repositories.UserRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,7 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+    private ModelMapper modelMapper = new ModelMapper();
 
     public User saveUser(UserRequest model) throws UserAlreadyExistException, UserException {
         Optional<User> userToAdd = userRepository.findByEmail(model.getEmail());

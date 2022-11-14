@@ -79,7 +79,7 @@ public class CryptosService {
 
 
     @Transactional
-    //@Scheduled(cron = "0 0/10 * * * *") // cron = "0 0/10 * * * *" para que sea cada 10m
+    @Scheduled(cron = "0 0/5 * * * *") // cron = "0 0/10 * * * *" para que sea cada 10m
     public List<Cryptocurrency> updateAllCryptos() {
         List<Cryptocurrency> cryptoCurrencyList = new ArrayList<>();
         BinanceResponse[] binanceCryptoDTOS = getAllCryptoPrice(List.of(CriptosNames.values()));
