@@ -33,7 +33,7 @@ public class Transaction {
     private Intention intention;
     @Getter @Setter
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "users_id")
     private User secondUser;
     @Getter @Setter
     @Column(nullable = false)

@@ -3,6 +3,7 @@ package ar.edu.unq.grupoh.criptop2p;
 import ar.edu.unq.grupoh.criptop2p.dto.UserRequest;
 import ar.edu.unq.grupoh.criptop2p.exceptions.UserAlreadyExistException;
 import ar.edu.unq.grupoh.criptop2p.exceptions.UserException;
+import ar.edu.unq.grupoh.criptop2p.model.Transaction;
 import ar.edu.unq.grupoh.criptop2p.model.User;
 import ar.edu.unq.grupoh.criptop2p.service.UserService;
 import org.modelmapper.ModelMapper;
@@ -44,5 +45,6 @@ public class InitServiceInMemory {
                 .withCvu("1234567891234567891255").withWallet("87654321").build();
         userService.saveUser(modelMapper.map(user, UserRequest.class));
         userService.saveUser(modelMapper.map(user1, UserRequest.class));
+        //Transaction t1 = Transaction
     }
 }

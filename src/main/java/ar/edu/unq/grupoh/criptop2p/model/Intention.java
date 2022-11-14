@@ -37,7 +37,7 @@ public class Intention {
     private Double amountArg;
     @Getter @Setter
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "users_id")
     private User user;
     @Getter @Setter
     @Column(nullable = false)

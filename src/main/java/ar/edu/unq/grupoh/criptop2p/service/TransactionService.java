@@ -34,11 +34,11 @@ public class TransactionService {
     public void processActionOperation(Action action, Integer usuario, Long transaction) throws UserNotFoundException, TransactionStatusException, TransactionException {
         User user = this.userService.getUserById(usuario);
         Transaction transaction1 = this.transactionRepository.findById(transaction).orElseThrow(() -> new TransactionException("The operation does not exist"));
+        //Opcional hacerlo aca , se hace para obtener la ultima cotizacion de la crypto y validar la diff de precio
         Cryptocurrency cryptocurrency = this.cryptosService.getCryptoCurrency(transaction1.getCrypto());
         if (action == Action.CANCEL && (transaction1.getStateTransaction() != StatesTransaction.COMPLETED && transaction1.getStateTransaction() != StatesTransaction.CANCELED)){
             transaction1.setStateTransaction(StatesTransaction.CANCELED);
             user.substractPoints();
-            //userService.saveUser(user);
             transactionRepository.save(transaction1);
         }else {
             transaction1.getStateTransaction().onChange(user, transaction1, cryptocurrency, action);
