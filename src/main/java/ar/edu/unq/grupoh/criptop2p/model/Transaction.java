@@ -53,6 +53,7 @@ public class Transaction {
     public Transaction(Intention intention, User secondUser) {
         this.intention = intention;
         this.secondUser = secondUser;
+        this.dateTime = LocalDateTime.now();
         this.direccionEnvio = intention.getTypeOperation() == TypeOperation.SELL ? intention.getUser().getCvu() : intention.getUser().getAddressWallet();
         this.crypto = intention.getCrypto();
         this.quantity = intention.getQuantity();
@@ -82,5 +83,26 @@ public class Transaction {
     public void completeIntention(){
         this.intention.completeIntention();
     }
+
+    public static final class TransactionBuilder {
+        private final Transaction transaction = new Transaction();
+
+        private TransactionBuilder() {}
+
+        public TransactionBuilder withIntention(Intention intention){
+            transaction.setIntention(intention);
+            return this;
+        }
+        public TransactionBuilder withUserSecondUser(User user){
+            transaction.setSecondUser(user);
+            return this;
+        }
+
+        public Transaction build(){
+            return new Transaction(transaction.getIntention(),transaction.getSecondUser());
+        }
+    }
+
+    public static TransactionBuilder builder(){return new TransactionBuilder();}
 
 }

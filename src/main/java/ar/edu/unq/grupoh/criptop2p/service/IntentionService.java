@@ -36,7 +36,7 @@ public class IntentionService {
         return transactions;
     }
 
-    public Intention saveTransaction(Intention transaction){
+    public Intention saveIntention(Intention transaction){
         return this.intentionRepository.save(transaction);
     }
 }

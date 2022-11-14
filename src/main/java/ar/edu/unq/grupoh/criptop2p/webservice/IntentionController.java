@@ -42,7 +42,7 @@ public class IntentionController {
 
     @PostMapping
     public ResponseEntity<?> postIntention(@Valid @RequestBody Intention intentionDTO){
-        Intention transaction = intentionService.saveTransaction(intentionDTO);
+        Intention transaction = intentionService.saveIntention(intentionDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(transaction);
     }
 }

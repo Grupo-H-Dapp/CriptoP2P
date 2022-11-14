@@ -20,21 +20,21 @@ public class Intention {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Getter @Setter
+/*  @Getter @Setter
     @Column(nullable = false)
-    private LocalDateTime dateTime;
+    private LocalDateTime dateTime;*/
     @Getter @Setter
     @Column(nullable = false)
     private CriptosNames crypto;
     @Getter @Setter
     @Column(nullable = false)
-    private Double quantity;
+    private Double quantity; // CANTIDAD CRYPTO
     @Getter @Setter
     @Column(nullable = false)
-    private Float price; //PRECIO NOMINAL
+    private Float price; //PRECIO NOMINAL en usd
     @Getter @Setter
     @Column(nullable = false)
-    private Double amountArg;
+    private Double amountArg; //PRECIO EN PESOS
     @Getter @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "users_id")
@@ -46,19 +46,69 @@ public class Intention {
     @Column(nullable = false)
     private IntentionStatus status;
 
-    public Intention(LocalDateTime dateTime, CriptosNames crypto, Double quantity, Float price, Double amountArg, User user, TypeOperation typeOperation) {
-        this.dateTime = dateTime;
+    public Intention(CriptosNames crypto, Double quantity, Float price, Double amountArg, User user, TypeOperation typeOperation) {
         this.crypto = crypto;
         this.quantity = quantity;
         this.price = price;
         this.amountArg = amountArg;
         this.user = user;
         this.typeOperation = typeOperation;
+        this.status = IntentionStatus.ACTIVE;
     }
 
     public void completeIntention(){
         this.status = IntentionStatus.ENDED;
     }
 
+    public static final class IntentionBuilder {
+
+        private final Intention transaction = new Intention();
+
+        private IntentionBuilder() {
+        }
+
+        public IntentionBuilder withTypeTransaction(TypeOperation type){
+            transaction.setTypeOperation(type);
+            return this;
+        }
+
+        public IntentionBuilder withAmountArg(double amount){
+            transaction.setAmountArg(amount);
+            return this;
+        }
+
+        public IntentionBuilder withQuantity(double quantity){
+            transaction.setQuantity(quantity);
+            return this;
+        }
+
+        public IntentionBuilder withPrice(float price){
+            transaction.setPrice(price);
+            return this;
+        }
+
+        public IntentionBuilder withCryptoCurrency(CriptosNames cryptoName){
+            transaction.setCrypto(cryptoName);
+            return this;
+        }
+
+        public IntentionBuilder withUser(User user){
+            transaction.setUser(user);
+            return this;
+        }
+
+        public IntentionBuilder withId(Long id) {
+            transaction.setId(id);
+            return this;
+        }
+
+        public Intention build() {
+            return new Intention(transaction.getCrypto(),transaction.getQuantity(),transaction.getPrice(),transaction.getAmountArg(),transaction.getUser(),transaction.getTypeOperation());
+        }
+    }
+
+    public static IntentionBuilder builder() {
+        return new IntentionBuilder();
+    }
 }
 
