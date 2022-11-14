@@ -83,39 +83,4 @@ public class Transaction {
         this.intention.completeIntention();
     }
 
-    /*
-    public void doTransfer(User userAction) {
-        if(stateOperation == ar.edu.unq.grupoh.criptop2p.model.enums.StateTransaction.ONGOING){
-            if(userAction == this.getIntention().getUser()){
-                throw new RuntimeException("No se puede transferir a si mismo");
-            }
-            this.stateOperation = ar.edu.unq.grupoh.criptop2p.model.enums.StateTransaction.WAITING_CONFIRM;
-        }
-        throw new RuntimeException("La transaccion no esta activa"); // no esta esperando o cancelada
-    }
-
-    public void doConfirm(User userAction) {
-        if(stateOperation == ar.edu.unq.grupoh.criptop2p.model.enums.StateTransaction.WAITING_CONFIRM){
-            if(! (userAction == this.getIntention().getUser())){
-                throw new RuntimeException("El usuario no es el que tiene que confirmar");
-            } else if (this.validateDiffPrice()) {
-                this.stateOperation = ar.edu.unq.grupoh.criptop2p.model.enums.StateTransaction.COMPLETED;
-                this.givePointsCompleted();
-            } else {
-                this.stateOperation = ar.edu.unq.grupoh.criptop2p.model.enums.StateTransaction.CANCELED;
-            }
-        }
-        throw new RuntimeException("La operacion no puede avanzar"); // no esta esperando o cancelada
-    }
-
-    public void doCancel(User userAction) {
-        if (userAction == this.getIntention().getUser() || userAction == this.getSecondUser()){
-            this.stateOperation = ar.edu.unq.grupoh.criptop2p.model.enums.StateTransaction.CANCELED;
-            userAction.substractPoints();
-        }
-    }
-
-    public void doCancelSystem(){
-        this.stateOperation = ar.edu.unq.grupoh.criptop2p.model.enums.StateTransaction.CANCELED;
-    }*/
 }
