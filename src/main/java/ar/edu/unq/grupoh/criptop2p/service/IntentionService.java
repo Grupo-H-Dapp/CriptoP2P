@@ -1,8 +1,10 @@
 package ar.edu.unq.grupoh.criptop2p.service;
 
+import ar.edu.unq.grupoh.criptop2p.dto.IntentionResponse;
 import ar.edu.unq.grupoh.criptop2p.exceptions.IntentionException;
 import ar.edu.unq.grupoh.criptop2p.model.Intention;
 import ar.edu.unq.grupoh.criptop2p.repositories.IntentionRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,7 @@ public class IntentionService {
 
     @Autowired
     private IntentionRepository intentionRepository;
+
 
     public List<Intention> findAll() {
         return this.intentionRepository.findAll();
