@@ -113,7 +113,9 @@ public enum StatesTransaction {
         }
     },
     COMPLETED {
-        
+        public void onChange(User user, Transaction transaction, Cryptocurrency cryptocurrency,Action action) throws TransactionStatusException {
+            throw new TransactionStatusException("La transaccion esta completada , no se aceptan mas acciones");
+        }
     },
     CANCELED {
         public void onChange(User user, Transaction transaction, Cryptocurrency cryptocurrency,Action action) throws TransactionStatusException {

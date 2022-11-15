@@ -52,7 +52,7 @@ public class Transaction {
     @Enumerated(EnumType.STRING)
     private StatesTransaction stateTransaction;
 
-    public Transaction(Intention intention, User secondUser) {
+    public Transaction(Intention intention, User secondUser,StatesTransaction stateTransaction) {
         this.intention = intention;
         this.secondUser = secondUser;
         this.dateTime = LocalDateTime.now();
@@ -60,7 +60,7 @@ public class Transaction {
         this.crypto = intention.getCrypto();
         this.quantity = intention.getQuantity();
         this.price = intention.getPrice();
-        this.stateTransaction = StatesTransaction.WAITING_TRANSFER_MONEY;
+        this.stateTransaction = stateTransaction != null ? stateTransaction :  StatesTransaction.WAITING_TRANSFER_MONEY;
     }
 
 
@@ -78,7 +78,7 @@ public class Transaction {
     }
 
 
-    public boolean isInPriceRange(Cryptocurrency cryptoCurrency){
+    public boolean isInPriceRange(Cryptocurrency cryptoCurrency) throws TransactionStatusException {
         return cryptoCurrency.validateDiffPrice(intention.getPrice());
     }
 
@@ -100,8 +100,13 @@ public class Transaction {
             return this;
         }
 
+        public TransactionBuilder withState(StatesTransaction state){
+            transaction.setStateTransaction(state);
+            return this;
+        }
+
         public Transaction build(){
-            return new Transaction(transaction.getIntention(),transaction.getSecondUser());
+            return new Transaction(transaction.getIntention(),transaction.getSecondUser(),transaction.getStateTransaction());
         }
     }
 
