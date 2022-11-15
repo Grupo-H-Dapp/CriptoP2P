@@ -99,19 +99,6 @@ public enum StatesTransaction {
             }
         }
 
-//        //CONFIRM_CRYPTO
-//        public void onChange(User user, Transaction transaction, Cryptocurrency cryptocurrency,Action action) throws TransactionStatusException {
-//            if (acceptedAction(action)&& checkUserBasedOnTypeIntention(user,transaction)) {
-//                if(transaction.isInPriceRange(cryptocurrency)){
-//                    transaction.setStateTransaction(COMPLETED);
-//                    transaction.givePointsCompleted();
-//                    transaction.completeIntention();
-//                }
-//            } else {
-//                throw new TransactionStatusException("Usuario invalido para la accion");
-//            }
-//        }
-
         public void completeTransaction(User user, Transaction transaction, Cryptocurrency cryptocurrency,Action action) throws TransactionStatusException {
             if (acceptedAction(action) && checkUserBasedOnTypeIntention(user,transaction)) {
                 if(transaction.isInPriceRange(cryptocurrency)){

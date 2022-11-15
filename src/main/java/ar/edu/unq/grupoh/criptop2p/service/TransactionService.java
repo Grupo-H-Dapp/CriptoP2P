@@ -34,14 +34,15 @@ public class TransactionService {
     public void processActionOperation(Action action, Integer usuario, Long transaction) throws UserNotFoundException, TransactionStatusException, TransactionException {
         User user = this.userService.getUserById(usuario);
         Transaction transaction1 = this.transactionRepository.findById(transaction).orElseThrow(() -> new TransactionException("The operation does not exist"));
+        if(transaction1.getStateTransaction() == StatesTransaction.COMPLETED || transaction1.getStateTransaction() == StatesTransaction.CANCELED ){
+            String message = String.format("La Transaccion esta en en el estado: %s",transaction1.getStateTransaction());
+            throw new TransactionStatusException(message);
+        }
         try {
             switch (action) {
                 case CANCEL:
-                    if ((transaction1.getStateTransaction() != StatesTransaction.COMPLETED && transaction1.getStateTransaction() != StatesTransaction.CANCELED)) {
-                        transaction1.setStateTransaction(StatesTransaction.CANCELED);
-                        user.substractPoints();
-                        transactionRepository.save(transaction1);
-                    }
+                    transaction1.setStateTransaction(StatesTransaction.CANCELED);
+                    user.substractPoints();
                     break;
                 case CONFIRM_CRYPTO:
                     Cryptocurrency cryptocurrency1 = this.cryptosService.getCryptoCurrency(transaction1.getCrypto());

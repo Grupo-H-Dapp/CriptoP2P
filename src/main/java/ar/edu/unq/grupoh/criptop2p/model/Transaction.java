@@ -69,8 +69,9 @@ public class Transaction {
         LocalDateTime endedTime = LocalDateTime.now();
         long timePassed = Duration.between(this.getDateTime(), endedTime).toMinutes();
         int points = timePassed <= 30 ? 10 : 5;
-        this.getSecondUser().setPoints(points);
-        this.getIntention().getUser().setPoints(points);
+        this.getSecondUser().addPoint(points);
+        this.getIntention().getUser().addPoint(points);
+
     }
 
     private Double priceMarket(CriptosNames crypto) {
