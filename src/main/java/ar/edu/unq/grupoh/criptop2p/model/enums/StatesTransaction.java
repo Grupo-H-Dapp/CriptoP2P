@@ -31,7 +31,7 @@ public enum StatesTransaction {
             }
         }
 
-        public void onChange(User user, Transaction transaction, Cryptocurrency cryptocurrency,Action action) throws TransactionStatusException {
+        public void onChange(User user, Transaction transaction,Action action) throws TransactionStatusException {
             if (acceptedAction(action) && checkUserBasedOnTypeIntention(user,transaction)) {
                 transaction.setStateTransaction(WAITING_CONFIRM_TRANSFER_MONEY);
             } else {
@@ -54,7 +54,7 @@ public enum StatesTransaction {
         }
 
         //CONFIRM_MONEY
-        public void onChange(User user, Transaction transaction, Cryptocurrency cryptocurrency,Action action) throws TransactionStatusException {
+        public void onChange(User user, Transaction transaction,Action action) throws TransactionStatusException {
             if (acceptedAction(action) && checkUserBasedOnTypeIntention(user,transaction)) {
                 transaction.setStateTransaction(WAITING_TRANSFER_CRYPTO);
             } else {
@@ -77,7 +77,7 @@ public enum StatesTransaction {
         }
 
         //Action TRANSFER_CRYPTO
-        public void onChange(User user, Transaction transaction, Cryptocurrency cryptocurrency,Action action) throws TransactionStatusException {
+        public void onChange(User user, Transaction transaction,Action action) throws TransactionStatusException {
             if (acceptedAction(action) && checkUserBasedOnTypeIntention(user,transaction)) {
                 transaction.setStateTransaction(WAITING_CONFIRM_TRANSFER_CRYPTO);
             } else {
@@ -99,9 +99,21 @@ public enum StatesTransaction {
             }
         }
 
-        //CONFIRM_CRYPTO
-        public void onChange(User user, Transaction transaction, Cryptocurrency cryptocurrency,Action action) throws TransactionStatusException {
-            if (acceptedAction(action)&& checkUserBasedOnTypeIntention(user,transaction)) {
+//        //CONFIRM_CRYPTO
+//        public void onChange(User user, Transaction transaction, Cryptocurrency cryptocurrency,Action action) throws TransactionStatusException {
+//            if (acceptedAction(action)&& checkUserBasedOnTypeIntention(user,transaction)) {
+//                if(transaction.isInPriceRange(cryptocurrency)){
+//                    transaction.setStateTransaction(COMPLETED);
+//                    transaction.givePointsCompleted();
+//                    transaction.completeIntention();
+//                }
+//            } else {
+//                throw new TransactionStatusException("Usuario invalido para la accion");
+//            }
+//        }
+
+        public void completeTransaction(User user, Transaction transaction, Cryptocurrency cryptocurrency,Action action) throws TransactionStatusException {
+            if (acceptedAction(action) && checkUserBasedOnTypeIntention(user,transaction)) {
                 if(transaction.isInPriceRange(cryptocurrency)){
                     transaction.setStateTransaction(COMPLETED);
                     transaction.givePointsCompleted();
@@ -113,16 +125,19 @@ public enum StatesTransaction {
         }
     },
     COMPLETED {
-        public void onChange(User user, Transaction transaction, Cryptocurrency cryptocurrency,Action action) throws TransactionStatusException {
+        public void onChange(User user, Transaction transaction,Action action) throws TransactionStatusException {
             throw new TransactionStatusException("La transaccion esta completada , no se aceptan mas acciones");
         }
     },
     CANCELED {
-        public void onChange(User user, Transaction transaction, Cryptocurrency cryptocurrency,Action action) throws TransactionStatusException {
+        public void onChange(User user, Transaction transaction,Action action) throws TransactionStatusException {
             throw new TransactionStatusException("La transaccion esta cancelada , no se aceptan mas acciones");
         }
     };
 
-    public void onChange(User user, Transaction transaction, Cryptocurrency cryptocurrency,Action action) throws TransactionStatusException {
+    public void onChange(User user, Transaction transaction,Action action) throws TransactionStatusException {
+    }
+
+    public void completeTransaction(User user, Transaction transaction, Cryptocurrency cryptocurrency,Action action) throws TransactionStatusException {
     }
 }
