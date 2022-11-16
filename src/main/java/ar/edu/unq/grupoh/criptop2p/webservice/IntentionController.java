@@ -1,21 +1,18 @@
 package ar.edu.unq.grupoh.criptop2p.webservice;
 
-import ar.edu.unq.grupoh.criptop2p.dto.IntentionDTO;
+import ar.edu.unq.grupoh.criptop2p.dto.IntentionRequest;
 import ar.edu.unq.grupoh.criptop2p.dto.IntentionResponse;
 import ar.edu.unq.grupoh.criptop2p.exceptions.IntentionException;
+import ar.edu.unq.grupoh.criptop2p.exceptions.UserNotFoundException;
 import ar.edu.unq.grupoh.criptop2p.model.Intention;
 import ar.edu.unq.grupoh.criptop2p.service.IntentionService;
-import io.swagger.models.auth.In;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/intentions")
@@ -34,9 +31,7 @@ public class IntentionController {
 
     @GetMapping("/{id}")
     public ResponseEntity<IntentionResponse> findById(@PathVariable Long id) throws IntentionException {
-        Intention intention = this.intentionService.findById(id);
-        IntentionResponse response = new IntentionResponse(intention);
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+        return ResponseEntity.status(HttpStatus.OK).body(this.intentionService.findById(id));
     }
 
     @GetMapping("actives")
@@ -46,8 +41,8 @@ public class IntentionController {
     }
 
     @PostMapping
-    public ResponseEntity<?> postIntention(@Valid @RequestBody Intention intentionDTO){
-        Intention transaction = intentionService.saveIntention(intentionDTO);
+    public ResponseEntity<?> postIntention(@Valid @RequestBody IntentionRequest intentionRequest) throws IntentionException, UserNotFoundException {
+        IntentionResponse transaction = intentionService.saveIntention(intentionRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(transaction);
     }
 }

@@ -4,41 +4,31 @@ import ar.edu.unq.grupoh.criptop2p.model.Intention;
 import ar.edu.unq.grupoh.criptop2p.model.enums.CriptosNames;
 import ar.edu.unq.grupoh.criptop2p.model.enums.IntentionStatus;
 import ar.edu.unq.grupoh.criptop2p.model.enums.TypeOperation;
-import lombok.Getter;
-import lombok.Setter;
 
 
 public class IntentionResponse {
-
-    private final Intention wrapped;
-
-    public IntentionResponse(Intention wrapped) {
-        this.wrapped = wrapped;
-    }
-
     private Long id;
     private CriptosNames crypto;
-    private Integer idUser;
+    private Integer user;
     private TypeOperation typeOperation;
     private IntentionStatus status;
+    private Double price;
+    private Double amount;
+    private Double amountARS;
 
-    public Long getId() {
-        return wrapped.getId();
+    public IntentionResponse(Long id, CriptosNames crypto, Integer user, TypeOperation typeOperation, IntentionStatus status, Double price, Double amount, Double amountARS) {
+        this.id = id;
+        this.crypto = crypto;
+        this.user = user;
+        this.typeOperation = typeOperation;
+        this.status = status;
+        this.price = price;
+        this.amount = amount;
+        this.amountARS = amountARS;
     }
 
-    public CriptosNames getCrypto() {
-        return wrapped.getCrypto();
-    }
 
-    public Integer getIdUser() {
-        return wrapped.getUser().getUserId();
-    }
-
-    public TypeOperation getTypeOperation() {
-        return wrapped.getTypeOperation();
-    }
-
-    public IntentionStatus getStatus() {
-        return wrapped.getStatus();
+    public static IntentionResponse FromModel(Intention intention) {
+        return new IntentionResponse(intention.getId(), intention.getCrypto(), intention.getUser().getUserId(), intention.getTypeOperation(), intention.getStatus(), intention.getPrice().doubleValue(), intention.getQuantity(), intention.getAmountArg());
     }
 }
