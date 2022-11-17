@@ -1,10 +1,9 @@
-package ar.edu.unq.grupoh.criptop2p.webservice;
+package ar.edu.unq.grupoh.criptop2p.dto.request;
 
-import ar.edu.unq.grupoh.criptop2p.model.Intention;
 import ar.edu.unq.grupoh.criptop2p.model.enums.Action;
 import lombok.Getter;
 
-public class TransactionActionRequestDto {
+public class TransactionActionRequest {
 
     @Getter
     private Action action;

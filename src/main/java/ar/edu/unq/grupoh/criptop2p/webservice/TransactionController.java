@@ -1,10 +1,10 @@
 package ar.edu.unq.grupoh.criptop2p.webservice;
 
+import ar.edu.unq.grupoh.criptop2p.dto.request.TransactionActionRequest;
 import ar.edu.unq.grupoh.criptop2p.exceptions.TransactionException;
 import ar.edu.unq.grupoh.criptop2p.exceptions.TransactionStatusException;
 import ar.edu.unq.grupoh.criptop2p.exceptions.UserNotFoundException;
 import ar.edu.unq.grupoh.criptop2p.model.Transaction;
-import ar.edu.unq.grupoh.criptop2p.model.enums.Action;
 import ar.edu.unq.grupoh.criptop2p.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,7 +31,7 @@ public class TransactionController {
     }
 
     @PutMapping
-    public ResponseEntity<?> doActionTransaction(@Valid @RequestBody TransactionActionRequestDto dto) throws UserNotFoundException, TransactionException, TransactionStatusException {
+    public ResponseEntity<?> doActionTransaction(@Valid @RequestBody TransactionActionRequest dto) throws UserNotFoundException, TransactionException, TransactionStatusException {
             transactionService.processActionOperation(dto.getAction(), dto.getUserId(),dto.getIntentionId());
             return ResponseEntity.status(HttpStatus.OK).build();
     }

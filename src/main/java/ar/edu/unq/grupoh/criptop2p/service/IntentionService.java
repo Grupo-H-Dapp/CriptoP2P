@@ -1,15 +1,13 @@
 package ar.edu.unq.grupoh.criptop2p.service;
 
-import ar.edu.unq.grupoh.criptop2p.dto.IntentionRequest;
-import ar.edu.unq.grupoh.criptop2p.dto.IntentionResponse;
+import ar.edu.unq.grupoh.criptop2p.dto.request.IntentionRequest;
+import ar.edu.unq.grupoh.criptop2p.dto.response.IntentionResponse;
 import ar.edu.unq.grupoh.criptop2p.exceptions.IntentionException;
-import ar.edu.unq.grupoh.criptop2p.exceptions.TransactionStatusException;
 import ar.edu.unq.grupoh.criptop2p.exceptions.UserNotFoundException;
 import ar.edu.unq.grupoh.criptop2p.model.Cryptocurrency;
 import ar.edu.unq.grupoh.criptop2p.model.Intention;
 import ar.edu.unq.grupoh.criptop2p.model.User;
 import ar.edu.unq.grupoh.criptop2p.repositories.IntentionRepository;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,6 +1,6 @@
 package ar.edu.unq.grupoh.criptop2p.model;
 
-import ar.edu.unq.grupoh.criptop2p.dto.UserRequest;
+import ar.edu.unq.grupoh.criptop2p.dto.request.UserRequest;
 import ar.edu.unq.grupoh.criptop2p.exceptions.UserException;
 import lombok.*;
 

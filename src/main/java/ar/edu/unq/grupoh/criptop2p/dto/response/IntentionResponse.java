@@ -1,4 +1,4 @@
-package ar.edu.unq.grupoh.criptop2p.dto;
+package ar.edu.unq.grupoh.criptop2p.dto.response;
 
 import ar.edu.unq.grupoh.criptop2p.model.Intention;
 import ar.edu.unq.grupoh.criptop2p.model.enums.CriptosNames;

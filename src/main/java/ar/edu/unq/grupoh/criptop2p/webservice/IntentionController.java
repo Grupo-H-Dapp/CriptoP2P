@@ -1,7 +1,7 @@
 package ar.edu.unq.grupoh.criptop2p.webservice;
 
-import ar.edu.unq.grupoh.criptop2p.dto.IntentionRequest;
-import ar.edu.unq.grupoh.criptop2p.dto.IntentionResponse;
+import ar.edu.unq.grupoh.criptop2p.dto.request.IntentionRequest;
+import ar.edu.unq.grupoh.criptop2p.dto.response.IntentionResponse;
 import ar.edu.unq.grupoh.criptop2p.exceptions.IntentionException;
 import ar.edu.unq.grupoh.criptop2p.exceptions.UserNotFoundException;
 import ar.edu.unq.grupoh.criptop2p.model.Intention;

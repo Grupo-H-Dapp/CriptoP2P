@@ -1,5 +1,6 @@
 package ar.edu.unq.grupoh.criptop2p.webservice;
 
+import ar.edu.unq.grupoh.criptop2p.dto.request.DateRangeRequest;
 import ar.edu.unq.grupoh.criptop2p.model.Cryptocurrency;
 import ar.edu.unq.grupoh.criptop2p.model.enums.CriptosNames;
 import ar.edu.unq.grupoh.criptop2p.service.CryptosService;
@@ -64,7 +65,7 @@ public class CryptosController {
     }
 
     @GetMapping("/cryptocurrency/{crypto}/between")
-    public ResponseEntity<List<Cryptocurrency>> cryptoCurrencyBetween(@PathVariable String crypto, @Valid @RequestBody DateRangeDto dateRange){
+    public ResponseEntity<List<Cryptocurrency>> cryptoCurrencyBetween(@PathVariable String crypto, @Valid @RequestBody DateRangeRequest dateRange){
         try {
             List<Cryptocurrency> cryptoCurrencies = cryptosService.cryptoBetween(crypto, dateRange.getStartDate(), dateRange.getEndDate());
             return ResponseEntity.status(HttpStatus.OK).body(cryptoCurrencies);
