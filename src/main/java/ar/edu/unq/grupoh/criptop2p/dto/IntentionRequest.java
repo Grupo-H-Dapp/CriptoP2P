@@ -1,16 +1,13 @@
 package ar.edu.unq.grupoh.criptop2p.dto;
 
-import ar.edu.unq.grupoh.criptop2p.model.User;
 import ar.edu.unq.grupoh.criptop2p.model.enums.CriptosNames;
 import ar.edu.unq.grupoh.criptop2p.model.enums.TypeOperation;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
-public class IntentionDTO {
+public class IntentionRequest {
 
     @Getter @Setter
     @NotBlank(message = "the Intention type cannot be null")
@@ -32,9 +29,9 @@ public class IntentionDTO {
 
     @Getter @Setter
     @NotBlank(message = "The user must be specified")
-    private User user;
+    private Integer user;
 
-    public IntentionDTO(TypeOperation typeIntention, double amount, float price, CriptosNames cryptoName, User user) {
+    public IntentionRequest(TypeOperation typeIntention, double amount, float price, CriptosNames cryptoName, Integer user) {
         this.typeIntention = typeIntention;
         this.amount = amount;
         this.price = price;

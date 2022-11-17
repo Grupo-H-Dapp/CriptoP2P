@@ -5,7 +5,7 @@ import ar.edu.unq.grupoh.criptop2p.model.Cryptocurrency;
 import ar.edu.unq.grupoh.criptop2p.model.enums.CriptosNames;
 import ar.edu.unq.grupoh.criptop2p.repositories.CryptoRepository;
 import ar.edu.unq.grupoh.criptop2p.service.response.BinanceResponse;
-import ar.edu.unq.grupoh.criptop2p.service.response.USDResponse;
+import ar.edu.unq.grupoh.criptop2p.service.response.CotizationUSDToARS;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -63,9 +63,9 @@ public class CryptosService {
     @Transactional
     public Cryptocurrency getCryptoCurrency(CriptosNames cryptoName) {
         Float binancePrice = this.getBinanceResponse(cryptoName).getPrice();
-        Float usdPrice = this.getUSDResponse().getVenta();
-        Float price = binancePrice * usdPrice;
-        return new Cryptocurrency(cryptoName, price);
+//        Float usdPrice = this.getUSDResponse().getVenta();
+//        Float price = binancePrice * usdPrice;
+        return new Cryptocurrency(cryptoName, binancePrice);
     }
 
     @Transactional
@@ -101,10 +101,10 @@ public class CryptosService {
             return br != null ? br : new BinanceResponse();
     }
 
-    private USDResponse getUSDResponse() {
+    public CotizationUSDToARS getUSDCotization() {
             String url = "https://api-dolar-argentina.herokuapp.com/api/dolaroficial";
-            USDResponse br = restTemplate.getForObject(url, USDResponse.class);
-            return br != null ? br : new USDResponse();
+            CotizationUSDToARS br = restTemplate.getForObject(url, CotizationUSDToARS.class);
+            return br != null ? br : new CotizationUSDToARS(1F,1F);
     }
 
     private List<Cryptocurrency> findByCrypto(CriptosNames cryptoName){
