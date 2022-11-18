@@ -1,8 +1,12 @@
 package ar.edu.unq.grupoh.criptop2p;
 
+import ar.edu.unq.grupoh.criptop2p.dto.request.IntentionRequest;
 import ar.edu.unq.grupoh.criptop2p.dto.request.UserRequest;
+import ar.edu.unq.grupoh.criptop2p.dto.response.IntentionResponse;
+import ar.edu.unq.grupoh.criptop2p.exceptions.IntentionException;
 import ar.edu.unq.grupoh.criptop2p.exceptions.UserAlreadyExistException;
 import ar.edu.unq.grupoh.criptop2p.exceptions.UserException;
+import ar.edu.unq.grupoh.criptop2p.exceptions.UserNotFoundException;
 import ar.edu.unq.grupoh.criptop2p.model.Cryptocurrency;
 import ar.edu.unq.grupoh.criptop2p.model.Intention;
 import ar.edu.unq.grupoh.criptop2p.model.Transaction;
@@ -46,14 +50,14 @@ public class InitServiceInMemory {
     ModelMapper modelMapper = new ModelMapper();
 
     @PostConstruct
-    public void initialize() throws UserException, UserAlreadyExistException {
+    public void initialize() throws UserException, UserAlreadyExistException, UserNotFoundException, IntentionException {
         if (className.equals("prod")) {
             logger.info("Init Data Using H2 DB");
             fireInitialData();
         }
     }
 
-    private void fireInitialData() throws UserException, UserAlreadyExistException {
+    private void fireInitialData() throws UserException, UserAlreadyExistException, UserNotFoundException, IntentionException {
         List<Cryptocurrency> cryptos = cryptosService.updateAllCryptos();
         User userPepe = User.builder().withName("Pepe").withLastname("Argento").withAddress("1234567891").withEmail("asdsadsa@gmail.com").withPassword("aAsadsadsad#")
                 .withCvu("1234567891234567891233").withWallet("12345678").build();
@@ -62,8 +66,8 @@ public class InitServiceInMemory {
         userPepe = userService.saveUser(modelMapper.map(userPepe, UserRequest.class));
         userDardo =userService.saveUser(modelMapper.map(userDardo, UserRequest.class));
         Intention i1 = Intention.builder().withUser(userPepe).withCryptoCurrency(CriptosNames.ALICEUSDT).withQuantity(0.10).withTypeOperation(TypeOperation.BUY)
-                .withAmountArg(100.0).withPrice(210.21300000f).build();
-        intentionService.saveIntention(i1);
+                .withPrice(1.20f).build();
+        intentionService.saveIntentionModel(i1);
         Transaction t1 = Transaction.builder().withIntention(i1).withUserSecondUser(userDardo).withState(StatesTransaction.WAITING_CONFIRM_TRANSFER_CRYPTO).build();
         transactionService.saveTransaction(t1);
     }

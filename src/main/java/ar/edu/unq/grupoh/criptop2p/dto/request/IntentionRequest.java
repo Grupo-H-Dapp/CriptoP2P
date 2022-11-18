@@ -25,7 +25,7 @@ public class IntentionRequest {
 
     @Getter @Setter
     @NotBlank(message = "Crypto Currency must be specified")
-    private CriptosNames cryptoName;
+    private CriptosNames crypto;
 
     @Getter @Setter
     @NotBlank(message = "The user must be specified")
@@ -35,8 +35,10 @@ public class IntentionRequest {
         this.typeIntention = typeIntention;
         this.amount = amount;
         this.price = price;
-        this.cryptoName = cryptoName;
+        this.crypto = cryptoName;
         this.user = user;
     }
 
+    public IntentionRequest() {
+    }
 }

@@ -28,9 +28,6 @@ public class Intention {
     @Column(nullable = false)
     private Float price; //PRECIO NOMINAL en usd
     @Getter @Setter
-    @Column(nullable = false)
-    private Double amountArg; //PRECIO EN PESOS
-    @Getter @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "users_id")
     private User user;
@@ -64,11 +61,6 @@ public class Intention {
 
         public IntentionBuilder withTypeOperation(TypeOperation type){
             intention.setTypeOperation(type);
-            return this;
-        }
-
-        public IntentionBuilder withAmountArg(double amount){
-            intention.setAmountArg(amount);
             return this;
         }
 

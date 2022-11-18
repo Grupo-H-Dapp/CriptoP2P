@@ -12,11 +12,11 @@ public class IntentionResponse {
     private Integer user;
     private TypeOperation typeOperation;
     private IntentionStatus status;
-    private Double price;
-    private Double amount;
+    private Double price; //Es el valor en USD
+    private Double amount; //deberia ser quantity que seria la cantidad de cryptos
     private Double amountARS;
 
-    public IntentionResponse(Long id, CriptosNames crypto, Integer user, TypeOperation typeOperation, IntentionStatus status, Double price, Double amount, Double amountARS) {
+    public IntentionResponse(Long id, CriptosNames crypto, Integer user, TypeOperation typeOperation, IntentionStatus status, Double price, Double amount) {
         this.id = id;
         this.crypto = crypto;
         this.user = user;
@@ -24,11 +24,10 @@ public class IntentionResponse {
         this.status = status;
         this.price = price;
         this.amount = amount;
-        this.amountARS = amountARS;
     }
 
 
     public static IntentionResponse FromModel(Intention intention) {
-        return new IntentionResponse(intention.getId(), intention.getCrypto(), intention.getUser().getUserId(), intention.getTypeOperation(), intention.getStatus(), intention.getPrice().doubleValue(), intention.getQuantity(), intention.getAmountArg());
+        return new IntentionResponse(intention.getId(), intention.getCrypto(), intention.getUser().getUserId(), intention.getTypeOperation(), intention.getStatus(), intention.getPrice().doubleValue(), intention.getQuantity());
     }
 }

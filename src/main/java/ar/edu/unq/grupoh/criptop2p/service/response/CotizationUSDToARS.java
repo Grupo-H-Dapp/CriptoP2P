@@ -4,16 +4,21 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@NoArgsConstructor
+import java.time.LocalDateTime;
+import java.util.Date;
+
 public class CotizationUSDToARS {
     @Getter @Setter
-    private Float priceSell;
-
+    private Float compra;
     @Getter @Setter
-    private Float priceBuy;
+    private Float venta;
 
-    public CotizationUSDToARS(Float sell, Float buy) {
-        this.priceSell = sell;
-        this.priceBuy = buy;
+
+    public CotizationUSDToARS(Float compra, Float venta) {
+        this.compra = compra;
+        this.venta = venta;
+    }
+
+    public CotizationUSDToARS() {
     }
 }

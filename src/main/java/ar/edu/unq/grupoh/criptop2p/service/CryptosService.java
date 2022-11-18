@@ -104,7 +104,7 @@ public class CryptosService {
     public CotizationUSDToARS getUSDCotization() {
             String url = "https://api-dolar-argentina.herokuapp.com/api/dolaroficial";
             CotizationUSDToARS br = restTemplate.getForObject(url, CotizationUSDToARS.class);
-            return br != null ? br : new CotizationUSDToARS(1F,1F);
+            return br;
     }
 
     private List<Cryptocurrency> findByCrypto(CriptosNames cryptoName){

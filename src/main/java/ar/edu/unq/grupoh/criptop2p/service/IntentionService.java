@@ -20,12 +20,16 @@ import static ar.edu.unq.grupoh.criptop2p.model.enums.IntentionStatus.ACTIVE;
 @Service
 public class IntentionService {
 
+    private final IntentionRepository intentionRepository;
+    private final CryptosService cryptosService;
+    private final UserService userRepository;
+
     @Autowired
-    private IntentionRepository intentionRepository;
-    @Autowired
-    private CryptosService cryptosService;
-    @Autowired
-    private UserService userRepository;
+    public IntentionService(IntentionRepository intentionRepository, CryptosService cryptosService, UserService userRepository) {
+        this.intentionRepository = intentionRepository;
+        this.cryptosService = cryptosService;
+        this.userRepository = userRepository;
+    }
 
     public List<Intention> findAll() {
         return this.intentionRepository.findAll();
@@ -46,21 +50,31 @@ public class IntentionService {
     }
 
     public IntentionResponse saveIntention(IntentionRequest intentionRequest) throws IntentionException, UserNotFoundException {
-        Cryptocurrency cryptocurrency = cryptosService.getCryptoCurrency(intentionRequest.getCryptoName());
+        Cryptocurrency cryptocurrency = cryptosService.getCryptoCurrency(intentionRequest.getCrypto());
         User user = userRepository.getUserById(intentionRequest.getUser());
         Float min = cryptocurrency.getPrice() * 0.95F ;
         Float max = cryptocurrency.getPrice() * 1.05F ;
         if (intentionRequest.getPrice() > min && intentionRequest.getPrice() < max) {
-            Double cotizationUSDToARS = this.cryptosService.getUSDCotization().getPriceSell().doubleValue();
-            Intention intention = Intention.builder()
+            Float cotizationUSDToARS = this.cryptosService.getUSDCotization().getVenta();
+            Intention intention = Intention.builder() //usar el intentionRequest.getPrice() * cotizationUSDToARS.doubleValue() para el valor en pesos
                                     .withPrice(intentionRequest.getPrice())
                                     .withUser(user)
                                     .withQuantity(intentionRequest.getAmount())
                                     .withTypeOperation(intentionRequest.getTypeIntention())
-                                    .withCryptoCurrency(intentionRequest.getCryptoName())
-                                    .withAmountArg(intentionRequest.getPrice() * cotizationUSDToARS)
+                                    .withCryptoCurrency(intentionRequest.getCrypto())
                                     .build();
             return IntentionResponse.FromModel(this.intentionRepository.save(intention));
+        }
+        throw new IntentionException("Price exceed difference 5%");
+    }
+
+    public IntentionResponse saveIntentionModel(Intention intentionRequest) throws IntentionException, UserNotFoundException {
+        Cryptocurrency cryptocurrency = cryptosService.getCryptoCurrency(intentionRequest.getCrypto());
+        User user = userRepository.getUserById(intentionRequest.getUser().getUserId());
+        Float min = cryptocurrency.getPrice() * 0.95F ;
+        Float max = cryptocurrency.getPrice() * 1.05F ;
+        if (intentionRequest.getPrice() > min && intentionRequest.getPrice() < max) {
+            return IntentionResponse.FromModel(this.intentionRepository.save(intentionRequest));
         }
         throw new IntentionException("Price exceed difference 5%");
     }

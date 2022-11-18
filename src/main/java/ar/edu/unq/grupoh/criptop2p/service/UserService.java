@@ -1,18 +1,23 @@
 package ar.edu.unq.grupoh.criptop2p.service;
 
 import ar.edu.unq.grupoh.criptop2p.dto.request.UserRequest;
+import ar.edu.unq.grupoh.criptop2p.dto.response.TokenResponse;
+import ar.edu.unq.grupoh.criptop2p.dto.response.UserLoginRequest;
 import ar.edu.unq.grupoh.criptop2p.dto.response.UserResponse;
 import ar.edu.unq.grupoh.criptop2p.exceptions.UserAlreadyExistException;
 import ar.edu.unq.grupoh.criptop2p.exceptions.UserException;
 import ar.edu.unq.grupoh.criptop2p.exceptions.UserNotFoundException;
 import ar.edu.unq.grupoh.criptop2p.model.User;
 import ar.edu.unq.grupoh.criptop2p.repositories.UserRepository;
+import ar.edu.unq.grupoh.criptop2p.security.JWTAuthorizationFilter;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -87,6 +92,18 @@ public class UserService {
             return user.get();
         } else {
             throw new UserNotFoundException(id);
+        }
+    }
+
+    @Transactional
+    public TokenResponse login(UserLoginRequest userLoginDTO){
+        Optional<User> user = userRepository.findByEmail(userLoginDTO.getEmail());
+        if(!user.isPresent()){return null;}
+        //if (passwordEncoder.matches(userLoginDTO.getPassword(), user.get().getPassword())){
+        if (Objects.equals(userLoginDTO.getPassword(), user.get().getPassword())){
+            return new TokenResponse(JWTAuthorizationFilter.getJWTToken(userLoginDTO.getEmail()));
+        }else{
+            return null;
         }
     }
 
