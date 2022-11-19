@@ -5,6 +5,7 @@ import ar.edu.unq.grupoh.criptop2p.dto.response.TokenResponse;
 import ar.edu.unq.grupoh.criptop2p.dto.response.UserLoginRequest;
 import ar.edu.unq.grupoh.criptop2p.model.User;
 import ar.edu.unq.grupoh.criptop2p.service.UserService;
+import ar.edu.unq.grupoh.criptop2p.webservice.aspects.LogExecutionTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,7 @@ public class AuthController {
     private UserService userService;
 
     @PostMapping("/login")
+    @LogExecutionTime
     public ResponseEntity<TokenResponse> login(@RequestBody UserLoginRequest userLoginDTO){
         TokenResponse tokenDTO = userService.login(userLoginDTO);
         if(tokenDTO == null)
@@ -31,6 +33,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
+    @LogExecutionTime
     public ResponseEntity<User> register(@Valid @RequestBody UserRequest userDto) {
         try {
             User user = userService.saveUser(userDto);
