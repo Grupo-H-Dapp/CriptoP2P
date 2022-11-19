@@ -6,6 +6,7 @@ import ar.edu.unq.grupoh.criptop2p.exceptions.TransactionStatusException;
 import ar.edu.unq.grupoh.criptop2p.exceptions.UserNotFoundException;
 import ar.edu.unq.grupoh.criptop2p.model.Transaction;
 import ar.edu.unq.grupoh.criptop2p.service.TransactionService;
+import ar.edu.unq.grupoh.criptop2p.webservice.aspects.LogExecutionTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,7 @@ public class TransactionController {
     private TransactionService transactionService;
 
     @PostMapping
+    @LogExecutionTime
     public ResponseEntity<Transaction> createOperation(@Valid @RequestBody Transaction transactionDto){
         try {
             Transaction transaction = transactionService.saveTransaction(transactionDto);
@@ -31,6 +33,7 @@ public class TransactionController {
     }
 
     @PutMapping
+    @LogExecutionTime
     public ResponseEntity<?> doActionTransaction(@Valid @RequestBody TransactionActionRequest dto) throws UserNotFoundException, TransactionException, TransactionStatusException {
             transactionService.processActionOperation(dto.getAction(), dto.getUserId(),dto.getIntentionId());
             return ResponseEntity.status(HttpStatus.OK).build();

@@ -27,6 +27,7 @@ public class UserService {
     private UserRepository userRepository;
     private ModelMapper modelMapper = new ModelMapper();
 
+    @Transactional
     public User saveUser(UserRequest model) throws UserAlreadyExistException, UserException {
         Optional<User> userToAdd = userRepository.findByEmail(model.getEmail());
         if(userToAdd.isEmpty()){
@@ -35,6 +36,7 @@ public class UserService {
             throw new UserAlreadyExistException(model.getEmail());
         }
     }
+    @Transactional
     public User updateUser(@Valid UserRequest user,int id) {
         return userRepository.findById(id).map(userFound -> {
             try {
@@ -57,10 +59,12 @@ public class UserService {
         });
     }
 
+    @Transactional
     public List<User> findAll() {
         return this.userRepository.findAll();
     }
 
+    @Transactional
     public User getUser(int id) throws UserNotFoundException {
         User user= userRepository.findByUserId(id);
         if(user!=null){
@@ -69,14 +73,14 @@ public class UserService {
             throw new UserNotFoundException(id);
         }
     }
-
+    @Transactional
     public void deleteUser(int id) throws UserNotFoundException {
         if(this.userRepository.findById(id).isEmpty()){
             throw new UserNotFoundException(id);
         }
         this.userRepository.deleteById(id);
     }
-
+    @Transactional
     public User getUserByEmail(String email) throws UserNotFoundException {
         Optional<User> user = this.userRepository.findByEmail(email);
         if (user.isPresent()) {
@@ -85,7 +89,7 @@ public class UserService {
             throw new UserNotFoundException(email);
         }
     }
-
+    @Transactional
     public User getUserById(int id) throws UserNotFoundException {
         Optional<User> user = userRepository.findById(id);
         if (user.isPresent()) {
@@ -106,7 +110,7 @@ public class UserService {
             return null;
         }
     }
-
+    @Transactional
     public void deleteAllUsers() {
         this.userRepository.deleteAll();
     }

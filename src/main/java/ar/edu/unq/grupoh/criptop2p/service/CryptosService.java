@@ -79,7 +79,7 @@ public class CryptosService {
 
 
     @Transactional
-    @Scheduled(cron = "0 0/5 * * * *") // cron = "0 0/10 * * * *" para que sea cada 10m
+    @Scheduled(cron = "0 0/10 * * * *") // cron = "0 0/10 * * * *" para que sea cada 10m
     public List<Cryptocurrency> updateAllCryptos() {
         List<Cryptocurrency> cryptoCurrencyList = new ArrayList<>();
         BinanceResponse[] binanceCryptoDTOS = getAllCryptoPrice(List.of(CriptosNames.values()));
@@ -100,7 +100,7 @@ public class CryptosService {
             BinanceResponse br = restTemplate.getForObject(url, BinanceResponse.class);
             return br != null ? br : new BinanceResponse();
     }
-
+    @Transactional
     public CotizationUSDToARS getUSDCotization() {
             String url = "https://api-dolar-argentina.herokuapp.com/api/dolaroficial";
             CotizationUSDToARS br = restTemplate.getForObject(url, CotizationUSDToARS.class);

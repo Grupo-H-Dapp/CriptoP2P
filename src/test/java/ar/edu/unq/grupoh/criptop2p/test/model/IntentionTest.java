@@ -19,7 +19,7 @@ public class IntentionTest {
     @Test
     void caseIntentionSell() throws UserException {
         User user1 = User.builder().withName("Pepe").build();
-        Intention i1 = new Intention(ALICEUSDT,0.1, 1.5F,100.0,user1, TypeOperation.SELL);
+        Intention i1 = Intention.builder().withCryptoCurrency(ALICEUSDT).withUser(user1).withTypeOperation(TypeOperation.SELL).withQuantity(0.1).withPrice(1.5F).build();
         assertEquals(user1.getName(),i1.getUser().getName());
     }
 }

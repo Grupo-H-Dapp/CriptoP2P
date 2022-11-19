@@ -22,10 +22,10 @@ public class TransactionService {
     private UserService userService;
     @Autowired
     private CryptosService cryptosService;
-
     @Autowired
     private TransactionRepository transactionRepository;
 
+    @Transactional
     public Transaction saveTransaction(Transaction transaction){
         return this.transactionRepository.save(transaction);
     }

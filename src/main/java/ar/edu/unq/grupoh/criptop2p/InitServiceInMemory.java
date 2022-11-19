@@ -50,7 +50,7 @@ public class InitServiceInMemory {
     ModelMapper modelMapper = new ModelMapper();
 
     @PostConstruct
-    public void initialize() throws UserException, UserAlreadyExistException, UserNotFoundException, IntentionException {
+    private void initialize() throws UserException, UserAlreadyExistException, UserNotFoundException, IntentionException {
         if (className.equals("prod")) {
             logger.info("Init Data Using H2 DB");
             fireInitialData();

@@ -10,6 +10,7 @@ import ar.edu.unq.grupoh.criptop2p.model.User;
 import ar.edu.unq.grupoh.criptop2p.repositories.IntentionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,21 +21,20 @@ import static ar.edu.unq.grupoh.criptop2p.model.enums.IntentionStatus.ACTIVE;
 @Service
 public class IntentionService {
 
-    private final IntentionRepository intentionRepository;
-    private final CryptosService cryptosService;
-    private final UserService userRepository;
-
     @Autowired
-    public IntentionService(IntentionRepository intentionRepository, CryptosService cryptosService, UserService userRepository) {
-        this.intentionRepository = intentionRepository;
-        this.cryptosService = cryptosService;
-        this.userRepository = userRepository;
-    }
+    private  IntentionRepository intentionRepository;
+    @Autowired
+    private  CryptosService cryptosService;
+    @Autowired
+    private  UserService userRepository;
 
+
+    @Transactional
     public List<Intention> findAll() {
         return this.intentionRepository.findAll();
     }
 
+    @Transactional
     public IntentionResponse findById(Long id) throws IntentionException {
        Optional<Intention> intention = this.intentionRepository.findById(id);
        if(intention.isEmpty()){
@@ -43,12 +43,13 @@ public class IntentionService {
        return IntentionResponse.FromModel(intention.get());
     }
 
+    @Transactional
     public List<Intention> findAllActive(){
         List<Intention> transactions = intentionRepository.findAll();
         transactions = transactions.stream().filter(transaction -> transaction.getStatus() == ACTIVE).collect(Collectors.toList());
         return transactions;
     }
-
+    @Transactional
     public IntentionResponse saveIntention(IntentionRequest intentionRequest) throws IntentionException, UserNotFoundException {
         Cryptocurrency cryptocurrency = cryptosService.getCryptoCurrency(intentionRequest.getCrypto());
         User user = userRepository.getUserById(intentionRequest.getUser());
@@ -67,7 +68,7 @@ public class IntentionService {
         }
         throw new IntentionException("Price exceed difference 5%");
     }
-
+    @Transactional
     public IntentionResponse saveIntentionModel(Intention intentionRequest) throws IntentionException, UserNotFoundException {
         Cryptocurrency cryptocurrency = cryptosService.getCryptoCurrency(intentionRequest.getCrypto());
         User user = userRepository.getUserById(intentionRequest.getUser().getUserId());
