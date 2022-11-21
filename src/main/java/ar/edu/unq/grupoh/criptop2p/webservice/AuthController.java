@@ -28,8 +28,8 @@ public class AuthController {
     public ResponseEntity<TokenResponse> login(@RequestBody UserLoginRequest userLoginDTO){
         TokenResponse tokenDTO = userService.login(userLoginDTO);
         if(tokenDTO == null)
-            ResponseEntity.badRequest().build();
-        return ResponseEntity.status(HttpStatus.OK).header("token", tokenDTO.token).build();
+           return ResponseEntity.badRequest().build();
+        return ResponseEntity.status(HttpStatus.OK).header("token", tokenDTO.token).body(tokenDTO);
     }
 
     @PostMapping("/register")
