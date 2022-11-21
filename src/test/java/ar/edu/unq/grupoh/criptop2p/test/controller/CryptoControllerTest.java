@@ -2,7 +2,6 @@ package ar.edu.unq.grupoh.criptop2p.test.controller;
 
 import ar.edu.unq.grupoh.criptop2p.exceptions.CryptoException;
 import ar.edu.unq.grupoh.criptop2p.model.Cryptocurrency;
-import ar.edu.unq.grupoh.criptop2p.model.User;
 import ar.edu.unq.grupoh.criptop2p.model.enums.CriptosNames;
 import ar.edu.unq.grupoh.criptop2p.service.CryptosService;
 import ar.edu.unq.grupoh.criptop2p.webservice.CryptosController;
