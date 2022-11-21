@@ -55,7 +55,7 @@ public class ApplicationExceptionHandler {
         return errorMap;
     }
 
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(IntentionExceedPriceDifferenceException.class)
     public Map<String, String> handleBusinessException(IntentionExceedPriceDifferenceException ex) {
         Map<String, String> errorMap = new HashMap<>();

@@ -4,10 +4,9 @@ import ar.edu.unq.grupoh.criptop2p.exceptions.CryptoException;
 import ar.edu.unq.grupoh.criptop2p.model.Cryptocurrency;
 import ar.edu.unq.grupoh.criptop2p.model.enums.CriptosNames;
 import ar.edu.unq.grupoh.criptop2p.service.CryptosService;
+import ar.edu.unq.grupoh.criptop2p.service.UserService;
 import ar.edu.unq.grupoh.criptop2p.webservice.CryptosController;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.*;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,7 +23,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class CryptoControllerTest extends JWTHeaderTest {
-    private static final String HTTP_LOCALHOST = "http://localhost:";
 
     @LocalServerPort
     private int port;
@@ -38,8 +36,10 @@ public class CryptoControllerTest extends JWTHeaderTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
-    private String token;
-    @BeforeAll
+    @Autowired
+    private UserService userService;
+
+    @BeforeEach
     void before() throws CryptoException {
         this.token = this.generateUserAndAuthenticated(HTTP_LOCALHOST,this.port);
         List<Cryptocurrency> cryptos = List.of(Cryptocurrency.builder().withCryptoCurrency(CriptosNames.AAVEUSDT).build(),
@@ -49,13 +49,16 @@ public class CryptoControllerTest extends JWTHeaderTest {
 
     @Test
     void getAllCryptos() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.set("Authorization", "Bearer "+ this.token);
+        HttpHeaders headers = this.generateHeaderWithToken();
         HttpEntity<String> body = new HttpEntity<String>("parameters", headers);
         ResponseEntity<Cryptocurrency[]> response = this.restTemplate.exchange(HTTP_LOCALHOST + port + "/crypto/cryptocurrency",HttpMethod.GET,
                 body, Cryptocurrency[].class);
         List<Cryptocurrency> cryptos = Arrays.stream(response.getBody()).toList();
         assertEquals(2, cryptos.size());
+    }
+
+    @AfterEach
+    public void tearDown() {
+        this.userService.deleteAllUsers();
     }
 }

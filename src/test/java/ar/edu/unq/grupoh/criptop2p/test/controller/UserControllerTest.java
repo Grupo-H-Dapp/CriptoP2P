@@ -20,7 +20,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class UserControllerTest extends JWTHeaderTest {
-    private static final String HTTP_LOCALHOST = "http://localhost:";
 
     @LocalServerPort
     private int port;
@@ -34,14 +33,7 @@ public class UserControllerTest extends JWTHeaderTest {
     @Autowired
     private UserService userService;
 
-    private String token;
 
-    private HttpHeaders generateHeaderWithToken() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.set("Authorization", "Bearer "+ this.token);
-        return headers;
-    }
     @BeforeEach
     void setUp() throws UserException, UserAlreadyExistException {
         UserRequest user = UserRequest.builder()

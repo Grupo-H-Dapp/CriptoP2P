@@ -4,13 +4,15 @@ import ar.edu.unq.grupoh.criptop2p.dto.request.UserRequest;
 import ar.edu.unq.grupoh.criptop2p.dto.response.TokenResponse;
 import ar.edu.unq.grupoh.criptop2p.dto.response.UserLoginRequest;
 import ar.edu.unq.grupoh.criptop2p.model.User;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 
 public class JWTHeaderTest {
-    public String generateUserAndAuthenticated(String URL, int port) {
+    protected static final String HTTP_LOCALHOST = "http://localhost:";
+
+    protected String token;
+
+    protected String generateUserAndAuthenticated(String URL, int port) {
         //Generated User
         RestTemplate server = new RestTemplate();
         UserRequest userRegisterRequest = UserRequest.builder()
@@ -31,5 +33,12 @@ public class JWTHeaderTest {
         HttpEntity<UserLoginRequest> userLogin = new HttpEntity<>(userLoginRequest);
         ResponseEntity<TokenResponse> token = server.exchange(URL + port + "/auth/login", HttpMethod.POST,userRegister,TokenResponse.class);
         return token.getBody().token;
+    }
+
+    protected HttpHeaders generateHeaderWithToken() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set("Authorization", "Bearer "+ this.token);
+        return headers;
     }
 }

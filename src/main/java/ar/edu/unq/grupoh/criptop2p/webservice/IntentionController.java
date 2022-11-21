@@ -28,8 +28,7 @@ public class IntentionController {
     @GetMapping
     @LogExecutionTime
     public ResponseEntity<List<Intention>> getAll(){
-        List<Intention> activeTransactions = this.intentionService.findAll();
-        return ResponseEntity.status(HttpStatus.OK).body(activeTransactions);
+        return ResponseEntity.status(HttpStatus.OK).body(this.intentionService.findAll());
     }
 
     @GetMapping("/{id}")
@@ -46,8 +45,8 @@ public class IntentionController {
 
     @PostMapping
     @LogExecutionTime
-    public ResponseEntity<?> postIntention(@Valid @RequestBody IntentionRequest intentionRequest) throws IntentionExceedPriceDifferenceException, UserNotFoundException {
-        IntentionResponse transaction = intentionService.saveIntention(intentionRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body(transaction);
+    public ResponseEntity<IntentionResponse> postIntention(@Valid @RequestBody IntentionRequest intentionRequest) throws IntentionExceedPriceDifferenceException, UserNotFoundException {
+        IntentionResponse intention = intentionService.saveIntention(intentionRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(intention);
     }
 }
