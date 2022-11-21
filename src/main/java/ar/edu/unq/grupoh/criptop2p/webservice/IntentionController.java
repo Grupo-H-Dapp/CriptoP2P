@@ -2,7 +2,8 @@ package ar.edu.unq.grupoh.criptop2p.webservice;
 
 import ar.edu.unq.grupoh.criptop2p.dto.request.IntentionRequest;
 import ar.edu.unq.grupoh.criptop2p.dto.response.IntentionResponse;
-import ar.edu.unq.grupoh.criptop2p.exceptions.IntentionException;
+import ar.edu.unq.grupoh.criptop2p.exceptions.IntentionExceedPriceDifferenceException;
+import ar.edu.unq.grupoh.criptop2p.exceptions.IntentionNotFoundException;
 import ar.edu.unq.grupoh.criptop2p.exceptions.UserNotFoundException;
 import ar.edu.unq.grupoh.criptop2p.model.Intention;
 import ar.edu.unq.grupoh.criptop2p.service.IntentionService;
@@ -33,20 +34,19 @@ public class IntentionController {
 
     @GetMapping("/{id}")
     @LogExecutionTime
-    public ResponseEntity<IntentionResponse> findById(@PathVariable Long id) throws IntentionException {
+    public ResponseEntity<IntentionResponse> findById(@PathVariable Long id) throws IntentionNotFoundException {
         return ResponseEntity.status(HttpStatus.OK).body(this.intentionService.findById(id));
     }
 
     @GetMapping("actives")
     @LogExecutionTime
-    public ResponseEntity<List<Intention>> findActives(){
-        List<Intention> activeTransactions = this.intentionService.findAllActive();
-        return ResponseEntity.status(HttpStatus.OK).body(activeTransactions);
+    public ResponseEntity<List<IntentionResponse>> findActives(){
+        return ResponseEntity.status(HttpStatus.OK).body(this.intentionService.findAllActive());
     }
 
     @PostMapping
     @LogExecutionTime
-    public ResponseEntity<?> postIntention(@Valid @RequestBody IntentionRequest intentionRequest) throws IntentionException, UserNotFoundException {
+    public ResponseEntity<?> postIntention(@Valid @RequestBody IntentionRequest intentionRequest) throws IntentionExceedPriceDifferenceException, UserNotFoundException {
         IntentionResponse transaction = intentionService.saveIntention(intentionRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(transaction);
     }
