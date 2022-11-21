@@ -7,6 +7,8 @@ import ar.edu.unq.grupoh.criptop2p.repositories.CryptoRepository;
 import ar.edu.unq.grupoh.criptop2p.service.response.BinanceResponse;
 import ar.edu.unq.grupoh.criptop2p.service.response.CotizationUSDToARS;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -33,7 +35,8 @@ public class CryptosService {
 
     @Transactional(readOnly = true)
     public Cryptocurrency findCryptoValueByName(CriptosNames cryptoName) {
-        return cryptoCurrencyRepository.findAll()
+        List<Cryptocurrency> cryptos = cryptoCurrencyRepository.findAll();
+        return cryptos
                 .stream()
                 .filter(crypto -> crypto.getCrypto() == cryptoName)
                 .collect(Collectors.collectingAndThen(Collectors.maxBy(Comparator.comparing(Cryptocurrency::getDate)), Optional::get));
@@ -42,7 +45,7 @@ public class CryptosService {
     @Transactional
     public List<Cryptocurrency> cryptoLast24hours(CriptosNames cryptoName) {
         LocalDateTime end = LocalDateTime.now();
-        LocalDateTime start2 = end.minusHours(24) ;//Para que sea cada 24hr //end.minusMinutes(4);
+        LocalDateTime start2 = end.minusHours(24) ;//Para que sea cada 24hr
         List<Cryptocurrency> cryptos = findByCrypto(cryptoName)
                 .stream()
                 .filter(cryptoCurrency -> cryptoCurrency.getDate().isBefore(ChronoLocalDateTime.from(end)) && cryptoCurrency.getDate().isAfter(ChronoLocalDateTime.from(start2)))
@@ -69,6 +72,7 @@ public class CryptosService {
     }
 
     @Transactional
+    @Cacheable(value = "crypto")
     public List<Cryptocurrency> getLastCryptoCurrency() {
         List<CriptosNames> cryptoNames = Arrays.asList(CriptosNames.values());
         return cryptoNames
@@ -80,19 +84,16 @@ public class CryptosService {
 
     @Transactional
     @Scheduled(cron = "0 0/10 * * * *") // cron = "0 0/10 * * * *" para que sea cada 10m
-    public List<Cryptocurrency> updateAllCryptos() {
-        List<Cryptocurrency> cryptoCurrencyList = new ArrayList<>();
+    public void updateAllCryptos() {
         BinanceResponse[] binanceCryptoDTOS = getAllCryptoPrice(List.of(CriptosNames.values()));
         Arrays.stream(binanceCryptoDTOS).forEach(binanceCrypto -> {
             try {
                 Cryptocurrency crypto = binanceToModel(binanceCrypto);
-                cryptoCurrencyList.add(crypto);
                 cryptoCurrencyRepository.save(crypto);
             } catch (CryptoException e) {
 
             }
         });
-        return cryptoCurrencyList;
     }
 
     private BinanceResponse getBinanceResponse(CriptosNames cryptoName) {
@@ -108,7 +109,8 @@ public class CryptosService {
     }
 
     private List<Cryptocurrency> findByCrypto(CriptosNames cryptoName){
-        return cryptoCurrencyRepository.findAll().stream().filter(cryptoCurrency -> cryptoCurrency.getCrypto() == cryptoName).collect(Collectors.toList());
+        List<Cryptocurrency> cryptos = cryptoCurrencyRepository.findAll();
+        return cryptos.stream().filter(cryptoCurrency -> cryptoCurrency.getCrypto() == cryptoName).collect(Collectors.toList());
     }
 
     private Cryptocurrency binanceToModel(BinanceResponse binanceCryptoDTO) throws CryptoException {

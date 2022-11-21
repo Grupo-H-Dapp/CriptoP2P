@@ -58,7 +58,7 @@ public class InitServiceInMemory {
     }
 
     private void fireInitialData() throws UserException, UserAlreadyExistException, UserNotFoundException, IntentionException {
-        List<Cryptocurrency> cryptos = cryptosService.updateAllCryptos();
+        cryptosService.updateAllCryptos();
         User userPepe = User.builder().withName("Pepe").withLastname("Argento").withAddress("1234567891").withEmail("asdsadsa@gmail.com").withPassword("aAsadsadsad#")
                 .withCvu("1234567891234567891233").withWallet("12345678").build();
         User userDardo = User.builder().withName("Dardo").withLastname("Fuseneco").withAddress("9876543219").withEmail("dardoF@gmail.com").withPassword("asdsadsadD#")
@@ -66,7 +66,7 @@ public class InitServiceInMemory {
         userPepe = userService.saveUser(modelMapper.map(userPepe, UserRequest.class));
         userDardo =userService.saveUser(modelMapper.map(userDardo, UserRequest.class));
         Intention i1 = Intention.builder().withUser(userPepe).withCryptoCurrency(CriptosNames.ALICEUSDT).withQuantity(0.10).withTypeOperation(TypeOperation.BUY)
-                .withPrice(1.20f).build();
+                .withPrice(1.1548999f).build();
         intentionService.saveIntentionModel(i1);
         Transaction t1 = Transaction.builder().withIntention(i1).withUserSecondUser(userDardo).withState(StatesTransaction.WAITING_CONFIRM_TRANSFER_CRYPTO).build();
         transactionService.saveTransaction(t1);
