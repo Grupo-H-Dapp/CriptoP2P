@@ -27,7 +27,7 @@ public class IntentionController {
 
     @GetMapping
     @LogExecutionTime
-    public ResponseEntity<List<Intention>> getAll(){
+    public ResponseEntity<List<IntentionResponse>> getAll(){
         return ResponseEntity.status(HttpStatus.OK).body(this.intentionService.findAll());
     }
 

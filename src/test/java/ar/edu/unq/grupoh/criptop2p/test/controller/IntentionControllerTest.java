@@ -17,10 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -53,8 +50,11 @@ public class IntentionControllerTest extends JWTHeaderTest {
     public void createIntentionBuyForUSDT() {
         Mockito.when(this.cryptosService.getCryptoCurrency(CriptosNames.ALICEUSDT)).thenReturn(new Cryptocurrency(CriptosNames.ALICEUSDT, 10.00f));
 
-        IntentionRequest intentionRequest = new IntentionRequest(TypeOperation.SELL,5.00,10.00f, CriptosNames.ALICEUSDT,1);
+
         HttpHeaders headers = this.generateHeaderWithToken();
+        HttpEntity<String> jwt = new HttpEntity<String>("", headers);
+        ResponseEntity<User> user = this.restTemplate.exchange(HTTP_LOCALHOST + port + "/users/anonimous@gmail.com", HttpMethod.GET,jwt,User.class);
+        IntentionRequest intentionRequest = new IntentionRequest(TypeOperation.SELL,5.00,10.00f, CriptosNames.ALICEUSDT,user.getBody().getUserId());
         HttpEntity<IntentionRequest> body = new HttpEntity<>(intentionRequest, headers);
         ResponseEntity<IntentionResponse> response = restTemplate.exchange(HTTP_LOCALHOST + port + "/intentions", HttpMethod.POST, body, IntentionResponse.class);
 
@@ -62,8 +62,69 @@ public class IntentionControllerTest extends JWTHeaderTest {
         assertEquals(5.00,response.getBody().getAmount());
         assertEquals(10.00,response.getBody().getPrice());
         assertEquals(CriptosNames.ALICEUSDT,response.getBody().getCrypto());
-        assertEquals(1,response.getBody().getUser());
+        assertEquals(user.getBody().getUserId(),response.getBody().getUser());
         assertEquals(IntentionStatus.ACTIVE,response.getBody().getStatus());
+    }
+
+    @Test
+    public void createIntentionBuyForUSDTThatExceedPrice() {
+        Mockito.when(this.cryptosService.getCryptoCurrency(CriptosNames.ALICEUSDT)).thenReturn(new Cryptocurrency(CriptosNames.ALICEUSDT, 10.00f));
+
+        HttpHeaders headers = this.generateHeaderWithToken();
+        HttpEntity<String> jwt = new HttpEntity<String>("", headers);
+        ResponseEntity<User> user = this.restTemplate.exchange(HTTP_LOCALHOST + port + "/users/anonimous@gmail.com", HttpMethod.GET,jwt,User.class);
+        IntentionRequest intentionRequest = new IntentionRequest(TypeOperation.SELL,5.00,100.00f, CriptosNames.ALICEUSDT,user.getBody().getUserId());
+        HttpEntity<IntentionRequest> body = new HttpEntity<>(intentionRequest, headers);
+        ResponseEntity<IntentionResponse> response = restTemplate.exchange(HTTP_LOCALHOST + port + "/intentions", HttpMethod.POST, body, IntentionResponse.class);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+    }
+
+    @Test
+    public void getAllIntentionsActives() {
+        HttpHeaders headers = this.generateHeaderWithToken();
+
+        HttpEntity<String> jwt = new HttpEntity<String>("", headers);
+        ResponseEntity<IntentionResponse[]> intentions = this.restTemplate.exchange(HTTP_LOCALHOST + port + "/intentions/actives", HttpMethod.GET, jwt, IntentionResponse[].class);
+
+        assertEquals(0, intentions.getBody().length);
+    }
+
+    @Test
+    public void getAllIntentions() {
+        HttpHeaders headers = this.generateHeaderWithToken();
+
+        HttpEntity<String> jwt = new HttpEntity<String>("", headers);
+        ResponseEntity<IntentionResponse[]> intentions = this.restTemplate.exchange(HTTP_LOCALHOST + port + "/intentions", HttpMethod.GET, jwt, IntentionResponse[].class);
+
+        assertEquals(0, intentions.getBody().length);
+    }
+
+    @Test
+    public void getIntentionById() {
+        Mockito.when(this.cryptosService.getCryptoCurrency(CriptosNames.ALICEUSDT)).thenReturn(new Cryptocurrency(CriptosNames.ALICEUSDT, 10.00f));
+
+        HttpHeaders headers = this.generateHeaderWithToken();
+        HttpEntity<String> jwt = new HttpEntity<String>("", headers);
+        ResponseEntity<User> user = this.restTemplate.exchange(HTTP_LOCALHOST + port + "/users/anonimous@gmail.com", HttpMethod.GET,jwt,User.class);
+        IntentionRequest intentionRequest = new IntentionRequest(TypeOperation.SELL,5.00,10.00f, CriptosNames.ALICEUSDT,user.getBody().getUserId());
+        HttpEntity<IntentionRequest> body = new HttpEntity<>(intentionRequest, headers);
+        ResponseEntity<IntentionResponse> response = restTemplate.exchange(HTTP_LOCALHOST + port + "/intentions", HttpMethod.POST, body, IntentionResponse.class);
+        ResponseEntity<IntentionResponse> intention = this.restTemplate.exchange(HTTP_LOCALHOST + port + "/intentions/" + response.getBody().getId(), HttpMethod.GET, jwt, IntentionResponse.class);
+
+        assertEquals(TypeOperation.SELL,intention.getBody().getTypeOperation());
+        assertEquals(5.00,intention.getBody().getAmount());
+        assertEquals(10.00,intention.getBody().getPrice());
+        assertEquals(CriptosNames.ALICEUSDT,intention.getBody().getCrypto());
+    }
+
+    @Test
+    public void getIntentionByIdThatNotExists() {
+        HttpHeaders headers = this.generateHeaderWithToken();
+        HttpEntity<String> jwt = new HttpEntity<String>("", headers);
+        ResponseEntity<IntentionResponse> intention = this.restTemplate.exchange(HTTP_LOCALHOST + port + "/intentions/100", HttpMethod.GET, jwt, IntentionResponse.class);
+
+        assertEquals(HttpStatus.NOT_FOUND, intention.getStatusCode());
     }
 
     @AfterEach

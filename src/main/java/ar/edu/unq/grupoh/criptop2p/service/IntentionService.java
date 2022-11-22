@@ -31,8 +31,8 @@ public class IntentionService {
 
 
     @Transactional
-    public List<Intention> findAll() {
-        return this.intentionRepository.findAll();
+    public List<IntentionResponse> findAll() {
+        return this.intentionRepository.findAll().stream().map(intention -> IntentionResponse.FromModel(intention)).collect(Collectors.toList());
     }
 
     @Transactional

@@ -46,7 +46,7 @@ public class IntentionServiceTest {
     }
     @Test
     public void getAllIntentions() {
-        List<Intention> intentions = intentionService.findAll();
+        List<IntentionResponse> intentions = intentionService.findAll();
 
         assertEquals(0,intentions.size());
     }
