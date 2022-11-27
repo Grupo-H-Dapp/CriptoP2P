@@ -80,7 +80,7 @@ public class IntentionService {
         }
         throw new IntentionExceedPriceDifferenceException();
     }
-
+    @Transactional
     public void deleteAllIntentions() {
         this.intentionRepository.deleteAll();
     }

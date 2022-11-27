@@ -1,9 +1,7 @@
 package ar.edu.unq.grupoh.criptop2p.webservice;
 
 import ar.edu.unq.grupoh.criptop2p.dto.request.TransactionActionRequest;
-import ar.edu.unq.grupoh.criptop2p.exceptions.TransactionException;
-import ar.edu.unq.grupoh.criptop2p.exceptions.TransactionStatusException;
-import ar.edu.unq.grupoh.criptop2p.exceptions.UserNotFoundException;
+import ar.edu.unq.grupoh.criptop2p.exceptions.*;
 import ar.edu.unq.grupoh.criptop2p.model.Transaction;
 import ar.edu.unq.grupoh.criptop2p.service.TransactionService;
 import ar.edu.unq.grupoh.criptop2p.webservice.aspects.LogExecutionTime;
@@ -23,8 +21,9 @@ public class TransactionController {
 
     @PostMapping
     @LogExecutionTime
-    public ResponseEntity<Transaction> createOperation(@Valid @RequestBody Transaction transactionDto){
+    public ResponseEntity<Transaction> createOperation(@Valid @RequestBody Transaction transactionDto, @RequestHeader (name="Authorization") String token){
         try {
+            System.out.println(token);
             Transaction transaction = transactionService.saveTransaction(transactionDto);
             return ResponseEntity.status(HttpStatus.CREATED).body(transactionDto);
         } catch(Exception e){
@@ -34,7 +33,7 @@ public class TransactionController {
 
     @PutMapping
     @LogExecutionTime
-    public ResponseEntity<?> doActionTransaction(@Valid @RequestBody TransactionActionRequest dto) throws UserNotFoundException, TransactionException, TransactionStatusException {
+    public ResponseEntity<?> doActionTransaction(@Valid @RequestBody TransactionActionRequest dto) throws ExceedPriceDifference, UserNotFoundException, TransactionException, TransactionStatusException, IlegalUserChangeStateTransaction, IlegalActionOnStateTransaction {
             transactionService.processActionOperation(dto.getAction(), dto.getUserId(),dto.getIntentionId());
             return ResponseEntity.status(HttpStatus.OK).build();
     }

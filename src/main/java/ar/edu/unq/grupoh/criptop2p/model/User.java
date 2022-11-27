@@ -32,9 +32,9 @@ public class User {
     @Getter
     private String addressWallet ; //8 digitos
     @Getter @Setter
-    private int amountOperations; // La cantidad de concretaciones de intenciones
+    private int amountOperations = 0; // La cantidad de concretaciones de intenciones
     @Getter @Setter
-    private int points;
+    private int points = 0;
 
 
     public User(String name, String lastname, String email, String address, String password, String cvu, String addressWallet, int amountOperations, int points) {
@@ -63,10 +63,6 @@ public class User {
 
     public void addPoint(int x){
         this.points += x;
-        this.amountOperations ++;
-    }
-
-    public void addOperation() {
         this.amountOperations ++;
     }
 
@@ -146,6 +142,11 @@ public class User {
 
         public UserBuilder withWallet(String wallet) throws UserException {
             user.setWallet(wallet);
+            return this;
+        }
+
+        public UserBuilder withId(Integer id) throws UserException {
+            user.setUserId(id);
             return this;
         }
 

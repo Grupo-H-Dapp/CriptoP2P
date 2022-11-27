@@ -1,12 +1,14 @@
 package ar.edu.unq.grupoh.criptop2p.model;
 
+import ar.edu.unq.grupoh.criptop2p.exceptions.ExceedPriceDifference;
+import ar.edu.unq.grupoh.criptop2p.exceptions.IlegalActionOnStateTransaction;
+import ar.edu.unq.grupoh.criptop2p.exceptions.IlegalUserChangeStateTransaction;
 import ar.edu.unq.grupoh.criptop2p.exceptions.TransactionStatusException;
 import ar.edu.unq.grupoh.criptop2p.model.enums.Action;
 import ar.edu.unq.grupoh.criptop2p.model.enums.CriptosNames;
 import ar.edu.unq.grupoh.criptop2p.model.enums.StatesTransaction;
 import ar.edu.unq.grupoh.criptop2p.model.enums.TypeOperation;
-import ar.edu.unq.grupoh.criptop2p.model.state.StateTransaction;
-import lombok.Data;
+import ar.edu.unq.grupoh.criptop2p.model.state.ApiBinance;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,7 +16,6 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import static ar.edu.unq.grupoh.criptop2p.model.enums.Action.TRANSFER_MONEY;
 
 @Entity
 @Table(name = "transaction")
@@ -54,6 +55,9 @@ public class Transaction {
     @Getter @Setter
     @Enumerated(EnumType.STRING)
     private StatesTransaction stateTransaction;
+    @Getter @Setter
+    @Transient
+    private ApiBinance apiBinance;
 
     public Transaction(Intention intention, User secondUser,StatesTransaction stateTransaction) {
         this.intention = intention;
@@ -78,17 +82,16 @@ public class Transaction {
 
     }
 
-    private Double priceMarket(CriptosNames crypto) {
-        return 0.0; // Ver como obtenemos el valor de la crypto
-    }
-
-
-    public boolean isInPriceRange(Cryptocurrency cryptoCurrency) throws TransactionStatusException {
+    public boolean isInPriceRange(Cryptocurrency cryptoCurrency) throws ExceedPriceDifference {
         return cryptoCurrency.validateDiffPrice(intention.getPrice());
     }
 
     public void completeIntention(){
         this.intention.completeIntention();
+    }
+
+    public void change(User user, Action action) throws  TransactionStatusException, IlegalUserChangeStateTransaction, IlegalActionOnStateTransaction, ExceedPriceDifference {
+        this.stateTransaction.onChange(user, this, action);
     }
 
     public static final class TransactionBuilder {
@@ -100,7 +103,7 @@ public class Transaction {
             transaction.setIntention(intention);
             return this;
         }
-        public TransactionBuilder withUserSecondUser(User user){
+        public TransactionBuilder withSecondUser(User user){
             transaction.setSecondUser(user);
             return this;
         }

@@ -3,6 +3,8 @@ package ar.edu.unq.grupoh.criptop2p.service;
 import ar.edu.unq.grupoh.criptop2p.exceptions.CryptoException;
 import ar.edu.unq.grupoh.criptop2p.model.Cryptocurrency;
 import ar.edu.unq.grupoh.criptop2p.model.enums.CriptosNames;
+import ar.edu.unq.grupoh.criptop2p.model.state.ApiBinance;
+import ar.edu.unq.grupoh.criptop2p.model.state.ApiDolar;
 import ar.edu.unq.grupoh.criptop2p.repositories.CryptoRepository;
 import ar.edu.unq.grupoh.criptop2p.service.response.BinanceResponse;
 import ar.edu.unq.grupoh.criptop2p.service.response.CotizationUSDToARS;
@@ -26,7 +28,8 @@ public class CryptosService {
 
     @Autowired
     private CryptoRepository cryptoCurrencyRepository;
-    private final RestTemplate restTemplate = new RestTemplate();
+    private final ApiBinance apiBinance = new ApiBinance();
+    private final ApiDolar apiDolar = new ApiDolar();
 
     @Transactional
     public List<Cryptocurrency> findAll() {
@@ -97,15 +100,10 @@ public class CryptosService {
     }
 
     private BinanceResponse getBinanceResponse(CriptosNames cryptoName) {
-            String url = "https://api1.binance.com/api/v3/ticker/price?symbol=" + cryptoName.name();
-            BinanceResponse br = restTemplate.getForObject(url, BinanceResponse.class);
-            return br != null ? br : new BinanceResponse();
+            return this.apiBinance.getBinanceResponse(cryptoName);
     }
-    @Transactional
-    public CotizationUSDToARS getUSDCotization() {
-            String url = "https://api-dolar-argentina.herokuapp.com/api/dolaroficial";
-            CotizationUSDToARS br = restTemplate.getForObject(url, CotizationUSDToARS.class);
-            return br;
+    private CotizationUSDToARS getUSDCotization() {
+            return apiDolar.getUSDCotization();
     }
 
     private List<Cryptocurrency> findByCrypto(CriptosNames cryptoName){
