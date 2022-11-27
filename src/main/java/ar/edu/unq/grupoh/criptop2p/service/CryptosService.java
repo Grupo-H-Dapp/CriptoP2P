@@ -6,6 +6,7 @@ import ar.edu.unq.grupoh.criptop2p.model.enums.CriptosNames;
 import ar.edu.unq.grupoh.criptop2p.repositories.CryptoRepository;
 import ar.edu.unq.grupoh.criptop2p.service.response.BinanceResponse;
 import ar.edu.unq.grupoh.criptop2p.service.response.CotizationUSDToARS;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
@@ -22,6 +23,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 @EnableScheduling
 public class CryptosService {
 
@@ -30,7 +32,9 @@ public class CryptosService {
     private final RestTemplate restTemplate = new RestTemplate();
 
     @Transactional
+    //@Cacheable(value = "cryptos" , key = "'All'")
     public List<Cryptocurrency> findAll() {
+        log.info("Dentro del metodo del service findAll");
         return cryptoCurrencyRepository.findAll();
     }
 
@@ -73,8 +77,9 @@ public class CryptosService {
     }
 
     @Transactional
-    //@Cacheable("cryptos")
+    @Cacheable(value = "cryptos" , key = "'All'")
     public List<Cryptocurrency> getLastCryptoCurrency() {
+        log.info("Dentro del metodo del service");
         List<CriptosNames> cryptoNames = Arrays.asList(CriptosNames.values());
         return cryptoNames
                 .stream()

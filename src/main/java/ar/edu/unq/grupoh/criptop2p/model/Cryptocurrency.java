@@ -9,12 +9,13 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "Cryptocurrency")
 @NoArgsConstructor
-public class Cryptocurrency {
+public class Cryptocurrency implements Serializable {
     @Getter @Setter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
