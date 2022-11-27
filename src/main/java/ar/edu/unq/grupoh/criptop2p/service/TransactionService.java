@@ -51,7 +51,7 @@ public class TransactionService {
                 default:
                     transaction1.getStateTransaction().onChange(user, transaction1, action);
             }
-        }finally {
+        } finally {
             transactionRepository.save(transaction1);
         }
     }
