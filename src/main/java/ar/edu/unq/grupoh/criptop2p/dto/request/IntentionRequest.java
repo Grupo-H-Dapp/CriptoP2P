@@ -6,29 +6,27 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 public class IntentionRequest {
-
+    @NotNull
     @Getter @Setter
-    @NotBlank(message = "the Intention type cannot be null")
     private TypeOperation typeIntention;
 
+    @NotNull
     @Getter @Setter
-    @NotBlank(message = "The amount cannot be null")
-    //@DecimalMin(message = "The amount available must be bigger than 0", value = "1")
     private double amount;
 
+    @NotNull
     @Getter @Setter
-    @NotBlank(message = "The price must not be null")
-    //@DecimalMin(message = "The price must be bigger than 0.01", value = "0.01")
     private float price;
 
+    @NotNull
     @Getter @Setter
-    @NotBlank(message = "Crypto Currency must be specified")
     private CriptosNames crypto;
 
+    @NotNull
     @Getter @Setter
-    @NotBlank(message = "The user must be specified")
     private Integer user;
 
     public IntentionRequest(TypeOperation typeIntention, double amount, float price, CriptosNames cryptoName, Integer user) {

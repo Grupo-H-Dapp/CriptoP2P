@@ -80,7 +80,6 @@ tasks.jacocoTestReport {
 						.filter({ file -> !file.name.contains('SwaggerConfig') })
 						.filter({ file -> !file.name.contains('ServletInitializer') })
 						.filter({ file -> !file.name.contains('Request') })
-						.filter({ file -> !file.name.contains('Controller') })
 						.filter({ file -> !file.name.contains('Exception') }))
 	}
 }

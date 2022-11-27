@@ -65,15 +65,6 @@ public class UserService {
     }
 
     @Transactional
-    public User getUser(int id) throws UserNotFoundException {
-        User user= userRepository.findByUserId(id);
-        if(user!=null){
-            return user;
-        }else{
-            throw new UserNotFoundException(id);
-        }
-    }
-    @Transactional
     public void deleteUser(int id) throws UserNotFoundException {
         if(this.userRepository.findById(id).isEmpty()){
             throw new UserNotFoundException(id);

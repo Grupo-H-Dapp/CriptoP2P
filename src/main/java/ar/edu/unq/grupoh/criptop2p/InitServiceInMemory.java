@@ -1,13 +1,10 @@
 package ar.edu.unq.grupoh.criptop2p;
 
-import ar.edu.unq.grupoh.criptop2p.dto.request.IntentionRequest;
 import ar.edu.unq.grupoh.criptop2p.dto.request.UserRequest;
-import ar.edu.unq.grupoh.criptop2p.dto.response.IntentionResponse;
-import ar.edu.unq.grupoh.criptop2p.exceptions.IntentionException;
+import ar.edu.unq.grupoh.criptop2p.exceptions.IntentionExceedPriceDifferenceException;
 import ar.edu.unq.grupoh.criptop2p.exceptions.UserAlreadyExistException;
 import ar.edu.unq.grupoh.criptop2p.exceptions.UserException;
 import ar.edu.unq.grupoh.criptop2p.exceptions.UserNotFoundException;
-import ar.edu.unq.grupoh.criptop2p.model.Cryptocurrency;
 import ar.edu.unq.grupoh.criptop2p.model.Intention;
 import ar.edu.unq.grupoh.criptop2p.model.Transaction;
 import ar.edu.unq.grupoh.criptop2p.model.User;
@@ -27,7 +24,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import javax.annotation.PostConstruct;
-import java.util.List;
 
 @Service
 @Transactional
@@ -50,14 +46,14 @@ public class InitServiceInMemory {
     ModelMapper modelMapper = new ModelMapper();
 
     @PostConstruct
-    private void initialize() throws UserException, UserAlreadyExistException, UserNotFoundException, IntentionException {
+    private void initialize() throws UserException, UserAlreadyExistException, UserNotFoundException, IntentionExceedPriceDifferenceException {
         if (className.equals("prod")) {
             logger.info("Init Data Using H2 DB");
             fireInitialData();
         }
     }
 
-    private void fireInitialData() throws UserException, UserAlreadyExistException, UserNotFoundException, IntentionException {
+    private void fireInitialData() throws UserException, UserAlreadyExistException, UserNotFoundException, IntentionExceedPriceDifferenceException {
         cryptosService.updateAllCryptos();
         User userPepe = User.builder().withName("Pepe").withLastname("Argento").withAddress("1234567891").withEmail("asdsadsa@gmail.com").withPassword("aAsadsadsad#")
                 .withCvu("1234567891234567891233").withWallet("12345678").build();
