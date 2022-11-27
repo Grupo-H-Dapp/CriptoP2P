@@ -19,7 +19,7 @@ public class IntentionTest {
 
     @Test
     void createIntentionSell() throws UserException {
-        User user = User.builder().withName("Pepe").build();
+        User user = User.builder().withName("Prueba").build();
         Intention intention = Intention.builder().withCryptoCurrency(ALICEUSDT).withUser(user).withTypeOperation(TypeOperation.SELL).withQuantity(0.1).withPrice(1.5F).build();
         LocalDateTime now = LocalDateTime.now();
         assertEquals(user.getName(),intention.getUser().getName());
@@ -35,7 +35,7 @@ public class IntentionTest {
 
     @Test
     void createIntentionBuy() throws UserException {
-        User user = User.builder().withName("Pepe").build();
+        User user = User.builder().withName("Prueba").build();
         Intention intention = Intention.builder().withCryptoCurrency(ALICEUSDT).withUser(user).withTypeOperation(TypeOperation.BUY).withQuantity(0.1).withPrice(1.5F).build();
         LocalDateTime now = LocalDateTime.now();
         assertEquals(user.getName(),intention.getUser().getName());
@@ -51,7 +51,7 @@ public class IntentionTest {
 
     @Test
     void createIntentionEnded()  throws UserException {
-        User user = User.builder().withName("Pepe").build();
+        User user = User.builder().withName("Prueba").build();
         Intention intention = Intention.builder().withCryptoCurrency(ALICEUSDT).withUser(user).withTypeOperation(TypeOperation.BUY).withQuantity(0.1).withPrice(1.5F).build();
         intention.completeIntention();
         assertEquals(IntentionStatus.ENDED,intention.getStatus());

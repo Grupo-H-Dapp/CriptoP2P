@@ -26,7 +26,7 @@ public class Transaction {
     private Long id;
     @Getter @Setter
     @Column(nullable = false)
-    private LocalDateTime dateTime;
+    private LocalDateTime dateCreated;
     @Getter @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "intention_id")
@@ -37,7 +37,10 @@ public class Transaction {
     private User secondUser;
     @Getter @Setter
     @Column(nullable = false)
-    private String direccionEnvio;
+    private String addressSendMoney;
+    @Getter @Setter
+    @Column(nullable = false)
+    private String addressSendCrypto;
     @Getter @Setter
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -55,8 +58,9 @@ public class Transaction {
     public Transaction(Intention intention, User secondUser,StatesTransaction stateTransaction) {
         this.intention = intention;
         this.secondUser = secondUser;
-        this.dateTime = LocalDateTime.now();
-        this.direccionEnvio = intention.getTypeOperation() == TypeOperation.SELL ? intention.getUser().getCvu() : intention.getUser().getAddressWallet();
+        this.dateCreated = LocalDateTime.now();
+        this.addressSendMoney = intention.getTypeOperation() == TypeOperation.SELL ? intention.getUser().getCvu() : secondUser.getCvu();
+        this.addressSendCrypto = intention.getTypeOperation() == TypeOperation.SELL ? secondUser.getAddressWallet() : intention.getUser().getAddressWallet();
         this.crypto = intention.getCrypto();
         this.quantity = intention.getQuantity();
         this.price = intention.getPrice();
@@ -67,7 +71,7 @@ public class Transaction {
 
     public void givePointsCompleted() {
         LocalDateTime endedTime = LocalDateTime.now();
-        long timePassed = Duration.between(this.getDateTime(), endedTime).toMinutes();
+        long timePassed = Duration.between(this.getDateCreated(), endedTime).toMinutes();
         int points = timePassed <= 30 ? 10 : 5;
         this.getSecondUser().addPoint(points);
         this.getIntention().getUser().addPoint(points);
