@@ -1,7 +1,10 @@
 package ar.edu.unq.grupoh.criptop2p.service;
 
+import ar.edu.unq.grupoh.criptop2p.dto.request.TransactionRequest;
+import ar.edu.unq.grupoh.criptop2p.dto.response.IntentionResponse;
 import ar.edu.unq.grupoh.criptop2p.exceptions.*;
 import ar.edu.unq.grupoh.criptop2p.model.Cryptocurrency;
+import ar.edu.unq.grupoh.criptop2p.model.Intention;
 import ar.edu.unq.grupoh.criptop2p.model.Transaction;
 import ar.edu.unq.grupoh.criptop2p.model.User;
 import ar.edu.unq.grupoh.criptop2p.model.enums.Action;
@@ -22,9 +25,19 @@ public class TransactionService {
     private CryptosService cryptosService;
     @Autowired
     private TransactionRepository transactionRepository;
+    @Autowired
+    private IntentionService intentionService;
 
     @Transactional
     public Transaction saveTransaction(Transaction transaction){
+        return this.transactionRepository.save(transaction);
+    }
+
+    @Transactional
+    public Transaction createTransaction(TransactionRequest transactionRequest) throws IntentionNotFoundException, UserNotFoundException {
+        Intention intention = intentionService.findById(transactionRequest.getIntentionId());
+        User user = userService.getUserById(transactionRequest.getUser());
+        Transaction transaction = Transaction.builder().withIntention(intention).withSecondUser(user).build();
         return this.transactionRepository.save(transaction);
     }
 
@@ -41,5 +54,10 @@ public class TransactionService {
         } finally {
             transactionRepository.save(transaction1);
         }
+    }
+
+    @Transactional
+    public void deleteAll() {
+        this.transactionRepository.deleteAll();
     }
 }

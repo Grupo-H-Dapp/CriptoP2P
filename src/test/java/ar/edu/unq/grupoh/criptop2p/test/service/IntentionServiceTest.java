@@ -89,13 +89,13 @@ public class IntentionServiceTest {
         User user = this.userService.getUserByEmail("prueba@gmail.com");
         IntentionRequest intentionRequest = new IntentionRequest(TypeOperation.SELL,5.00,10.00f, CriptosNames.ALICEUSDT,user.getUserId());
         IntentionResponse intentionResponseCreated = this.intentionService.saveIntention(intentionRequest);
-        IntentionResponse intentionById = this.intentionService.findById(intentionResponseCreated.getId());
+        Intention intentionById = this.intentionService.findById(intentionResponseCreated.getId());
 
         assertEquals(TypeOperation.SELL,intentionById.getTypeOperation());
-        assertEquals(5.00,intentionById.getAmount());
-        assertEquals(10.00,intentionById.getPrice());
+        assertEquals(5.00,intentionById.getQuantity());
+        assertEquals(10.00,intentionById.getPrice().floatValue());
         assertEquals(CriptosNames.ALICEUSDT,intentionById.getCrypto());
-        assertEquals(user.getUserId(),intentionById.getUser());
+        assertEquals(user.getUserId(),intentionById.getUser().getUserId());
     }
 
     @Test

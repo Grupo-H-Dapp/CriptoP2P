@@ -1,6 +1,7 @@
 package ar.edu.unq.grupoh.criptop2p.webservice;
 
 import ar.edu.unq.grupoh.criptop2p.dto.request.TransactionActionRequest;
+import ar.edu.unq.grupoh.criptop2p.dto.request.TransactionRequest;
 import ar.edu.unq.grupoh.criptop2p.exceptions.*;
 import ar.edu.unq.grupoh.criptop2p.model.Transaction;
 import ar.edu.unq.grupoh.criptop2p.service.TransactionService;
@@ -21,11 +22,10 @@ public class TransactionController {
 
     @PostMapping
     @LogExecutionTime
-    public ResponseEntity<Transaction> createOperation(@Valid @RequestBody Transaction transactionDto, @RequestHeader (name="Authorization") String token){
+    public ResponseEntity<Transaction> createTransaction(@Valid @RequestBody TransactionRequest transactionRequest){
         try {
-            System.out.println(token);
-            Transaction transaction = transactionService.saveTransaction(transactionDto);
-            return ResponseEntity.status(HttpStatus.CREATED).body(transactionDto);
+            Transaction transaction = transactionService.createTransaction(transactionRequest);
+            return ResponseEntity.status(HttpStatus.CREATED).body(transaction);
         } catch(Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }

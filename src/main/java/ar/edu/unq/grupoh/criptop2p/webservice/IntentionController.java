@@ -34,7 +34,7 @@ public class IntentionController {
     @GetMapping("/{id}")
     @LogExecutionTime
     public ResponseEntity<IntentionResponse> findById(@PathVariable Long id) throws IntentionNotFoundException {
-        return ResponseEntity.status(HttpStatus.OK).body(this.intentionService.findById(id));
+        return ResponseEntity.status(HttpStatus.OK).body(IntentionResponse.FromModel(this.intentionService.findById(id)));
     }
 
     @GetMapping("actives")
