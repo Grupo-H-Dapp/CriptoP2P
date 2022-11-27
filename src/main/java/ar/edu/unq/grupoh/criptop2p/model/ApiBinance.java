@@ -1,4 +1,4 @@
-package ar.edu.unq.grupoh.criptop2p.model.state;
+package ar.edu.unq.grupoh.criptop2p.model;
 
 import ar.edu.unq.grupoh.criptop2p.model.enums.CriptosNames;
 import ar.edu.unq.grupoh.criptop2p.service.response.BinanceResponse;
