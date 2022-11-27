@@ -7,6 +7,7 @@ import ar.edu.unq.grupoh.criptop2p.repositories.CryptoRepository;
 import ar.edu.unq.grupoh.criptop2p.service.response.BinanceResponse;
 import ar.edu.unq.grupoh.criptop2p.service.response.CotizationUSDToARS;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -72,7 +73,7 @@ public class CryptosService {
     }
 
     @Transactional
-    @Cacheable(value = "crypto")
+    //@Cacheable("cryptos")
     public List<Cryptocurrency> getLastCryptoCurrency() {
         List<CriptosNames> cryptoNames = Arrays.asList(CriptosNames.values());
         return cryptoNames
@@ -84,16 +85,28 @@ public class CryptosService {
 
     @Transactional
     @Scheduled(cron = "0 0/10 * * * *") // cron = "0 0/10 * * * *" para que sea cada 10m
-    public void updateAllCryptos() {
+    //@CacheEvict(value = "cryptos", allEntries = true)
+    public List<Cryptocurrency> updateAllCryptos() {
+        List<Cryptocurrency> cryptoCurrencyList = new ArrayList<>();
         BinanceResponse[] binanceCryptoDTOS = getAllCryptoPrice(List.of(CriptosNames.values()));
         Arrays.stream(binanceCryptoDTOS).forEach(binanceCrypto -> {
             try {
                 Cryptocurrency crypto = binanceToModel(binanceCrypto);
+                cryptoCurrencyList.add(crypto);
                 cryptoCurrencyRepository.save(crypto);
             } catch (CryptoException e) {
 
             }
         });
+        return cryptoCurrencyList;
+    }
+
+    @Transactional
+    //@CacheEvict(value = "cryptos", allEntries = true)
+    public Cryptocurrency updateCrypto(CriptosNames cryptoName) throws CryptoException {
+        BinanceResponse cryptoResponse = getCryptoPriceForOne(cryptoName);
+        Cryptocurrency crypto = binanceToModel(cryptoResponse);
+        return cryptoCurrencyRepository.save(crypto);
     }
 
     private BinanceResponse getBinanceResponse(CriptosNames cryptoName) {
@@ -131,4 +144,9 @@ public class CryptosService {
         return restTemplate.getForObject("https://api1.binance.com/api/v3/ticker/price?symbols=" + cryptoSymbols, BinanceResponse[].class);
     }
 
+
+    private BinanceResponse getCryptoPriceForOne(CriptosNames name){
+        RestTemplate restTemplate = new RestTemplate();
+        return restTemplate.getForObject("https://api1.binance.com/api/v3/ticker/price?symbol=" +name,BinanceResponse.class );
+    }
 }

@@ -66,7 +66,7 @@ public class InitServiceInMemory {
         userPepe = userService.saveUser(modelMapper.map(userPepe, UserRequest.class));
         userDardo =userService.saveUser(modelMapper.map(userDardo, UserRequest.class));
         Intention i1 = Intention.builder().withUser(userPepe).withCryptoCurrency(CriptosNames.ALICEUSDT).withQuantity(0.10).withTypeOperation(TypeOperation.BUY)
-                .withPrice(1.1548999f).build();
+                .withPrice(1.1000f).build();
         intentionService.saveIntentionModel(i1);
         Transaction t1 = Transaction.builder().withIntention(i1).withUserSecondUser(userDardo).withState(StatesTransaction.WAITING_CONFIRM_TRANSFER_CRYPTO).build();
         transactionService.saveTransaction(t1);
