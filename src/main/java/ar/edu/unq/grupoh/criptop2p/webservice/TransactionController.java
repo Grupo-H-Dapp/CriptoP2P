@@ -33,8 +33,8 @@ public class TransactionController {
 
     @PutMapping
     @LogExecutionTime
-    public ResponseEntity<?> doActionTransaction(@Valid @RequestBody TransactionActionRequest dto) throws ExceedPriceDifference, UserNotFoundException, TransactionException, TransactionStatusException, IlegalUserChangeStateTransaction, IlegalActionOnStateTransaction {
-            transactionService.processActionOperation(dto.getAction(), dto.getUserId(),dto.getIntentionId());
+    public ResponseEntity<?> doActionTransaction(@Valid @RequestBody TransactionActionRequest transactionActionRequest) throws  UserNotFoundException, TransactionStatusException, TransactionNotFoundException, IlegalUserChangeStateTransaction, IlegalActionOnStateTransaction, ExceedPriceDifference {
+            transactionService.processActionOperation(transactionActionRequest);
             return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

@@ -56,7 +56,7 @@ public class Transaction {
     private StatesTransaction stateTransaction;
     @Getter @Setter
     @Transient
-    private ApiBinance apiBinance;
+    private ApiBinance apiBinance = new ApiBinance();
 
     public Transaction(Intention intention, User secondUser,StatesTransaction stateTransaction) {
         this.intention = intention;
