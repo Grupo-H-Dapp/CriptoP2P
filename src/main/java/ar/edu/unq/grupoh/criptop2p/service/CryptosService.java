@@ -90,7 +90,6 @@ public class CryptosService {
 
     @Transactional
     @Scheduled(cron = "0 0/10 * * * *") // cron = "0 0/10 * * * *" para que sea cada 10m
-    //@CacheEvict(value = "cryptos", allEntries = true)
     public List<Cryptocurrency> updateAllCryptos() {
         List<Cryptocurrency> cryptoCurrencyList = new ArrayList<>();
         BinanceResponse[] binanceCryptoDTOS = getAllCryptoPrice(List.of(CriptosNames.values()));
@@ -107,7 +106,6 @@ public class CryptosService {
     }
 
     @Transactional
-    //@CacheEvict(value = "cryptos", allEntries = true)
     public Cryptocurrency updateCrypto(CriptosNames cryptoName) throws CryptoException {
         BinanceResponse cryptoResponse = getCryptoPriceForOne(cryptoName);
         Cryptocurrency crypto = binanceToModel(cryptoResponse);

@@ -5,7 +5,6 @@ import ar.edu.unq.grupoh.criptop2p.model.enums.Action;
 import ar.edu.unq.grupoh.criptop2p.model.enums.CriptosNames;
 import ar.edu.unq.grupoh.criptop2p.model.enums.StatesTransaction;
 import ar.edu.unq.grupoh.criptop2p.model.enums.TypeOperation;
-import ar.edu.unq.grupoh.criptop2p.model.state.StateTransaction;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
