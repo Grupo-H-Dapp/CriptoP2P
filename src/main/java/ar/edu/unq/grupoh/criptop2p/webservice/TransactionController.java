@@ -1,9 +1,8 @@
 package ar.edu.unq.grupoh.criptop2p.webservice;
 
 import ar.edu.unq.grupoh.criptop2p.dto.request.TransactionActionRequest;
-import ar.edu.unq.grupoh.criptop2p.exceptions.TransactionException;
-import ar.edu.unq.grupoh.criptop2p.exceptions.TransactionStatusException;
-import ar.edu.unq.grupoh.criptop2p.exceptions.UserNotFoundException;
+import ar.edu.unq.grupoh.criptop2p.dto.request.TransactionRequest;
+import ar.edu.unq.grupoh.criptop2p.exceptions.*;
 import ar.edu.unq.grupoh.criptop2p.model.Transaction;
 import ar.edu.unq.grupoh.criptop2p.service.TransactionService;
 import ar.edu.unq.grupoh.criptop2p.webservice.aspects.LogExecutionTime;
@@ -23,10 +22,10 @@ public class TransactionController {
 
     @PostMapping
     @LogExecutionTime
-    public ResponseEntity<Transaction> createOperation(@Valid @RequestBody Transaction transactionDto){
+    public ResponseEntity<Transaction> createTransaction(@Valid @RequestBody TransactionRequest transactionRequest){
         try {
-            Transaction transaction = transactionService.saveTransaction(transactionDto);
-            return ResponseEntity.status(HttpStatus.CREATED).body(transactionDto);
+            Transaction transaction = transactionService.createTransaction(transactionRequest);
+            return ResponseEntity.status(HttpStatus.CREATED).body(transaction);
         } catch(Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
@@ -34,8 +33,8 @@ public class TransactionController {
 
     @PutMapping
     @LogExecutionTime
-    public ResponseEntity<?> doActionTransaction(@Valid @RequestBody TransactionActionRequest dto) throws UserNotFoundException, TransactionException, TransactionStatusException {
-            transactionService.processActionOperation(dto.getAction(), dto.getUserId(),dto.getIntentionId());
+    public ResponseEntity<?> doActionTransaction(@Valid @RequestBody TransactionActionRequest transactionActionRequest) throws  UserNotFoundException, TransactionStatusException, TransactionNotFoundException, IlegalUserChangeStateTransaction, IlegalActionOnStateTransaction, ExceedPriceDifference {
+            transactionService.processActionOperation(transactionActionRequest);
             return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

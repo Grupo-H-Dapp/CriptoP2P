@@ -36,12 +36,12 @@ public class IntentionService {
     }
 
     @Transactional
-    public IntentionResponse findById(Long id) throws IntentionNotFoundException {
+    public Intention findById(Long id) throws IntentionNotFoundException {
        Optional<Intention> intention = this.intentionRepository.findById(id);
        if(intention.isEmpty()){
            throw new IntentionNotFoundException(id.intValue());
        }
-       return IntentionResponse.FromModel(intention.get());
+       return intention.get();
     }
 
     @Transactional
@@ -80,7 +80,7 @@ public class IntentionService {
         }
         throw new IntentionExceedPriceDifferenceException();
     }
-
+    @Transactional
     public void deleteAllIntentions() {
         this.intentionRepository.deleteAll();
     }

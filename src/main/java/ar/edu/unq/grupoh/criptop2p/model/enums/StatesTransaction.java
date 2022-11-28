@@ -1,9 +1,13 @@
 package ar.edu.unq.grupoh.criptop2p.model.enums;
 
+import ar.edu.unq.grupoh.criptop2p.exceptions.ExceedPriceDifference;
+import ar.edu.unq.grupoh.criptop2p.exceptions.IlegalActionOnStateTransaction;
+import ar.edu.unq.grupoh.criptop2p.exceptions.IlegalUserChangeStateTransaction;
 import ar.edu.unq.grupoh.criptop2p.exceptions.TransactionStatusException;
 import ar.edu.unq.grupoh.criptop2p.model.Cryptocurrency;
 import ar.edu.unq.grupoh.criptop2p.model.Transaction;
 import ar.edu.unq.grupoh.criptop2p.model.User;
+import ar.edu.unq.grupoh.criptop2p.service.response.BinanceResponse;
 
 
 /*
@@ -31,11 +35,19 @@ public enum StatesTransaction {
             }
         }
 
-        public void onChange(User user, Transaction transaction,Action action) throws TransactionStatusException {
-            if (acceptedAction(action) && checkUserBasedOnTypeIntention(user,transaction)) {
-                transaction.setStateTransaction(WAITING_CONFIRM_TRANSFER_MONEY);
+        public void onChange(User user, Transaction transaction,Action action) throws IlegalActionOnStateTransaction, IlegalUserChangeStateTransaction {
+            if (action == Action.CANCEL && StatesTransaction.isUserInTransaction(user,transaction)) {
+                user.substractPoints();
+                transaction.setStateTransaction(CANCELED);
+                return;
+            }
+            if (!acceptedAction(action)) {
+                throw new IlegalActionOnStateTransaction();
+            }
+            if (!checkUserBasedOnTypeIntention(user,transaction)) {
+                throw new IlegalUserChangeStateTransaction();
             } else {
-                throw new TransactionStatusException("Usuario invalido para la accion");
+                transaction.setStateTransaction(WAITING_CONFIRM_TRANSFER_MONEY);
             }
         }
 
@@ -54,11 +66,19 @@ public enum StatesTransaction {
         }
 
         //CONFIRM_MONEY
-        public void onChange(User user, Transaction transaction,Action action) throws TransactionStatusException {
-            if (acceptedAction(action) && checkUserBasedOnTypeIntention(user,transaction)) {
-                transaction.setStateTransaction(WAITING_TRANSFER_CRYPTO);
+        public void onChange(User user, Transaction transaction,Action action) throws IlegalActionOnStateTransaction, IlegalUserChangeStateTransaction {
+            if (action == Action.CANCEL && StatesTransaction.isUserInTransaction(user,transaction)) {
+                user.substractPoints();
+                transaction.setStateTransaction(CANCELED);
+                return;
+            }
+            if (!acceptedAction(action)) {
+                throw new IlegalActionOnStateTransaction();
+            }
+            if (!checkUserBasedOnTypeIntention(user,transaction)) {
+                throw new IlegalUserChangeStateTransaction();
             } else {
-                throw new TransactionStatusException("Usuario invalido para la accion");
+                transaction.setStateTransaction(WAITING_TRANSFER_CRYPTO);
             }
         }
     },
@@ -77,11 +97,19 @@ public enum StatesTransaction {
         }
 
         //Action TRANSFER_CRYPTO
-        public void onChange(User user, Transaction transaction,Action action) throws TransactionStatusException {
-            if (acceptedAction(action) && checkUserBasedOnTypeIntention(user,transaction)) {
-                transaction.setStateTransaction(WAITING_CONFIRM_TRANSFER_CRYPTO);
+        public void onChange(User user, Transaction transaction,Action action) throws IlegalActionOnStateTransaction, IlegalUserChangeStateTransaction {
+            if (action == Action.CANCEL && StatesTransaction.isUserInTransaction(user,transaction)) {
+                user.substractPoints();
+                transaction.setStateTransaction(CANCELED);
+                return;
+            }
+            if (!acceptedAction(action)) {
+                throw new IlegalActionOnStateTransaction();
+            }
+            if (!checkUserBasedOnTypeIntention(user,transaction)) {
+                throw new IlegalUserChangeStateTransaction();
             } else {
-                throw new TransactionStatusException("Usuario invalido para la accion");
+                transaction.setStateTransaction(WAITING_CONFIRM_TRANSFER_CRYPTO);
             }
         }
     },
@@ -99,32 +127,44 @@ public enum StatesTransaction {
             }
         }
 
-        public void completeTransaction(User user, Transaction transaction, Cryptocurrency cryptocurrency,Action action) throws TransactionStatusException {
-            if (acceptedAction(action) && checkUserBasedOnTypeIntention(user,transaction)) {
+        public void onChange(User user, Transaction transaction,Action action) throws IlegalActionOnStateTransaction, IlegalUserChangeStateTransaction, ExceedPriceDifference {
+            if (action == Action.CANCEL && StatesTransaction.isUserInTransaction(user,transaction)) {
+                user.substractPoints();
+                transaction.setStateTransaction(CANCELED);
+                return;
+            }
+            if (!acceptedAction(action)) {
+                throw new IlegalActionOnStateTransaction();
+            }
+            if (!checkUserBasedOnTypeIntention(user,transaction)) {
+                throw new IlegalUserChangeStateTransaction();
+            } else {
+                BinanceResponse response = transaction.getApiBinance().getBinanceResponse(transaction.getCrypto());
+                Cryptocurrency cryptocurrency = new Cryptocurrency(transaction.getCrypto(), response.getPrice());
                 if(transaction.isInPriceRange(cryptocurrency)){
                     transaction.setStateTransaction(COMPLETED);
                     transaction.givePointsCompleted();
                     transaction.completeIntention();
                 }
-            } else {
-                throw new TransactionStatusException("Usuario invalido para la accion");
             }
         }
     },
     COMPLETED {
-        public void onChange(User user, Transaction transaction,Action action) throws TransactionStatusException {
-            throw new TransactionStatusException("La transaccion esta completada , no se aceptan mas acciones");
+        public void onChange(User user, Transaction transaction,Action action) throws IlegalActionOnStateTransaction {
+            throw new IlegalActionOnStateTransaction();
         }
     },
     CANCELED {
-        public void onChange(User user, Transaction transaction,Action action) throws TransactionStatusException {
-            throw new TransactionStatusException("La transaccion esta cancelada , no se aceptan mas acciones");
+        public void onChange(User user, Transaction transaction,Action action) throws IlegalActionOnStateTransaction {
+            throw new IlegalActionOnStateTransaction();
         }
     };
 
-    public void onChange(User user, Transaction transaction,Action action) throws TransactionStatusException {
+    public void onChange(User user, Transaction transaction,Action action) throws IlegalActionOnStateTransaction, IlegalUserChangeStateTransaction, ExceedPriceDifference {
     }
 
-    public void completeTransaction(User user, Transaction transaction, Cryptocurrency cryptocurrency,Action action) throws TransactionStatusException {
+    static private boolean isUserInTransaction(User userAction, Transaction transaction) {
+        return userAction.getUserId() == transaction.getSecondUser().getUserId() || userAction.getUserId() == transaction.getIntention().getUser().getUserId();
     }
+
 }

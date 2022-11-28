@@ -2,13 +2,14 @@ package ar.edu.unq.grupoh.criptop2p.dto.request;
 
 import ar.edu.unq.grupoh.criptop2p.model.enums.Action;
 import lombok.Getter;
+import lombok.Setter;
 
 public class TransactionActionRequest {
 
-    @Getter
+    @Getter @Setter
     private Action action;
-    @Getter
+    @Getter @Setter
     private Integer userId;
-    @Getter
-    private Long intentionId;
+    @Getter @Setter
+    private Long transactionId;
 }

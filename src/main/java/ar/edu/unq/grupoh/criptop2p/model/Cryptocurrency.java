@@ -1,6 +1,7 @@
 package ar.edu.unq.grupoh.criptop2p.model;
 
 import ar.edu.unq.grupoh.criptop2p.exceptions.CryptoException;
+import ar.edu.unq.grupoh.criptop2p.exceptions.ExceedPriceDifference;
 import ar.edu.unq.grupoh.criptop2p.exceptions.TransactionStatusException;
 import ar.edu.unq.grupoh.criptop2p.model.enums.CriptosNames;
 import lombok.Getter;
@@ -36,20 +37,7 @@ public class Cryptocurrency implements Serializable {
         this.date = LocalDateTime.now();
     }
 
-    public boolean validateDiffPrice2(float price) throws TransactionStatusException {
-        Float min = this.getPrice() * 0.95F ;
-        Float max = this.getPrice() * 1.05F ;
-        System.out.println("Min Diff " + min);
-        System.out.println("Max Diff " +max);
-        System.out.println("Price Intention " +price);
-        if((min <= price) && (price <= max)){
-            return true;
-        }else{
-            throw new TransactionStatusException("Diferencia de precio");
-        }
-    }
-
-    public boolean validateDiffPrice(float price) throws TransactionStatusException {
+    public boolean validateDiffPrice(float price) throws ExceedPriceDifference {
         Double minValue = this.price*(0.95);
         Double maxValue = this.price*(1.05);
         System.out.println("Crypto Price " + this.price);
@@ -59,7 +47,7 @@ public class Cryptocurrency implements Serializable {
         if(price > minValue && price < maxValue){
             return true;
         }else{
-            throw new TransactionStatusException("Diferencia de precio");
+            throw new ExceedPriceDifference();
         }
     }
 
