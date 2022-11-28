@@ -103,16 +103,15 @@ public class TransactionTest {
     }
 
     @Test
-    public void changeStateTransactionWaitingConfirmTransferMoneyOfIntentionSellWithActionConfirmMoneyByUserBuyer() throws UserException {
+    public void changeStateTransactionWaitingConfirmTransferMoneyOfIntentionSellWithActionConfirmMoneyByUserBuyer() throws UserException, IlegalUserChangeStateTransaction, ExceedPriceDifference, TransactionStatusException, IlegalActionOnStateTransaction {
         User userOwnerIntention = User.builder().withName("Owner").withCvu("1234567891234567891233").withId(1).build();
         User userBuyer = User.builder().withName("Buyer").withWallet("12345678").withId(2).build();
         Intention intention = Intention.builder().withCryptoCurrency(ALICEUSDT).withUser(userOwnerIntention).withTypeOperation(TypeOperation.SELL).withQuantity(0.1).withPrice(1.5F).build();
         Transaction transaction = Transaction.builder().withIntention(intention).withSecondUser(userBuyer).build();
-
+        transaction.change(userBuyer, Action.TRANSFER_MONEY);
         IlegalUserChangeStateTransaction exception = assertThrows(
                 IlegalUserChangeStateTransaction.class,
                 () -> {
-                    transaction.change(userBuyer, Action.TRANSFER_MONEY);
                     transaction.change(userBuyer, Action.CONFIRM_MONEY);
                 }
         );
@@ -121,16 +120,15 @@ public class TransactionTest {
     }
 
     @Test
-    public void changeStateTransactionWaitingConfirmTransferMoneyOfIntentionSellWithIlegalAction() throws UserException {
+    public void changeStateTransactionWaitingConfirmTransferMoneyOfIntentionSellWithIlegalAction() throws UserException, IlegalUserChangeStateTransaction, ExceedPriceDifference, TransactionStatusException, IlegalActionOnStateTransaction {
         User userOwnerIntention = User.builder().withName("Owner").withCvu("1234567891234567891233").withId(1).build();
         User userBuyer = User.builder().withName("Buyer").withWallet("12345678").withId(2).build();
         Intention intention = Intention.builder().withCryptoCurrency(ALICEUSDT).withUser(userOwnerIntention).withTypeOperation(TypeOperation.SELL).withQuantity(0.1).withPrice(1.5F).build();
         Transaction transaction = Transaction.builder().withIntention(intention).withSecondUser(userBuyer).build();
-
+        transaction.change(userBuyer, Action.TRANSFER_MONEY);
         IlegalActionOnStateTransaction exception = assertThrows(
                 IlegalActionOnStateTransaction.class,
                 () -> {
-                    transaction.change(userBuyer, Action.TRANSFER_MONEY);
                     transaction.change(userOwnerIntention, Action.TRANSFER_CRYPTO);
                 }
         );
@@ -154,17 +152,17 @@ public class TransactionTest {
     }
 
     @Test
-    public void changeStateTransactionWaitingTransferCryptoOfIntentionSellWithActionTransferCryptoByUserBuyer() throws UserException {
+    public void changeStateTransactionWaitingTransferCryptoOfIntentionSellWithActionTransferCryptoByUserBuyer() throws UserException, IlegalUserChangeStateTransaction, ExceedPriceDifference, TransactionStatusException, IlegalActionOnStateTransaction {
         User userOwnerIntention = User.builder().withName("Owner").withCvu("1234567891234567891233").withId(1).build();
         User userBuyer = User.builder().withName("Buyer").withWallet("12345678").withId(2).build();
         Intention intention = Intention.builder().withCryptoCurrency(ALICEUSDT).withUser(userOwnerIntention).withTypeOperation(TypeOperation.SELL).withQuantity(0.1).withPrice(1.5F).build();
         Transaction transaction = Transaction.builder().withIntention(intention).withSecondUser(userBuyer).build();
-
+        transaction.change(userBuyer, Action.TRANSFER_MONEY);
+        transaction.change(userOwnerIntention, Action.CONFIRM_MONEY);
         IlegalUserChangeStateTransaction exception = assertThrows(
                 IlegalUserChangeStateTransaction.class,
                 () -> {
-                    transaction.change(userBuyer, Action.TRANSFER_MONEY);
-                    transaction.change(userOwnerIntention, Action.CONFIRM_MONEY);
+
                     transaction.change(userBuyer, Action.TRANSFER_CRYPTO);
                 }
         );
@@ -173,17 +171,16 @@ public class TransactionTest {
     }
 
     @Test
-    public void changeStateTransactionWaitingTransferCryptoOfIntentionSellWithIlegalAction() throws UserException {
+    public void changeStateTransactionWaitingTransferCryptoOfIntentionSellWithIlegalAction() throws UserException, IlegalUserChangeStateTransaction, ExceedPriceDifference, TransactionStatusException, IlegalActionOnStateTransaction {
         User userOwnerIntention = User.builder().withName("Owner").withCvu("1234567891234567891233").withId(1).build();
         User userBuyer = User.builder().withName("Buyer").withWallet("12345678").withId(2).build();
         Intention intention = Intention.builder().withCryptoCurrency(ALICEUSDT).withUser(userOwnerIntention).withTypeOperation(TypeOperation.SELL).withQuantity(0.1).withPrice(1.5F).build();
         Transaction transaction = Transaction.builder().withIntention(intention).withSecondUser(userBuyer).build();
-
+        transaction.change(userBuyer, Action.TRANSFER_MONEY);
+        transaction.change(userOwnerIntention, Action.CONFIRM_MONEY);
         IlegalActionOnStateTransaction exception = assertThrows(
                 IlegalActionOnStateTransaction.class,
                 () -> {
-                    transaction.change(userBuyer, Action.TRANSFER_MONEY);
-                    transaction.change(userOwnerIntention, Action.CONFIRM_MONEY);
                     transaction.change(userOwnerIntention, Action.TRANSFER_MONEY);
                 }
         );
@@ -216,18 +213,17 @@ public class TransactionTest {
     }
 
     @Test
-    public void changeStateTransactionWaitingConfirmTransferCryptoOfIntentionSellWithActionTransferCryptoByUserOwnerIntention() throws UserException {
+    public void changeStateTransactionWaitingConfirmTransferCryptoOfIntentionSellWithActionTransferCryptoByUserOwnerIntention() throws UserException, IlegalUserChangeStateTransaction, ExceedPriceDifference, TransactionStatusException, IlegalActionOnStateTransaction {
         User userOwnerIntention = User.builder().withName("Owner").withCvu("1234567891234567891233").withId(1).build();
         User userBuyer = User.builder().withName("Buyer").withWallet("12345678").withId(2).build();
         Intention intention = Intention.builder().withCryptoCurrency(ALICEUSDT).withUser(userOwnerIntention).withTypeOperation(TypeOperation.SELL).withQuantity(0.1).withPrice(1.5F).build();
         Transaction transaction = Transaction.builder().withIntention(intention).withSecondUser(userBuyer).build();
-
+        transaction.change(userBuyer, Action.TRANSFER_MONEY);
+        transaction.change(userOwnerIntention, Action.CONFIRM_MONEY);
+        transaction.change(userOwnerIntention, Action.TRANSFER_CRYPTO);
         IlegalUserChangeStateTransaction exception = assertThrows(
                 IlegalUserChangeStateTransaction.class,
                 () -> {
-                    transaction.change(userBuyer, Action.TRANSFER_MONEY);
-                    transaction.change(userOwnerIntention, Action.CONFIRM_MONEY);
-                    transaction.change(userOwnerIntention, Action.TRANSFER_CRYPTO);
                     transaction.change(userOwnerIntention, Action.CONFIRM_CRYPTO);
                 }
         );
@@ -236,18 +232,17 @@ public class TransactionTest {
     }
 
     @Test
-    public void changeStateTransactionWaitingConfirmTransferCryptoOfIntentionSellWithIlegalAction() throws UserException {
+    public void changeStateTransactionWaitingConfirmTransferCryptoOfIntentionSellWithIlegalAction() throws UserException, IlegalUserChangeStateTransaction, ExceedPriceDifference, TransactionStatusException, IlegalActionOnStateTransaction {
         User userOwnerIntention = User.builder().withName("Owner").withCvu("1234567891234567891233").withId(1).build();
         User userBuyer = User.builder().withName("Buyer").withWallet("12345678").withId(2).build();
         Intention intention = Intention.builder().withCryptoCurrency(ALICEUSDT).withUser(userOwnerIntention).withTypeOperation(TypeOperation.SELL).withQuantity(0.1).withPrice(1.5F).build();
         Transaction transaction = Transaction.builder().withIntention(intention).withSecondUser(userBuyer).build();
-
+        transaction.change(userBuyer, Action.TRANSFER_MONEY);
+        transaction.change(userOwnerIntention, Action.CONFIRM_MONEY);
+        transaction.change(userOwnerIntention, Action.TRANSFER_CRYPTO);
         IlegalActionOnStateTransaction exception = assertThrows(
                 IlegalActionOnStateTransaction.class,
                 () -> {
-                    transaction.change(userBuyer, Action.TRANSFER_MONEY);
-                    transaction.change(userOwnerIntention, Action.CONFIRM_MONEY);
-                    transaction.change(userOwnerIntention, Action.TRANSFER_CRYPTO);
                     transaction.change(userOwnerIntention, Action.TRANSFER_MONEY);
                 }
         );
@@ -318,7 +313,7 @@ public class TransactionTest {
     }
 
     @Test
-    public void changeStateTransactionCompletedOfIntentionSellWithActionCancel() throws  UserException {
+    public void changeStateTransactionCompletedOfIntentionSellWithActionCancel() throws UserException, IlegalUserChangeStateTransaction, ExceedPriceDifference, TransactionStatusException, IlegalActionOnStateTransaction {
         User userOwnerIntention = User.builder().withName("Owner").withCvu("1234567891234567891233").withId(1).build();
         User userBuyer = User.builder().withName("Buyer").withWallet("12345678").withId(2).build();
         Intention intention = Intention.builder().withCryptoCurrency(ALICEUSDT).withUser(userOwnerIntention).withTypeOperation(TypeOperation.SELL).withQuantity(0.1).withPrice(1.5F).build();
@@ -327,14 +322,13 @@ public class TransactionTest {
         ApiBinance apiBinance = Mockito.mock(ApiBinance.class);
         Mockito.when(apiBinance.getBinanceResponse(CriptosNames.ALICEUSDT)).thenReturn(new BinanceResponse("ALICEUSDT", 1.5f));
         transaction.setApiBinance(apiBinance);
-
+        transaction.change(userBuyer, Action.TRANSFER_MONEY);
+        transaction.change(userOwnerIntention, Action.CONFIRM_MONEY);
+        transaction.change(userOwnerIntention, Action.TRANSFER_CRYPTO);
+        transaction.change(userBuyer, Action.CONFIRM_CRYPTO);
         IlegalActionOnStateTransaction exception = assertThrows(
                 IlegalActionOnStateTransaction.class,
                 () -> {
-                    transaction.change(userBuyer, Action.TRANSFER_MONEY);
-                    transaction.change(userOwnerIntention, Action.CONFIRM_MONEY);
-                    transaction.change(userOwnerIntention, Action.TRANSFER_CRYPTO);
-                    transaction.change(userBuyer, Action.CONFIRM_CRYPTO);
                     transaction.change(userOwnerIntention, Action.CANCEL);
 
                 }
@@ -344,17 +338,16 @@ public class TransactionTest {
     }
 
     @Test
-    public void changeStateTransactionCanceledOfIntentionSellWithActionCancel() throws  UserException {
+    public void changeStateTransactionCanceledOfIntentionSellWithActionCancel() throws UserException, IlegalUserChangeStateTransaction, ExceedPriceDifference, TransactionStatusException, IlegalActionOnStateTransaction {
         User userOwnerIntention = User.builder().withName("Owner").withCvu("1234567891234567891233").withId(1).build();
         User userBuyer = User.builder().withName("Buyer").withWallet("12345678").withId(2).build();
         Intention intention = Intention.builder().withCryptoCurrency(ALICEUSDT).withUser(userOwnerIntention).withTypeOperation(TypeOperation.SELL).withQuantity(0.1).withPrice(1.5F).build();
         Transaction transaction = Transaction.builder().withIntention(intention).withSecondUser(userBuyer).build();
-
+        transaction.change(userBuyer, Action.TRANSFER_MONEY);
+        transaction.change(userOwnerIntention, Action.CANCEL);
         IlegalActionOnStateTransaction exception = assertThrows(
                 IlegalActionOnStateTransaction.class,
                 () -> {
-                    transaction.change(userBuyer, Action.TRANSFER_MONEY);
-                    transaction.change(userOwnerIntention, Action.CANCEL);
                     transaction.change(userOwnerIntention, Action.CANCEL);
                 }
         );
@@ -407,16 +400,15 @@ public class TransactionTest {
     }
 
     @Test
-    public void changeStateTransactionWaitingConfirmTransferMoneyOfIntentionBuyWithActionConfirmMoneyByUserOwner() throws UserException {
+    public void changeStateTransactionWaitingConfirmTransferMoneyOfIntentionBuyWithActionConfirmMoneyByUserOwner() throws UserException, IlegalUserChangeStateTransaction, ExceedPriceDifference, TransactionStatusException, IlegalActionOnStateTransaction {
         User userOwnerIntention = User.builder().withName("Owner").withCvu("1234567891234567891233").withId(1).build();
         User userSeller = User.builder().withName("Buyer").withWallet("12345678").withId(2).build();
         Intention intention = Intention.builder().withCryptoCurrency(ALICEUSDT).withUser(userOwnerIntention).withTypeOperation(TypeOperation.BUY).withQuantity(0.1).withPrice(1.5F).build();
         Transaction transaction = Transaction.builder().withIntention(intention).withSecondUser(userSeller).build();
-
+        transaction.change(userOwnerIntention, Action.TRANSFER_MONEY);
         IlegalUserChangeStateTransaction exception = assertThrows(
                 IlegalUserChangeStateTransaction.class,
                 () -> {
-                    transaction.change(userOwnerIntention, Action.TRANSFER_MONEY);
                     transaction.change(userOwnerIntention, Action.CONFIRM_MONEY);
                 }
         );
@@ -440,17 +432,16 @@ public class TransactionTest {
     }
 
     @Test
-    public void changeStateTransactionWaitingTransferCryptoOfIntentionBuyWithActionTransferCryptoByUserOwner() throws UserException {
+    public void changeStateTransactionWaitingTransferCryptoOfIntentionBuyWithActionTransferCryptoByUserOwner() throws UserException, IlegalUserChangeStateTransaction, ExceedPriceDifference, TransactionStatusException, IlegalActionOnStateTransaction {
         User userOwnerIntention = User.builder().withName("Owner").withCvu("1234567891234567891233").withId(1).build();
         User userSeller = User.builder().withName("Buyer").withWallet("12345678").withId(2).build();
         Intention intention = Intention.builder().withCryptoCurrency(ALICEUSDT).withUser(userOwnerIntention).withTypeOperation(TypeOperation.BUY).withQuantity(0.1).withPrice(1.5F).build();
         Transaction transaction = Transaction.builder().withIntention(intention).withSecondUser(userSeller).build();
-
+        transaction.change(userOwnerIntention, Action.TRANSFER_MONEY);
+        transaction.change(userSeller, Action.CONFIRM_MONEY);
         IlegalUserChangeStateTransaction exception = assertThrows(
                 IlegalUserChangeStateTransaction.class,
                 () -> {
-                    transaction.change(userOwnerIntention, Action.TRANSFER_MONEY);
-                    transaction.change(userSeller, Action.CONFIRM_MONEY);
                     transaction.change(userOwnerIntention, Action.TRANSFER_CRYPTO);
 
                 }
