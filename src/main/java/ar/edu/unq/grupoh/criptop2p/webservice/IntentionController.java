@@ -37,7 +37,7 @@ public class IntentionController {
         return ResponseEntity.status(HttpStatus.OK).body(IntentionResponse.FromModel(this.intentionService.findById(id)));
     }
 
-    @GetMapping("actives")
+    @GetMapping("/actives")
     @LogExecutionTime
     public ResponseEntity<List<IntentionResponse>> findActives(){
         return ResponseEntity.status(HttpStatus.OK).body(this.intentionService.findAllActive());

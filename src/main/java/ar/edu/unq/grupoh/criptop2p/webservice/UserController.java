@@ -45,17 +45,4 @@ public class UserController {
         this.userService.deleteUser(id);
         return new ResponseEntity<>("El usuario con el id " + id + " a sido eliminado" ,HttpStatus.ACCEPTED);
     }
-
-    //    @PutMapping("/{id}")
-//    @LogExecutionTime
-//    public ResponseEntity<?> updateUser(@RequestBody @Valid UserRequest newUser,@PathVariable int id) {
-//        HttpStatus code = HttpStatus.OK;
-//        try {
-//            User user = this.userService.getUserById(id);
-//        } catch (UserNotFoundException ex) {
-//            code = HttpStatus.CREATED;
-//        }
-//        User updateUser = this.userService.updateUser(newUser,id);
-//        return new ResponseEntity<>(updateUser,code);
-//    }
 }

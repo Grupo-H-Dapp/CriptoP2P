@@ -12,4 +12,13 @@ public class TransactionActionRequest {
     private Integer userId;
     @Getter @Setter
     private Long transactionId;
+
+    public TransactionActionRequest() {
+    }
+
+    public TransactionActionRequest(Action action, Integer userId, Long transactionId) {
+        this.action = action;
+        this.userId = userId;
+        this.transactionId = transactionId;
+    }
 }
