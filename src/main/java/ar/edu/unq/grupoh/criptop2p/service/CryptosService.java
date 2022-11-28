@@ -108,12 +108,12 @@ public class CryptosService {
         return cryptoCurrencyList;
     }
 
-    @Transactional
-    public Cryptocurrency updateCrypto(CriptosNames cryptoName) throws CryptoException {
-        BinanceResponse cryptoResponse = getCryptoPriceForOne(cryptoName);
-        Cryptocurrency crypto = binanceToModel(cryptoResponse);
-        return cryptoCurrencyRepository.save(crypto);
-    }
+//    @Transactional
+//    public Cryptocurrency updateCrypto(CriptosNames cryptoName) throws CryptoException {
+//        BinanceResponse cryptoResponse = getCryptoPriceForOne(cryptoName);
+//        Cryptocurrency crypto = binanceToModel(cryptoResponse);
+//        return cryptoCurrencyRepository.save(crypto);
+//    }
 
     private BinanceResponse getBinanceResponse(CriptosNames cryptoName) {
             return this.apiBinance.getBinanceResponse(cryptoName);

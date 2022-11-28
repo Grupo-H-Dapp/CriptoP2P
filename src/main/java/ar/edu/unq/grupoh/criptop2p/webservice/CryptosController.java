@@ -26,17 +26,6 @@ public class CryptosController {
         return cryptosService.findAll();
     }
 
-    @GetMapping("/cryptocurrency/update/{cryptoName}")
-    @LogExecutionTime
-    public ResponseEntity<?> updateCrypto(@PathVariable("cryptoName") CriptosNames cryptoName){
-        try {
-            Cryptocurrency crypto = cryptosService.updateCrypto(cryptoName);
-            return ResponseEntity.status(HttpStatus.OK).body(crypto);
-        } catch(Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
-
     @GetMapping("/cryptocurrency/last")
     @LogExecutionTime
     public ResponseEntity<List<Cryptocurrency>> last(){
