@@ -1,6 +1,8 @@
 package ar.edu.unq.grupoh.criptop2p.webservice;
 
 import ar.edu.unq.grupoh.criptop2p.dto.request.UserRequest;
+import ar.edu.unq.grupoh.criptop2p.dto.response.UserAllResponse;
+import ar.edu.unq.grupoh.criptop2p.dto.response.UserResponse;
 import ar.edu.unq.grupoh.criptop2p.exceptions.UserAlreadyExistException;
 import ar.edu.unq.grupoh.criptop2p.exceptions.UserException;
 import ar.edu.unq.grupoh.criptop2p.exceptions.UserNotFoundException;
@@ -24,17 +26,27 @@ public class UserController {
 
     @GetMapping(produces = "application/json")
     @LogExecutionTime
-    public ResponseEntity<List<User>> allUsers() {
-        return ResponseEntity.ok().body(userService.findAll());
+    public ResponseEntity<List<UserAllResponse>> allUsers() {
+        List<User> users = userService.findAll();
+        List<UserAllResponse> result = users.stream().map(UserAllResponse::new).toList();
+        return ResponseEntity.ok().body(result);
     }
 
     @GetMapping(value = "/{email}" , produces = "application/json")
     @LogExecutionTime
-    public ResponseEntity<User> getUser(@PathVariable String email) throws UserNotFoundException {
-        return ResponseEntity.ok(userService.getUserByEmail(email));
+    public ResponseEntity<UserResponse> getUser(@PathVariable String email) throws UserNotFoundException {
+        return ResponseEntity.ok(new UserResponse(userService.getUserByEmail(email)));
     }
 
-//    @PutMapping("/{id}")
+    //Devolver un mensaje lindo
+    @DeleteMapping(value = "/{id}")
+    @LogExecutionTime
+    public ResponseEntity<?> deleteUser(@PathVariable int id) throws UserNotFoundException {
+        this.userService.deleteUser(id);
+        return new ResponseEntity<>("El usuario con el id " + id + " a sido eliminado" ,HttpStatus.ACCEPTED);
+    }
+
+    //    @PutMapping("/{id}")
 //    @LogExecutionTime
 //    public ResponseEntity<?> updateUser(@RequestBody @Valid UserRequest newUser,@PathVariable int id) {
 //        HttpStatus code = HttpStatus.OK;
@@ -46,12 +58,4 @@ public class UserController {
 //        User updateUser = this.userService.updateUser(newUser,id);
 //        return new ResponseEntity<>(updateUser,code);
 //    }
-
-    //Devolver un mensaje lindo
-    @DeleteMapping(value = "/{id}")
-    @LogExecutionTime
-    public ResponseEntity<?> deleteUser(@PathVariable int id) throws UserNotFoundException {
-        this.userService.deleteUser(id);
-        return new ResponseEntity<>("El usuario con el id " + id + " a sido eliminado" ,HttpStatus.ACCEPTED);
-    }
 }

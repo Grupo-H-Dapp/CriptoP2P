@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class TransactionService {
 
@@ -26,6 +28,11 @@ public class TransactionService {
     @Transactional
     public Transaction saveTransaction(Transaction transaction){
         return this.transactionRepository.save(transaction);
+    }
+
+    @Transactional
+    public List<Transaction> getAll(){
+        return transactionRepository.findAll();
     }
 
     @Transactional

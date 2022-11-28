@@ -3,6 +3,7 @@ package ar.edu.unq.grupoh.criptop2p.webservice;
 import ar.edu.unq.grupoh.criptop2p.dto.request.UserRequest;
 import ar.edu.unq.grupoh.criptop2p.dto.response.TokenResponse;
 import ar.edu.unq.grupoh.criptop2p.dto.response.UserLoginRequest;
+import ar.edu.unq.grupoh.criptop2p.dto.response.UserResponse;
 import ar.edu.unq.grupoh.criptop2p.model.User;
 import ar.edu.unq.grupoh.criptop2p.service.UserService;
 import ar.edu.unq.grupoh.criptop2p.webservice.aspects.LogExecutionTime;
@@ -34,10 +35,10 @@ public class AuthController {
 
     @PostMapping("/register")
     @LogExecutionTime
-    public ResponseEntity<User> register(@Valid @RequestBody UserRequest userDto) {
+    public ResponseEntity<UserResponse> register(@Valid @RequestBody UserRequest userDto) {
         try {
             User user = userService.saveUser(userDto);
-            return ResponseEntity.status(HttpStatus.CREATED).body(user);
+            return ResponseEntity.status(HttpStatus.CREATED).body(new UserResponse(user));
         } catch(Exception e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }

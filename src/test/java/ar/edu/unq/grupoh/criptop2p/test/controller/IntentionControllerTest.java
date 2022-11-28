@@ -1,6 +1,7 @@
 package ar.edu.unq.grupoh.criptop2p.test.controller;
 import ar.edu.unq.grupoh.criptop2p.dto.request.IntentionRequest;
 import ar.edu.unq.grupoh.criptop2p.dto.response.IntentionResponse;
+import ar.edu.unq.grupoh.criptop2p.dto.response.UserResponse;
 import ar.edu.unq.grupoh.criptop2p.model.Cryptocurrency;
 import ar.edu.unq.grupoh.criptop2p.model.User;
 import ar.edu.unq.grupoh.criptop2p.model.enums.CriptosNames;
@@ -53,8 +54,8 @@ public class IntentionControllerTest extends JWTHeaderTest {
 
         HttpHeaders headers = this.generateHeaderWithToken();
         HttpEntity<String> jwt = new HttpEntity<String>("", headers);
-        ResponseEntity<User> user = this.restTemplate.exchange(HTTP_LOCALHOST + port + "/users/anonimous@gmail.com", HttpMethod.GET,jwt,User.class);
-        IntentionRequest intentionRequest = new IntentionRequest(TypeOperation.SELL,5.00,10.00f, CriptosNames.ALICEUSDT,user.getBody().getUserId());
+        ResponseEntity<UserResponse> user = this.restTemplate.exchange(HTTP_LOCALHOST + port + "/users/anonimous@gmail.com", HttpMethod.GET,jwt,UserResponse.class);
+        IntentionRequest intentionRequest = new IntentionRequest(TypeOperation.SELL,5.00,10.00f, CriptosNames.ALICEUSDT,user.getBody().getId());
         HttpEntity<IntentionRequest> body = new HttpEntity<>(intentionRequest, headers);
         ResponseEntity<IntentionResponse> response = restTemplate.exchange(HTTP_LOCALHOST + port + "/intentions", HttpMethod.POST, body, IntentionResponse.class);
 
@@ -62,7 +63,7 @@ public class IntentionControllerTest extends JWTHeaderTest {
         assertEquals(5.00,response.getBody().getAmount());
         assertEquals(10.00,response.getBody().getPrice());
         assertEquals(CriptosNames.ALICEUSDT,response.getBody().getCrypto());
-        assertEquals(user.getBody().getUserId(),response.getBody().getUser());
+        assertEquals(user.getBody().getId(),response.getBody().getUser());
         assertEquals(IntentionStatus.ACTIVE,response.getBody().getStatus());
     }
 
@@ -72,8 +73,8 @@ public class IntentionControllerTest extends JWTHeaderTest {
 
         HttpHeaders headers = this.generateHeaderWithToken();
         HttpEntity<String> jwt = new HttpEntity<String>("", headers);
-        ResponseEntity<User> user = this.restTemplate.exchange(HTTP_LOCALHOST + port + "/users/anonimous@gmail.com", HttpMethod.GET,jwt,User.class);
-        IntentionRequest intentionRequest = new IntentionRequest(TypeOperation.SELL,5.00,100.00f, CriptosNames.ALICEUSDT,user.getBody().getUserId());
+        ResponseEntity<UserResponse> user = this.restTemplate.exchange(HTTP_LOCALHOST + port + "/users/anonimous@gmail.com", HttpMethod.GET,jwt,UserResponse.class);
+        IntentionRequest intentionRequest = new IntentionRequest(TypeOperation.SELL,5.00,100.00f, CriptosNames.ALICEUSDT,user.getBody().getId());
         HttpEntity<IntentionRequest> body = new HttpEntity<>(intentionRequest, headers);
         ResponseEntity<IntentionResponse> response = restTemplate.exchange(HTTP_LOCALHOST + port + "/intentions", HttpMethod.POST, body, IntentionResponse.class);
 
@@ -106,8 +107,8 @@ public class IntentionControllerTest extends JWTHeaderTest {
 
         HttpHeaders headers = this.generateHeaderWithToken();
         HttpEntity<String> jwt = new HttpEntity<String>("", headers);
-        ResponseEntity<User> user = this.restTemplate.exchange(HTTP_LOCALHOST + port + "/users/anonimous@gmail.com", HttpMethod.GET,jwt,User.class);
-        IntentionRequest intentionRequest = new IntentionRequest(TypeOperation.SELL,5.00,10.00f, CriptosNames.ALICEUSDT,user.getBody().getUserId());
+        ResponseEntity<UserResponse> user = this.restTemplate.exchange(HTTP_LOCALHOST + port + "/users/anonimous@gmail.com", HttpMethod.GET,jwt,UserResponse.class);
+        IntentionRequest intentionRequest = new IntentionRequest(TypeOperation.SELL,5.00,10.00f, CriptosNames.ALICEUSDT,user.getBody().getId());
         HttpEntity<IntentionRequest> body = new HttpEntity<>(intentionRequest, headers);
         ResponseEntity<IntentionResponse> response = restTemplate.exchange(HTTP_LOCALHOST + port + "/intentions", HttpMethod.POST, body, IntentionResponse.class);
         ResponseEntity<IntentionResponse> intention = this.restTemplate.exchange(HTTP_LOCALHOST + port + "/intentions/" + response.getBody().getId(), HttpMethod.GET, jwt, IntentionResponse.class);

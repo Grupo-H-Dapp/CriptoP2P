@@ -1,6 +1,7 @@
 package ar.edu.unq.grupoh.criptop2p.test.controller;
 
 import ar.edu.unq.grupoh.criptop2p.dto.request.UserRequest;
+import ar.edu.unq.grupoh.criptop2p.dto.response.UserResponse;
 import ar.edu.unq.grupoh.criptop2p.exceptions.UserAlreadyExistException;
 import ar.edu.unq.grupoh.criptop2p.exceptions.UserException;
 import ar.edu.unq.grupoh.criptop2p.model.User;
@@ -15,6 +16,7 @@ import org.springframework.http.*;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -81,8 +83,8 @@ public class UserControllerTest extends JWTHeaderTest {
     void deleteUserWithEmailAnonimous() {
         HttpHeaders headers = this.generateHeaderWithToken();
         HttpEntity<String> body = new HttpEntity<String>("", headers);
-        ResponseEntity<User> user = this.restTemplate.exchange(HTTP_LOCALHOST + port + "/users/anonimous@gmail.com", HttpMethod.GET,body,User.class);
-        ResponseEntity<String> responseDelete = this.restTemplate.exchange(HTTP_LOCALHOST + port + "/users/"+ user.getBody().getUserId(),HttpMethod.DELETE, body , String.class);
+        ResponseEntity<UserResponse> user = this.restTemplate.exchange(HTTP_LOCALHOST + port + "/users/anonimous@gmail.com", HttpMethod.GET,body, UserResponse.class);
+        ResponseEntity<String> responseDelete = this.restTemplate.exchange(HTTP_LOCALHOST + port + "/users/"+ Objects.requireNonNull(user.getBody()).getId(),HttpMethod.DELETE, body , String.class);
         assertEquals(HttpStatus.ACCEPTED, responseDelete.getStatusCode());
     }
 

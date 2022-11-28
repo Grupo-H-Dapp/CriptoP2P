@@ -1,32 +1,38 @@
 package ar.edu.unq.grupoh.criptop2p.dto.response;
 
+import ar.edu.unq.grupoh.criptop2p.model.User;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
 public class UserResponse {
-    private String name; //3-30
-    private String lastname; //3-30
-    private String email; //email format
-    private String address; //3-30
-    private String password; //1 minuscula,1 mayuscula , 1 caracter especial , Min 6
-    private String cvu; //22 digitos
-    private String addressWallet ; //8 digitos
-    private int amountOperations; // La cantidad de concretaciones de intenciones
-    private int points;
+    @Getter@Setter
+    private int id;
+    @Getter@Setter
+    private String name;
+    @Getter@Setter
+    private String lastname;
+    @Getter@Setter
+    private String email;
+    @Getter@Setter
+    private String address;
+    @Getter@Setter
+    private String cvu;
+    @Getter@Setter
+    private String addressWallet;
+    private  User wrapped;
 
     public UserResponse() {
     }
 
-    public UserResponse(String name, String lastname, String email, String address, String password, String cvu, String addressWallet, int amountOperations, int points) {
-        this.name = name;
-        this.lastname = lastname;
-        this.email = email;
-        this.address = address;
-        this.password = password;
-        this.cvu = cvu;
-        this.addressWallet = addressWallet;
-        this.amountOperations = amountOperations;
-        this.points = points;
+    public UserResponse(User wrapped) {
+        this.wrapped = wrapped;
+        this.id = wrapped.getUserId();
+        this.name = wrapped.getName();
+        this.lastname = wrapped.getLastname();
+        this.email = wrapped.getEmail();
+        this.address = wrapped.getAddress();
+        this.cvu = wrapped.getCvu();
+        this.addressWallet = wrapped.getAddressWallet();
     }
+
 }
