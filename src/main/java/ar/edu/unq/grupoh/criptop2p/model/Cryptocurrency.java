@@ -1,6 +1,8 @@
 package ar.edu.unq.grupoh.criptop2p.model;
 
 import ar.edu.unq.grupoh.criptop2p.exceptions.CryptoException;
+import ar.edu.unq.grupoh.criptop2p.exceptions.ExceedPriceDifference;
+import ar.edu.unq.grupoh.criptop2p.exceptions.TransactionStatusException;
 import ar.edu.unq.grupoh.criptop2p.model.enums.CriptosNames;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,18 +10,20 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "Cryptocurrency")
 @NoArgsConstructor
-public class Cryptocurrency {
+public class Cryptocurrency implements Serializable {
     @Getter @Setter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Getter @Setter
     @NotNull
+    @Enumerated(EnumType.STRING)
     private CriptosNames crypto;
     @Getter @Setter
     @NotNull
@@ -32,6 +36,22 @@ public class Cryptocurrency {
         this.price = price;
         this.date = LocalDateTime.now();
     }
+
+    public boolean validateDiffPrice(float price) throws ExceedPriceDifference {
+        Double minValue = this.price*(0.95);
+        Double maxValue = this.price*(1.05);
+        System.out.println("Crypto Price " + this.price);
+        System.out.println("Min Dif " + minValue);
+        System.out.println("Max Dif " +maxValue);
+        System.out.println("Price Intention " +price);
+        if(price > minValue && price < maxValue){
+            return true;
+        }else{
+            throw new ExceedPriceDifference();
+        }
+    }
+
+
 
     public static final class Builder {
         private final Cryptocurrency cryptoCurrency = new Cryptocurrency();

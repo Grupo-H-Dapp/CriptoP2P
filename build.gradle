@@ -39,18 +39,33 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	//implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.mapstruct:mapstruct:1.5.2.Final'
-	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.2.Final'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-cache:3.0.0'
 	implementation 'org.springframework.boot:spring-boot-starter-validation:2.7.3'
 	implementation 'io.springfox:springfox-boot-starter:3.0.0'
+
+	implementation "javax.cache:cache-api:1.1.1"
+	implementation "org.ehcache:ehcache:3.10.8"
+
+	implementation 'io.jsonwebtoken:jjwt:0.9.1'
 	implementation 'org.modelmapper:modelmapper:3.1.0'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	implementation 'junit:junit:4.13.2'
+	implementation 'org.reflections:reflections:0.10.2'
+	implementation 'org.mapstruct:mapstruct:1.5.2.Final'
+	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.2.Final'
+
+
+	//implementation 'redis.clients:jedis:4.3.1'
+	//implementation 'org.springframework.boot:spring-boot-starter-data-redis:2.7.5'
+	//implementation 'org.springframework.boot:spring-boot-starter-cache:2.7.5'
 	runtimeOnly 'com.h2database:h2'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	//testImplementation 'org.springframework.security:spring-security-test'
+	testImplementation 'org.springframework.security:spring-security-test'
+
+
 }
 
 tasks.named('test') {
@@ -66,7 +81,9 @@ tasks.jacocoTestReport {
 						.filter({ file -> !file.name.contains('SwaggerConfig') })
 						.filter({ file -> !file.name.contains('ServletInitializer') })
 						.filter({ file -> !file.name.contains('Request') })
-						.filter({ file -> !file.name.contains('Controller') })
-						.filter({ file -> !file.name.contains('Exception') }))
+						.filter({ file -> !file.name.contains('Exception') })
+						.filter({ file -> !file.name.contains('CacheListener') })
+						.filter({ file -> !file.name.contains('CacheConfig') })
+						.filter({ file -> !file.name.contains('InitServiceInMemory') }))
 	}
 }

@@ -1,11 +1,8 @@
-package ar.edu.unq.grupoh.criptop2p.dto;
+package ar.edu.unq.grupoh.criptop2p.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.Column;
-import javax.validation.constraints.*;
 
 @Data
 @AllArgsConstructor(staticName = "build")
