@@ -75,8 +75,8 @@ public class InitServiceInMemory {
         intentionService.saveIntentionModel(i2);
         Transaction t1 = Transaction.builder().withIntention(i1).withSecondUser(userDardo).withState(StatesTransaction.WAITING_CONFIRM_TRANSFER_CRYPTO).build();
         transactionService.saveTransaction(t1);
-        Transaction t2 = Transaction.builder().withIntention(i2).withSecondUser(userMoni).withState(StatesTransaction.WAITING_CONFIRM_TRANSFER_CRYPTO).build();
+        Transaction t2 = Transaction.builder().withIntention(i2).withSecondUser(userDardo).withState(StatesTransaction.WAITING_CONFIRM_TRANSFER_CRYPTO).build();
         t2 = transactionService.saveTransaction(t2);
-        transactionService.processActionOperation(new TransactionActionRequest(CONFIRM_CRYPTO,userMoni.getUserId(),t2.getId()));
+        transactionService.processActionOperation(new TransactionActionRequest(CONFIRM_CRYPTO,userDardo.getUserId(),t2.getId()));
     }
 }
