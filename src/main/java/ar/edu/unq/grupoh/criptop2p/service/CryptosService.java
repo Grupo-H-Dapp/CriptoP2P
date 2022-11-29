@@ -57,7 +57,7 @@ public class CryptosService {
         List<Cryptocurrency> cryptos = findByCrypto(cryptoName)
                 .stream()
                 .filter(cryptoCurrency -> cryptoCurrency.getDate().isBefore(ChronoLocalDateTime.from(end)) && cryptoCurrency.getDate().isAfter(ChronoLocalDateTime.from(start2)))
-                .collect(Collectors.toList());
+                .toList();
         return cryptos;
     }
 
@@ -67,15 +67,13 @@ public class CryptosService {
         List<Cryptocurrency> cryptos = findByCrypto(crypto)
                 .stream()
                 .filter(cryptoCurrency -> cryptoCurrency.getDate().isBefore(ChronoLocalDateTime.from(end)) && cryptoCurrency.getDate().isAfter(ChronoLocalDateTime.from(start)))
-                .collect(Collectors.toList());
+                .toList();
         return cryptos;
     }
 
     @Transactional
     public Cryptocurrency getCryptoCurrency(CriptosNames cryptoName) {
         Float binancePrice = this.getBinanceResponse(cryptoName).getPrice();
-//        Float usdPrice = this.getUSDResponse().getVenta();
-//        Float price = binancePrice * usdPrice;
         return new Cryptocurrency(cryptoName, binancePrice);
     }
 
@@ -87,7 +85,7 @@ public class CryptosService {
         return cryptoNames
                 .stream()
                 .map (crypto -> Collections.max(findByCrypto(crypto), Comparator.comparing(Cryptocurrency::getDate)))
-                .collect(Collectors.toList()) ;
+                .toList() ;
     }
 
 
@@ -108,23 +106,13 @@ public class CryptosService {
         return cryptoCurrencyList;
     }
 
-//    @Transactional
-//    public Cryptocurrency updateCrypto(CriptosNames cryptoName) throws CryptoException {
-//        BinanceResponse cryptoResponse = getCryptoPriceForOne(cryptoName);
-//        Cryptocurrency crypto = binanceToModel(cryptoResponse);
-//        return cryptoCurrencyRepository.save(crypto);
-//    }
-
     private BinanceResponse getBinanceResponse(CriptosNames cryptoName) {
             return this.apiBinance.getBinanceResponse(cryptoName);
-    }
-    private CotizationUSDToARS getUSDCotization() {
-            return apiDolar.getUSDCotization();
     }
 
     private List<Cryptocurrency> findByCrypto(CriptosNames cryptoName){
         List<Cryptocurrency> cryptos = cryptoCurrencyRepository.findAll();
-        return cryptos.stream().filter(cryptoCurrency -> cryptoCurrency.getCrypto() == cryptoName).collect(Collectors.toList());
+        return cryptos.stream().filter(cryptoCurrency -> cryptoCurrency.getCrypto() == cryptoName).toList();
     }
 
     private Cryptocurrency binanceToModel(BinanceResponse binanceCryptoDTO) throws CryptoException {
@@ -145,9 +133,4 @@ public class CryptosService {
         return restTemplate.getForObject("https://api1.binance.com/api/v3/ticker/price?symbols=" + cryptoSymbols, BinanceResponse[].class);
     }
 
-
-    private BinanceResponse getCryptoPriceForOne(CriptosNames name){
-        RestTemplate restTemplate = new RestTemplate();
-        return restTemplate.getForObject("https://api1.binance.com/api/v3/ticker/price?symbol=" +name,BinanceResponse.class );
-    }
 }

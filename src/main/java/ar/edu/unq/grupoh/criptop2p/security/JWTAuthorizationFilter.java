@@ -27,7 +27,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try{
-            if(existsJWTToken(request, response)){
+            if(existsJWTToken(request)){
                 Claims claims = validateToken(request);
                 if(claims.containsKey(AUTHORITIES)){
                     setUpSpringAuthentication(claims);
@@ -48,7 +48,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
         List<String> authorities  = (List<String>) claims.get(AUTHORITIES);
         Authentication auth = new UsernamePasswordAuthenticationToken(claims.getSubject(), null,
                 authorities.stream().map(SimpleGrantedAuthority::new
-                ).collect(Collectors.toList())
+                ).toList()
         );
         SecurityContextHolder.getContext().setAuthentication(auth);
     }
@@ -58,7 +58,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
         return Jwts.parser().setSigningKey(SECRET.getBytes()).parseClaimsJws(jwtToken).getBody();
     }
 
-    private boolean existsJWTToken(HttpServletRequest request, HttpServletResponse response) {
+    private boolean existsJWTToken(HttpServletRequest request) {
         String authenticationHeader = request.getHeader(HEADER);
         return !(authenticationHeader == null || !authenticationHeader.startsWith(PREFIX));
     }
@@ -74,7 +74,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
                 .claim("authorities",
                         grantedAuthorities.stream()
                                 .map(GrantedAuthority::getAuthority)
-                                .collect(Collectors.toList()))
+                                .toList())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000000))
                 .signWith(
