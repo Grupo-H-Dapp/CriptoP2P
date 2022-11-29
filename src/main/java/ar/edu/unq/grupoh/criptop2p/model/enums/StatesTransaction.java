@@ -3,22 +3,12 @@ package ar.edu.unq.grupoh.criptop2p.model.enums;
 import ar.edu.unq.grupoh.criptop2p.exceptions.ExceedPriceDifference;
 import ar.edu.unq.grupoh.criptop2p.exceptions.IlegalActionOnStateTransaction;
 import ar.edu.unq.grupoh.criptop2p.exceptions.IlegalUserChangeStateTransaction;
-import ar.edu.unq.grupoh.criptop2p.exceptions.TransactionStatusException;
 import ar.edu.unq.grupoh.criptop2p.model.Cryptocurrency;
 import ar.edu.unq.grupoh.criptop2p.model.Transaction;
 import ar.edu.unq.grupoh.criptop2p.model.User;
 import ar.edu.unq.grupoh.criptop2p.service.response.BinanceResponse;
 
-
-/*
-  Ongoing es cuando esta recien creadad/iniciada la Operacion
-  Canceled es cuando fue cancelada tanto por el sistema como por el usuario
-  Completed es cuando se completo correctamente
-
-  ONGOING -> CANCELED
-  ONGOING -> WAITING_CONFIRM -> COMPLETED
-  ONGOING -> WAITING_CONFIRM -> CANCELED ?
- */  //WAITING_TRANSFER_MONEY,WAITING_CONFIRM_TRANSFER_MONEY,WAITING_TRANSFER_CRYPTO,WAITING_CONFIRM_TRANSFER_CRYPTO,CANCELED,COMPLETED
+//WAITING_TRANSFER_MONEY,WAITING_CONFIRM_TRANSFER_MONEY,WAITING_TRANSFER_CRYPTO,WAITING_CONFIRM_TRANSFER_CRYPTO,CANCELED,COMPLETED
 public enum StatesTransaction {
 
     WAITING_TRANSFER_MONEY {
@@ -160,8 +150,7 @@ public enum StatesTransaction {
         }
     };
 
-    public void onChange(User user, Transaction transaction,Action action) throws IlegalActionOnStateTransaction, IlegalUserChangeStateTransaction, ExceedPriceDifference {
-    }
+    public abstract void onChange(User user, Transaction transaction,Action action) throws IlegalActionOnStateTransaction, IlegalUserChangeStateTransaction, ExceedPriceDifference;
 
     static private boolean isUserInTransaction(User userAction, Transaction transaction) {
         return userAction.getUserId() == transaction.getSecondUser().getUserId() || userAction.getUserId() == transaction.getIntention().getUser().getUserId();

@@ -41,8 +41,8 @@ public class UserController {
     //Devolver un mensaje lindo
     @DeleteMapping(value = "/{id}")
     @LogExecutionTime
-    public ResponseEntity<?> deleteUser(@PathVariable int id) throws UserNotFoundException {
+    public ResponseEntity<String> deleteUser(@PathVariable int id) throws UserNotFoundException {
         this.userService.deleteUser(id);
-        return new ResponseEntity<>("El usuario con el id " + id + " a sido eliminado" ,HttpStatus.ACCEPTED);
+        return new ResponseEntity<>("User " + id + " deleted successful" ,HttpStatus.ACCEPTED);
     }
 }

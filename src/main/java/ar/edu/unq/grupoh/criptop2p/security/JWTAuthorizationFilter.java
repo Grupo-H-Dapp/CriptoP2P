@@ -22,13 +22,14 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
     private final String HEADER = "Authorization";
     private final String PREFIX = "Bearer ";
     private String SECRET = "secretKeyMuySecreta";
+    private String AUTHORITIES = "authorities";
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try{
             if(existsJWTToken(request, response)){
                 Claims claims = validateToken(request);
-                if(claims.containsKey("authorities")){
+                if(claims.containsKey(AUTHORITIES)){
                     setUpSpringAuthentication(claims);
                 } else {
                     SecurityContextHolder.clearContext();
@@ -44,7 +45,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
     }
 
     private void setUpSpringAuthentication(Claims claims) {
-        List<String> authorities  = (List<String>) claims.get("authorities");
+        List<String> authorities  = (List<String>) claims.get(AUTHORITIES);
         Authentication auth = new UsernamePasswordAuthenticationToken(claims.getSubject(), null,
                 authorities.stream().map(SimpleGrantedAuthority::new
                 ).collect(Collectors.toList())

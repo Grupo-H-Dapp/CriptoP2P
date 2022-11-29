@@ -61,10 +61,10 @@ public class CryptosController {
 
     @PostMapping("/cryptocurrency/update")
     @LogExecutionTime
-    public ResponseEntity<?> updateAllCryptos(){ //TODO este endpoint podria no ser necesario tenerlo
+    public ResponseEntity<String> updateAllCryptos(){ //TODO este endpoint podria no ser necesario tenerlo
         try {
-            List<Cryptocurrency> cryptoCurrencies = cryptosService.updateAllCryptos();
-            return ResponseEntity.status(HttpStatus.OK).body("Ok");
+            cryptosService.updateAllCryptos();
+            return ResponseEntity.status(HttpStatus.OK).body("Updated Successful");
         } catch(Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
