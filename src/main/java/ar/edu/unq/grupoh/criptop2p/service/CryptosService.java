@@ -32,7 +32,6 @@ public class CryptosService {
     @Autowired
     private CryptoRepository cryptoCurrencyRepository;
     private final ApiBinance apiBinance = new ApiBinance();
-    private final ApiDolar apiDolar = new ApiDolar();
 
     @Transactional
     //@Cacheable(value = "cryptos" , key = "'All'")

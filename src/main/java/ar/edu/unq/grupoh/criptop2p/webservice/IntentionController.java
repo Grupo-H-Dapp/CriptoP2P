@@ -5,7 +5,6 @@ import ar.edu.unq.grupoh.criptop2p.dto.response.IntentionResponse;
 import ar.edu.unq.grupoh.criptop2p.exceptions.IntentionExceedPriceDifferenceException;
 import ar.edu.unq.grupoh.criptop2p.exceptions.IntentionNotFoundException;
 import ar.edu.unq.grupoh.criptop2p.exceptions.UserNotFoundException;
-import ar.edu.unq.grupoh.criptop2p.model.Intention;
 import ar.edu.unq.grupoh.criptop2p.service.IntentionService;
 import ar.edu.unq.grupoh.criptop2p.webservice.aspects.LogExecutionTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +21,6 @@ public class IntentionController {
 
     @Autowired
     private IntentionService intentionService;
-
-    //ModelMapper modelMapper = new ModelMapper();
 
     @GetMapping
     @LogExecutionTime

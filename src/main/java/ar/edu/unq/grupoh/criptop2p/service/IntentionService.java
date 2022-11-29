@@ -32,7 +32,7 @@ public class IntentionService {
 
     @Transactional
     public List<IntentionResponse> findAll() {
-        return this.intentionRepository.findAll().stream().map(intention -> IntentionResponse.FromModel(intention)).collect(Collectors.toList());
+        return this.intentionRepository.findAll().stream().map(intention -> IntentionResponse.FromModel(intention)).toList();
     }
 
     @Transactional
@@ -47,7 +47,7 @@ public class IntentionService {
     @Transactional
     public List<IntentionResponse> findAllActive(){
         List<IntentionResponse> intentions;
-        intentions = intentionRepository.findAll().stream().filter(intention -> intention.getStatus() == ACTIVE).map(intention -> IntentionResponse.FromModel(intention)).collect(Collectors.toList());
+        intentions = intentionRepository.findAll().stream().filter(intention -> intention.getStatus() == ACTIVE).map(intention -> IntentionResponse.FromModel(intention)).toList();
         return intentions;
     }
     @Transactional
@@ -57,8 +57,7 @@ public class IntentionService {
         Float min = cryptocurrency.getPrice() * 0.95F ;
         Float max = cryptocurrency.getPrice() * 1.05F ;
         if (intentionRequest.getPrice() > min && intentionRequest.getPrice() < max) {
-//            Float cotizationUSDToARS = this.cryptosService.getUSDCotization().getVenta();
-            Intention intention = Intention.builder() //usar el intentionRequest.getPrice() * cotizationUSDToARS.doubleValue() para el valor en pesos
+            Intention intention = Intention.builder()
                                     .withPrice(intentionRequest.getPrice())
                                     .withUser(user)
                                     .withQuantity(intentionRequest.getAmount())
@@ -72,7 +71,7 @@ public class IntentionService {
     @Transactional
     public IntentionResponse saveIntentionModel(Intention intentionRequest) throws IntentionExceedPriceDifferenceException, UserNotFoundException {
         Cryptocurrency cryptocurrency = cryptosService.getCryptoCurrency(intentionRequest.getCrypto());
-        User user = userRepository.getUserById(intentionRequest.getUser().getUserId());
+        userRepository.getUserById(intentionRequest.getUser().getUserId());
         Float min = cryptocurrency.getPrice() * 0.95F ;
         Float max = cryptocurrency.getPrice() * 1.05F ;
         if (intentionRequest.getPrice() > min && intentionRequest.getPrice() < max) {
