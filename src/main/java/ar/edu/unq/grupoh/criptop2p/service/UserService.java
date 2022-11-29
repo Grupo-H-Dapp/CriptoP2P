@@ -9,7 +9,6 @@ import ar.edu.unq.grupoh.criptop2p.exceptions.UserNotFoundException;
 import ar.edu.unq.grupoh.criptop2p.model.User;
 import ar.edu.unq.grupoh.criptop2p.repositories.UserRepository;
 import ar.edu.unq.grupoh.criptop2p.security.JWTAuthorizationFilter;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +23,6 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
-    private ModelMapper modelMapper = new ModelMapper();
 
     @Transactional
     public User saveUser(UserRequest model) throws UserAlreadyExistException, UserException {
@@ -36,26 +34,15 @@ public class UserService {
         }
     }
     @Transactional
-    public User updateUser(@Valid UserRequest user,int id) {
-        return userRepository.findById(id).map(userFound -> {
-            try {
-                userFound.setName(user.getName());
-                userFound.setLastname(user.getLastname());
-                userFound.setEmail(user.getEmail());
-                userFound.setAddress(user.getAddress());
-                userFound.setPassword(user.getPassword());
-                userFound.setCvu(user.getCvu());
-            } catch (UserException e) {
-                throw new RuntimeException(e);
-            }
-            return userRepository.save(userFound);
-        }).orElseGet(() -> {
-            try {
-                return userRepository.save(User.build(user));
-            } catch (UserException e) {
-                throw new RuntimeException(e);
-            }
-        });
+    public User updateUser(@Valid UserRequest user,int id) throws UserNotFoundException, UserException {
+        User userRetrieved = this.getUserById(id);
+        userRetrieved.setName(user.getName());
+        userRetrieved.setLastname(user.getLastname());
+        userRetrieved.setEmail(user.getEmail());
+        userRetrieved.setAddress(user.getAddress());
+        userRetrieved.setPassword(user.getPassword());
+        userRetrieved.setCvu(user.getCvu());
+        return userRepository.save(userRetrieved);
     }
 
     @Transactional
@@ -93,7 +80,6 @@ public class UserService {
     public TokenResponse login(UserLoginRequest userLoginDTO){
         Optional<User> user = userRepository.findByEmail(userLoginDTO.getEmail());
         if(!user.isPresent()){return null;}
-        //if (passwordEncoder.matches(userLoginDTO.getPassword(), user.get().getPassword())){
         if (Objects.equals(userLoginDTO.getPassword(), user.get().getPassword())){
             return new TokenResponse(JWTAuthorizationFilter.getJWTToken(userLoginDTO.getEmail()));
         }else{
