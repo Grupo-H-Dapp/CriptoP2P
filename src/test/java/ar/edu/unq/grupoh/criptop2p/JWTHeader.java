@@ -1,4 +1,4 @@
-package ar.edu.unq.grupoh.criptop2p.test.controller;
+package ar.edu.unq.grupoh.criptop2p;
 
 import ar.edu.unq.grupoh.criptop2p.dto.request.UserRequest;
 import ar.edu.unq.grupoh.criptop2p.dto.response.TokenResponse;
@@ -7,7 +7,7 @@ import ar.edu.unq.grupoh.criptop2p.model.User;
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 
-public class JWTHeaderTest {
+public class JWTHeader {
     protected static final String HTTP_LOCALHOST = "http://localhost:";
 
     protected String token;

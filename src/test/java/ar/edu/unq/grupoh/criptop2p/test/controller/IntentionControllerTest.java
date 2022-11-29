@@ -1,16 +1,15 @@
 package ar.edu.unq.grupoh.criptop2p.test.controller;
+import ar.edu.unq.grupoh.criptop2p.JWTHeader;
 import ar.edu.unq.grupoh.criptop2p.dto.request.IntentionRequest;
 import ar.edu.unq.grupoh.criptop2p.dto.response.IntentionResponse;
 import ar.edu.unq.grupoh.criptop2p.dto.response.UserResponse;
 import ar.edu.unq.grupoh.criptop2p.model.Cryptocurrency;
-import ar.edu.unq.grupoh.criptop2p.model.User;
 import ar.edu.unq.grupoh.criptop2p.model.enums.CriptosNames;
 import ar.edu.unq.grupoh.criptop2p.model.enums.IntentionStatus;
 import ar.edu.unq.grupoh.criptop2p.model.enums.TypeOperation;
 import ar.edu.unq.grupoh.criptop2p.service.CryptosService;
 import ar.edu.unq.grupoh.criptop2p.service.IntentionService;
 import ar.edu.unq.grupoh.criptop2p.service.UserService;
-import ar.edu.unq.grupoh.criptop2p.webservice.IntentionController;
 import org.junit.jupiter.api.*;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +22,7 @@ import org.springframework.http.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class IntentionControllerTest extends JWTHeaderTest {
+public class IntentionControllerTest extends JWTHeader {
     @LocalServerPort
     private int port;
 
@@ -34,7 +33,7 @@ public class IntentionControllerTest extends JWTHeaderTest {
     private IntentionService intentionService;
 
     @Autowired
-    private IntentionController intentionController;
+    private ar.edu.unq.grupoh.criptop2p.webservice.IntentionController intentionController;
 
     @Autowired
     private TestRestTemplate restTemplate;

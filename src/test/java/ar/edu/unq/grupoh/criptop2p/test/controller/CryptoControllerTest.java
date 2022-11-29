@@ -1,5 +1,6 @@
 package ar.edu.unq.grupoh.criptop2p.test.controller;
 
+import ar.edu.unq.grupoh.criptop2p.JWTHeader;
 import ar.edu.unq.grupoh.criptop2p.exceptions.CryptoException;
 import ar.edu.unq.grupoh.criptop2p.model.Cryptocurrency;
 import ar.edu.unq.grupoh.criptop2p.model.enums.CriptosNames;
@@ -22,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class CryptoControllerTest extends JWTHeaderTest {
+public class CryptoControllerTest extends JWTHeader {
 
     @LocalServerPort
     private int port;

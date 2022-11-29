@@ -1,12 +1,12 @@
 package ar.edu.unq.grupoh.criptop2p.test.controller;
 
+import ar.edu.unq.grupoh.criptop2p.JWTHeader;
 import ar.edu.unq.grupoh.criptop2p.dto.request.UserRequest;
 import ar.edu.unq.grupoh.criptop2p.dto.response.UserResponse;
 import ar.edu.unq.grupoh.criptop2p.exceptions.UserAlreadyExistException;
 import ar.edu.unq.grupoh.criptop2p.exceptions.UserException;
 import ar.edu.unq.grupoh.criptop2p.model.User;
 import ar.edu.unq.grupoh.criptop2p.service.UserService;
-import ar.edu.unq.grupoh.criptop2p.webservice.UserController;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,13 +21,13 @@ import java.util.Objects;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class UserControllerTest extends JWTHeaderTest {
+public class UserControllerTest extends JWTHeader {
 
     @LocalServerPort
     private int port;
 
     @Autowired
-    private UserController userController;
+    private ar.edu.unq.grupoh.criptop2p.webservice.UserController userController;
 
     @Autowired
     private TestRestTemplate restTemplate;
