@@ -8,8 +8,7 @@ public class ApiDolar {
 
     public CotizationUSDToARS getUSDCotization() {
         String url = "https://api-dolar-argentina.herokuapp.com/api/dolaroficial";
-        CotizationUSDToARS br = restTemplate.getForObject(url, CotizationUSDToARS.class);
-        return br;
+        return restTemplate.getForObject(url, CotizationUSDToARS.class);
     }
 
 }

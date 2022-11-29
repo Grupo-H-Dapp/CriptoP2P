@@ -3,12 +3,10 @@ package ar.edu.unq.grupoh.criptop2p.model;
 import ar.edu.unq.grupoh.criptop2p.exceptions.ExceedPriceDifference;
 import ar.edu.unq.grupoh.criptop2p.exceptions.IlegalActionOnStateTransaction;
 import ar.edu.unq.grupoh.criptop2p.exceptions.IlegalUserChangeStateTransaction;
-import ar.edu.unq.grupoh.criptop2p.exceptions.TransactionStatusException;
 import ar.edu.unq.grupoh.criptop2p.model.enums.Action;
 import ar.edu.unq.grupoh.criptop2p.model.enums.CriptosNames;
 import ar.edu.unq.grupoh.criptop2p.model.enums.StatesTransaction;
 import ar.edu.unq.grupoh.criptop2p.model.enums.TypeOperation;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -90,7 +88,7 @@ public class Transaction {
         this.intention.completeIntention();
     }
 
-    public void change(User user, Action action) throws  TransactionStatusException, IlegalUserChangeStateTransaction, IlegalActionOnStateTransaction, ExceedPriceDifference {
+    public void change(User user, Action action) throws  IlegalUserChangeStateTransaction, IlegalActionOnStateTransaction, ExceedPriceDifference {
         this.stateTransaction.onChange(user, this, action);
     }
 

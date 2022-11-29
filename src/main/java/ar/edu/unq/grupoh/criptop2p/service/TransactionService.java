@@ -44,7 +44,7 @@ public class TransactionService {
     }
 
     @Transactional
-    public Transaction processActionOperation(TransactionActionRequest transactionActionRequest) throws UserNotFoundException, TransactionStatusException, TransactionNotFoundException, IlegalUserChangeStateTransaction, IlegalActionOnStateTransaction, ExceedPriceDifference {
+    public Transaction processActionOperation(TransactionActionRequest transactionActionRequest) throws UserNotFoundException, TransactionNotFoundException, IlegalUserChangeStateTransaction, IlegalActionOnStateTransaction, ExceedPriceDifference {
         User user = this.userService.getUserById(transactionActionRequest.getUserId());
         Transaction transaction1 = this.transactionRepository.findById(transactionActionRequest.getTransactionId()).orElseThrow(() -> new TransactionNotFoundException());
         transaction1.change(user, transactionActionRequest.getAction());

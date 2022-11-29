@@ -69,7 +69,7 @@ public class Cryptocurrency implements Serializable {
             return this;
         }
 
-        public Cryptocurrency build() throws CryptoException {
+        public Cryptocurrency build() {
             return cryptoCurrency;
         }
     }

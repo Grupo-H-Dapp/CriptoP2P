@@ -152,7 +152,7 @@ public enum StatesTransaction {
 
     public abstract void onChange(User user, Transaction transaction,Action action) throws IlegalActionOnStateTransaction, IlegalUserChangeStateTransaction, ExceedPriceDifference;
 
-    static private boolean isUserInTransaction(User userAction, Transaction transaction) {
+    private static boolean isUserInTransaction(User userAction, Transaction transaction) {
         return userAction.getUserId() == transaction.getSecondUser().getUserId() || userAction.getUserId() == transaction.getIntention().getUser().getUserId();
     }
 
