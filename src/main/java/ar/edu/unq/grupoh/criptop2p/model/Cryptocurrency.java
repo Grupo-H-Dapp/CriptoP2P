@@ -40,10 +40,6 @@ public class Cryptocurrency implements Serializable {
     public boolean validateDiffPrice(float price) throws ExceedPriceDifference {
         Double minValue = this.price*(0.95);
         Double maxValue = this.price*(1.05);
-        System.out.println("Crypto Price " + this.price);
-        System.out.println("Min Dif " + minValue);
-        System.out.println("Max Dif " +maxValue);
-        System.out.println("Price Intention " +price);
         if(price > minValue && price < maxValue){
             return true;
         }else{
