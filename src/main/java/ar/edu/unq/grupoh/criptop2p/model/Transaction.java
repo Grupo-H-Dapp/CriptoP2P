@@ -54,6 +54,8 @@ public class Transaction {
     @Enumerated(EnumType.STRING)
     private StatesTransaction stateTransaction;
     @Getter @Setter
+    private LocalDateTime dateEnded;
+    @Getter @Setter
     @Transient
     private ApiBinance apiBinance = new ApiBinance();
 

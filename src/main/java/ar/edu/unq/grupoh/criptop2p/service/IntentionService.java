@@ -1,5 +1,6 @@
 package ar.edu.unq.grupoh.criptop2p.service;
 
+import ar.edu.unq.grupoh.criptop2p.dto.request.DateRangeRequest;
 import ar.edu.unq.grupoh.criptop2p.dto.request.IntentionRequest;
 import ar.edu.unq.grupoh.criptop2p.dto.response.IntentionResponse;
 import ar.edu.unq.grupoh.criptop2p.exceptions.IntentionExceedPriceDifferenceException;
@@ -18,6 +19,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static ar.edu.unq.grupoh.criptop2p.model.enums.IntentionStatus.ACTIVE;
+import static ar.edu.unq.grupoh.criptop2p.model.enums.IntentionStatus.ENDED;
 
 @Service
 public class IntentionService {
@@ -50,6 +52,14 @@ public class IntentionService {
         intentions = intentionRepository.findAll().stream().filter(intention -> intention.getStatus() == ACTIVE).map(intention -> IntentionResponse.FromModel(intention)).toList();
         return intentions;
     }
+
+    @Transactional
+    public List<IntentionResponse> volumnOperatedCryptoBetween(DateRangeRequest dates,Integer userId){
+        List<IntentionResponse> intentions;
+        intentions = intentionRepository.findAll().stream().filter(intention -> intention.getStatus() == ENDED && intention.getUser().getUserId() == userId).map(IntentionResponse::FromModel).toList();
+        return intentions;
+    }
+
     @Transactional
     public IntentionResponse saveIntention(IntentionRequest intentionRequest) throws IntentionExceedPriceDifferenceException, UserNotFoundException {
         Cryptocurrency cryptocurrency = cryptosService.getCryptoCurrency(intentionRequest.getCrypto());

@@ -1,7 +1,9 @@
 package ar.edu.unq.grupoh.criptop2p.webservice;
 
+import ar.edu.unq.grupoh.criptop2p.dto.request.DateRangeRequest;
 import ar.edu.unq.grupoh.criptop2p.dto.request.TransactionActionRequest;
 import ar.edu.unq.grupoh.criptop2p.dto.request.TransactionRequest;
+import ar.edu.unq.grupoh.criptop2p.dto.response.CryptoVolumn;
 import ar.edu.unq.grupoh.criptop2p.dto.response.TransactionResponse;
 import ar.edu.unq.grupoh.criptop2p.exceptions.*;
 import ar.edu.unq.grupoh.criptop2p.model.Transaction;
@@ -46,10 +48,18 @@ public class TransactionController {
         }
     }
 
+    @GetMapping("volumen/{userId}")
+    @LogExecutionTime
+    public ResponseEntity<List<CryptoVolumn>> volumnOperatedCryptoBetween(@Valid @RequestBody DateRangeRequest dates, @PathVariable Integer userId){
+        return new ResponseEntity<>(transactionService.volumnOperatedCryptoBetween(dates,userId),HttpStatus.OK);
+    }
+
     @PutMapping
     @LogExecutionTime
     public ResponseEntity<String> doActionTransaction(@Valid @RequestBody TransactionActionRequest transactionActionRequest) throws  UserNotFoundException, TransactionStatusException, TransactionNotFoundException, IlegalUserChangeStateTransaction, IlegalActionOnStateTransaction, ExceedPriceDifference {
             transactionService.processActionOperation(transactionActionRequest);
             return ResponseEntity.status(HttpStatus.OK).body("Action Executed Successful");
     }
+
+
 }

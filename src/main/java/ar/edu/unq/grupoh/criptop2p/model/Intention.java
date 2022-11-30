@@ -42,6 +42,8 @@ public class Intention {
     @Getter @Setter
     @Column(nullable = false)
     private LocalDateTime dateCreated;
+    @Getter @Setter
+    private LocalDateTime dateEnded;
 
     public Intention() {
         this.status = IntentionStatus.ACTIVE;
@@ -50,6 +52,7 @@ public class Intention {
 
     public void completeIntention(){
         this.status = IntentionStatus.ENDED;
+        this.dateEnded = LocalDateTime.now();
     }
 
     public static final class IntentionBuilder {

@@ -8,6 +8,8 @@ import ar.edu.unq.grupoh.criptop2p.model.Transaction;
 import ar.edu.unq.grupoh.criptop2p.model.User;
 import ar.edu.unq.grupoh.criptop2p.service.response.BinanceResponse;
 
+import java.time.LocalDateTime;
+
 //WAITING_TRANSFER_MONEY,WAITING_CONFIRM_TRANSFER_MONEY,WAITING_TRANSFER_CRYPTO,WAITING_CONFIRM_TRANSFER_CRYPTO,CANCELED,COMPLETED
 public enum StatesTransaction {
 
@@ -29,6 +31,7 @@ public enum StatesTransaction {
             if (action == Action.CANCEL && StatesTransaction.isUserInTransaction(user,transaction)) {
                 user.substractPoints();
                 transaction.setStateTransaction(CANCELED);
+                transaction.setDateEnded(LocalDateTime.now());
                 return;
             }
             if (!acceptedAction(action)) {
@@ -60,6 +63,7 @@ public enum StatesTransaction {
             if (action == Action.CANCEL && StatesTransaction.isUserInTransaction(user,transaction)) {
                 user.substractPoints();
                 transaction.setStateTransaction(CANCELED);
+                transaction.setDateEnded(LocalDateTime.now());
                 return;
             }
             if (!acceptedAction(action)) {
@@ -91,6 +95,7 @@ public enum StatesTransaction {
             if (action == Action.CANCEL && StatesTransaction.isUserInTransaction(user,transaction)) {
                 user.substractPoints();
                 transaction.setStateTransaction(CANCELED);
+                transaction.setDateEnded(LocalDateTime.now());
                 return;
             }
             if (!acceptedAction(action)) {
@@ -121,6 +126,7 @@ public enum StatesTransaction {
             if (action == Action.CANCEL && StatesTransaction.isUserInTransaction(user,transaction)) {
                 user.substractPoints();
                 transaction.setStateTransaction(CANCELED);
+                transaction.setDateEnded(LocalDateTime.now());
                 return;
             }
             if (!acceptedAction(action)) {
@@ -133,6 +139,7 @@ public enum StatesTransaction {
                 Cryptocurrency cryptocurrency = new Cryptocurrency(transaction.getCrypto(), response.getPrice());
                 if(transaction.isInPriceRange(cryptocurrency)){
                     transaction.setStateTransaction(COMPLETED);
+                    transaction.setDateEnded(LocalDateTime.now());
                     transaction.givePointsCompleted();
                     transaction.completeIntention();
                 }
