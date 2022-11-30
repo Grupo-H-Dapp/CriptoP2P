@@ -72,12 +72,13 @@ public class TransactionService {
         HashMap<CriptosNames,CryptoVolumn> result = new HashMap<>();
         for(Intention i : intentions){
             if(! result.containsKey(i.getCrypto())){
-                CryptoVolumn cv = new CryptoVolumn(i.getCrypto(),i.getPrice().doubleValue(),i.getQuantity());
+                CryptoVolumn cv = new CryptoVolumn(i.getCrypto(),i.getPrice().doubleValue(),i.getQuantity(),i.getPriceARS());
                 result.put(i.getCrypto(),cv);
             }else{
                 CryptoVolumn value = result.get(i.getCrypto());
                 value.setPriceTotalUSD(value.getPriceTotalUSD() + i.getPrice());
                 value.setAmmount(value.getAmmount() + i.getQuantity());
+                value.setPriceTotalARS(value.getPriceTotalARS() + i.getPriceARS());
                 result.put(i.getCrypto(),value);
             }
         }

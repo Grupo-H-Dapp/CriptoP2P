@@ -44,6 +44,8 @@ public class Intention {
     private LocalDateTime dateCreated;
     @Getter @Setter
     private LocalDateTime dateEnded;
+    @Getter @Setter
+    private Double priceARS;
 
     public Intention() {
         this.status = IntentionStatus.ACTIVE;
@@ -89,6 +91,11 @@ public class Intention {
 
         public IntentionBuilder withId(Long id) {
             intention.setId(id);
+            return this;
+        }
+
+        public IntentionBuilder withPriceARS(Double priceARS){
+            intention.setPriceARS(priceARS);
             return this;
         }
 

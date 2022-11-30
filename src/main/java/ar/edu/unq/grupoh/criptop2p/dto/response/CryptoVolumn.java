@@ -12,11 +12,14 @@ public class CryptoVolumn {
     @Getter@Setter
     private Double priceTotalUSD;
     @Getter@Setter
+    private Double priceTotalARS;
+    @Getter@Setter
     private Double ammount;
 
-    public CryptoVolumn(CriptosNames crypto, Double priceTotalUSD, Double ammount) {
+    public CryptoVolumn(CriptosNames crypto, Double priceTotalUSD, Double ammount,Double priceTotalARS ) {
         this.crypto = crypto;
         this.priceTotalUSD = priceTotalUSD;
         this.ammount = ammount;
+        this.priceTotalARS = priceTotalARS;
     }
 }

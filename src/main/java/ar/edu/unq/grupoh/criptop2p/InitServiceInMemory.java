@@ -1,5 +1,6 @@
 package ar.edu.unq.grupoh.criptop2p;
 
+import ar.edu.unq.grupoh.criptop2p.dto.request.IntentionRequest;
 import ar.edu.unq.grupoh.criptop2p.dto.request.TransactionActionRequest;
 import ar.edu.unq.grupoh.criptop2p.dto.request.UserRequest;
 import ar.edu.unq.grupoh.criptop2p.exceptions.*;
