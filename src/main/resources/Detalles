@@ -1,10 +1,10 @@
 CASO 1 : INTENCION DE COMPRA
-Pepe(es un comprador) crea intencion de compra //COKI(3)
-Dardo(es un vendedor) se interesa y procesa esa Intencion //PEPE(1)
-Pepe realiza la transferencia del dinero
-Dardo confirma la recepcion del dinero
-Dardo realiza la transfernecia de crypto
-Pepe confirma la recepcion de crypto
+COKI(es un comprador) crea intencion de compra //COKI(3)
+PEPE(es un vendedor) se interesa y procesa esa Intencion //PEPE(1)
+COKI realiza la transferencia del dinero
+PEPE confirma la recepcion del dinero
+PEPE realiza la transfernecia de crypto
+COKI confirma la recepcion de crypto
 Termina
 
 CASO 2: INTENCION DE VENTA

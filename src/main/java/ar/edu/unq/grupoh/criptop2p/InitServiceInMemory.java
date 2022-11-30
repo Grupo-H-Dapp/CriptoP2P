@@ -69,7 +69,7 @@ public class InitServiceInMemory {
         userCoki = userService.saveUser(modelMapper.map(userCoki , UserRequest.class));
         userMoni = userService.saveUser(modelMapper.map(userMoni , UserRequest.class));
         Intention i1 = Intention.builder().withUser(userPepe).withCryptoCurrency(CriptosNames.ALICEUSDT).withQuantity(0.10).withTypeOperation(TypeOperation.BUY)
-                .withPrice(1.2500f).build();
+                .withPrice(1.3000f).build();
         intentionService.saveIntentionModel(i1);
         Intention i2 = Intention.builder().withUser(userCoki).withCryptoCurrency(CriptosNames.BNBUSDT).withQuantity(0.30).withTypeOperation(TypeOperation.SELL)
                 .withPrice(295.0F).build();
