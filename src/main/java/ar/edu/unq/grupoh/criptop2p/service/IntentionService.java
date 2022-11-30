@@ -71,7 +71,7 @@ public class IntentionService {
         Float min = cryptocurrency.getPrice() * 0.95F ;
         Float max = cryptocurrency.getPrice() * 1.05F ;
         if (intentionRequest.getPrice() > min && intentionRequest.getPrice() < max) {
-            Double priceARS = new BigDecimal(new ApiDolar().getUSDCotization().getVenta().doubleValue()).setScale(2, RoundingMode.HALF_UP).doubleValue();
+            Double priceARS = BigDecimal.valueOf(new ApiDolar().getUSDCotization().getVenta().doubleValue()).setScale(2, RoundingMode.HALF_UP).doubleValue();
             Intention intention = Intention.builder()
                                     .withPrice(intentionRequest.getPrice())
                                     .withPriceARS(priceARS * intentionRequest.getPrice())
@@ -91,7 +91,7 @@ public class IntentionService {
         Float min = cryptocurrency.getPrice() * 0.95F ;
         Float max = cryptocurrency.getPrice() * 1.05F ;
         if (intention.getPrice() > min && intention.getPrice() < max) {
-            Double valueArs = new BigDecimal(new ApiDolar().getUSDCotization().getVenta().doubleValue()).setScale(2, RoundingMode.HALF_UP).doubleValue();
+            Double valueArs = BigDecimal.valueOf(new ApiDolar().getUSDCotization().getVenta().doubleValue()).setScale(2, RoundingMode.HALF_UP).doubleValue();
             intention.setPriceARS(intention.getPrice() * valueArs);
             return IntentionResponse.FromModel(this.intentionRepository.save(intention));
         }
