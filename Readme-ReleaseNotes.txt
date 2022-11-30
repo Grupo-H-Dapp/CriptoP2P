@@ -1,3 +1,24 @@
+---------------------------------------------------------------------
+TAG 3.0
+---------------------------------------------------------------------
+NEW FEATURES:
+* Se segurizan las apis que necesitan de un login para ser usadas(JWT)
+* Se completan los endpoints de CREAR de Intencion y Transaccion
+* Se agregas mas tests de los distintos niveles(Controllers,Services,Modelo,Arquitectura)
+* Se agregan enpoints respecto a Crypto para obtener cotizaciones , tambien por
+un rango de fechas , volumen operado de una crypto de un usuario , y mas.
+* Se completa el circuito de la intencion/transaccion(ya estaba la logica seudohecha pero
+no implementada completamente)
+* Se loguea los controllers usando un aspecto
+* Se implemento Ehcache para el listado de la ultima cotizacion de cada crypto
+
+NOTES
+* Pulir el swagger para que este mas lindo
+
+KNOWN ISSUES:
+* AntiPatter DTO
+* Problema con los builds(no siento que estan de la mejor manera implementados)
+---------------------------------------------------------------------
 TAG 2.0
 ---------------------------------------------------------------------
 NEW FEATURES:
@@ -16,7 +37,7 @@ NOTES:
 
 KNOWN ISSUES:
 * AntiPatter DTO
-* Problema con los builds(no siento que estan de la mejor manera implementados=
+* Problema con los builds(no siento que estan de la mejor manera implementados)
 ---------------------------------------------------------------------
 TAG 1.0
 ---------------------------------------------------------------------
