@@ -1,11 +1,14 @@
 package ar.edu.unq.grupoh.criptop2p.webservice;
 
-import ar.edu.unq.grupoh.criptop2p.dto.UserRequest;
+import ar.edu.unq.grupoh.criptop2p.dto.request.UserRequest;
+import ar.edu.unq.grupoh.criptop2p.dto.response.UserAllResponse;
+import ar.edu.unq.grupoh.criptop2p.dto.response.UserResponse;
 import ar.edu.unq.grupoh.criptop2p.exceptions.UserAlreadyExistException;
 import ar.edu.unq.grupoh.criptop2p.exceptions.UserException;
 import ar.edu.unq.grupoh.criptop2p.exceptions.UserNotFoundException;
 import ar.edu.unq.grupoh.criptop2p.model.User;
 import ar.edu.unq.grupoh.criptop2p.service.UserService;
+import ar.edu.unq.grupoh.criptop2p.webservice.aspects.LogExecutionTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
@@ -23,36 +25,24 @@ public class UserController {
     private UserService userService;
 
     @GetMapping(produces = "application/json")
-    public ResponseEntity<List<User>> allUsers() {
-        return ResponseEntity.ok().body(userService.findAll());
+    @LogExecutionTime
+    public ResponseEntity<List<UserAllResponse>> allUsers() {
+        List<User> users = userService.findAll();
+        List<UserAllResponse> result = users.stream().map(UserAllResponse::new).toList();
+        return ResponseEntity.ok().body(result);
     }
 
     @GetMapping(value = "/{email}" , produces = "application/json")
-    public ResponseEntity<User> getUser(@PathVariable String email) throws UserNotFoundException {
-        return ResponseEntity.ok(userService.getUserByEmail(email));
-    }
-
-    @PostMapping(produces = "application/json")
-    public ResponseEntity<User> saveUser(@RequestBody @Valid UserRequest userRequest) throws UserAlreadyExistException, UserException {
-        return new ResponseEntity<>(userService.saveUser(userRequest), HttpStatus.CREATED);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateUser(@RequestBody @Valid UserRequest newUser,@PathVariable int id) {
-        HttpStatus code = HttpStatus.OK;
-        try {
-            User user = this.userService.getUserById(id);
-        } catch (UserNotFoundException ex) {
-            code = HttpStatus.CREATED;
-        }
-        User updateUser = this.userService.updateUser(newUser,id);
-        return new ResponseEntity<>(updateUser,code);
+    @LogExecutionTime
+    public ResponseEntity<UserResponse> getUser(@PathVariable String email) throws UserNotFoundException {
+        return ResponseEntity.ok(new UserResponse(userService.getUserByEmail(email)));
     }
 
     //Devolver un mensaje lindo
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<?> deleteUser(@PathVariable int id) throws UserNotFoundException {
+    @LogExecutionTime
+    public ResponseEntity<String> deleteUser(@PathVariable int id) throws UserNotFoundException {
         this.userService.deleteUser(id);
-        return new ResponseEntity<>("El usuario con el id " + id + " a sido eliminado" ,HttpStatus.ACCEPTED);
+        return new ResponseEntity<>("User " + id + " deleted successful" ,HttpStatus.ACCEPTED);
     }
 }

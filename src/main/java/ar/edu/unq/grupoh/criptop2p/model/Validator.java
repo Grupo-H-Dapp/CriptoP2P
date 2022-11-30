@@ -5,6 +5,11 @@ import ar.edu.unq.grupoh.criptop2p.exceptions.UserException;
 import java.util.regex.Pattern;
 
 public class Validator {
+
+    private Validator() {
+        throw new IllegalStateException("Utility class");
+    }
+
     public static void patternMatches(String emailAddress) throws UserException {
         if (!(Pattern.compile("^(.+)@(\\S+)$").matcher(emailAddress).matches())){
             throw new UserException("Email not valid");

@@ -1,8 +1,7 @@
 package ar.edu.unq.grupoh.criptop2p.advice;
 
-import ar.edu.unq.grupoh.criptop2p.exceptions.UserAlreadyExistException;
-import ar.edu.unq.grupoh.criptop2p.exceptions.UserException;
-import ar.edu.unq.grupoh.criptop2p.exceptions.UserNotFoundException;
+import ar.edu.unq.grupoh.criptop2p.exceptions.*;
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -37,6 +36,62 @@ public class ApplicationExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(UserNotFoundException.class)
     public Map<String, String> handleBusinessException(UserNotFoundException ex) {
+        Map<String, String> errorMap = new HashMap<>();
+        errorMap.put("errorMessage", ex.getMessage());
+        return errorMap;
+    }
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(TransactionStatusException.class)
+    public Map<String, String> handleBusinessException(TransactionStatusException ex) {
+        Map<String, String> errorMap = new HashMap<>();
+        errorMap.put("errorMessage", ex.getMessage());
+        return errorMap;
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(IntentionNotFoundException.class)
+    public Map<String, String> handleBusinessException(IntentionNotFoundException ex) {
+        Map<String, String> errorMap = new HashMap<>();
+        errorMap.put("errorMessage", ex.getMessage());
+        return errorMap;
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(TransactionNotFoundException.class)
+    public Map<String, String> handleBusinessException(TransactionNotFoundException ex) {
+        Map<String, String> errorMap = new HashMap<>();
+        errorMap.put("errorMessage", ex.getMessage());
+        return errorMap;
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(InvalidFormatException.class)
+    public Map<String, String> handleBusinessException(InvalidFormatException ex) {
+        Map<String, String> errorMap = new HashMap<>();
+        errorMap.put("errorMessage", ex.getMessage());
+        return errorMap;
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(IlegalActionOnStateTransaction.class)
+    public Map<String, String> handleBusinessException(IlegalActionOnStateTransaction ex) {
+        Map<String, String> errorMap = new HashMap<>();
+        errorMap.put("errorMessage", ex.getMessage());
+        return errorMap;
+    }
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(IlegalUserChangeStateTransaction.class)
+    public Map<String, String> handleBusinessException(IlegalUserChangeStateTransaction ex) {
+        Map<String, String> errorMap = new HashMap<>();
+        errorMap.put("errorMessage", ex.getMessage());
+        return errorMap;
+    }
+
+
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(IntentionExceedPriceDifferenceException.class)
+    public Map<String, String> handleBusinessException(IntentionExceedPriceDifferenceException ex) {
         Map<String, String> errorMap = new HashMap<>();
         errorMap.put("errorMessage", ex.getMessage());
         return errorMap;

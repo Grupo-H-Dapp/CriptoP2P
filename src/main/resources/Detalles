@@ -1,15 +1,19 @@
 CASO 1 : INTENCION DE COMPRA
-Pepe(es un comprador) crea intencion de compra
-Dardo(es un vendedor) se interesa y procesa esa Intencion
+Pepe(es un comprador) crea intencion de compra //COKI(3)
+Dardo(es un vendedor) se interesa y procesa esa Intencion //PEPE(1)
 Pepe realiza la transferencia del dinero
-Dardo confirma la recepcion
+Dardo confirma la recepcion del dinero
+Dardo realiza la transfernecia de crypto
+Pepe confirma la recepcion de crypto
 Termina
 
 CASO 2: INTENCION DE VENTA
 Pepe(es un vendedor) crea intencion de venta
 Dardo(es un comprador)  se interesa y procesa esa Intencion
 Dardo realiza la transferencia del dinero
-Pepe  confirma la recepcion
+Pepe  confirma la recepcion del dinero
+Pepe realiza la transferencia de crypto
+Dardo confirma la recepcion de crypto
 Termina
 
 Posibles endpoints de Operation :

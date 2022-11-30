@@ -32,3 +32,4 @@ build/reports/tests/test/js/report.js
 build
 .idea/uiDesigner.xml
 .idea/jpa-buddy.xml
+.idea/inspectionProfiles/Project_Default.xml

@@ -1,8 +1,8 @@
-package ar.edu.unq.grupoh.criptop2p.webservice;
+package ar.edu.unq.grupoh.criptop2p.dto.request;
 
 import java.time.LocalDateTime;
 
-public class DateRangeDto {
+public class DateRangeRequest {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
 

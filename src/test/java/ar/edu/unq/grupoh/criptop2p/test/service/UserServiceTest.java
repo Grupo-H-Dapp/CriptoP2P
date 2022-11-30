@@ -1,5 +1,5 @@
 package ar.edu.unq.grupoh.criptop2p.test.service;
-import ar.edu.unq.grupoh.criptop2p.dto.UserRequest;
+import ar.edu.unq.grupoh.criptop2p.dto.request.UserRequest;
 import ar.edu.unq.grupoh.criptop2p.exceptions.UserAlreadyExistException;
 import ar.edu.unq.grupoh.criptop2p.exceptions.UserException;
 import ar.edu.unq.grupoh.criptop2p.exceptions.UserNotFoundException;
@@ -107,6 +107,11 @@ public class UserServiceTest {
     void deleteUserCreated() throws UserException, UserAlreadyExistException, UserNotFoundException {
         User userAnonimuous = this.saveUserAnonimuous();
         this.userService.deleteUser(userAnonimuous.getUserId());
+        UserNotFoundException exception = assertThrows(
+                UserNotFoundException.class,
+                () -> this.userService.getUserById(userAnonimuous.getUserId())
+        );
+        assertEquals("Not found user " + userAnonimuous.getUserId(), exception.getMessage());
     }
     @Test
     void saveTwoSameUser() throws  UserException, UserAlreadyExistException, UserNotFoundException {
@@ -128,7 +133,7 @@ public class UserServiceTest {
                     this.userService.getUserById(100);
                 }
         );
-        assertEquals("No se puede encontrar el usuario con el id 100", exception.getMessage());
+        assertEquals("Not found user 100", exception.getMessage());
     }
 
     @Test
@@ -139,7 +144,7 @@ public class UserServiceTest {
                     this.userService.getUserByEmail("pepito@gmail.com");
                 }
         );
-        assertEquals("No se puede encontrar el usuario pepito@gmail.com", exception.getMessage());
+        assertEquals("Not found user pepito@gmail.com", exception.getMessage());
     }
 
     @Test
@@ -150,7 +155,7 @@ public class UserServiceTest {
                     this.userService.deleteUser(100);
                 }
         );
-        assertEquals("No se puede encontrar el usuario con el id 100", exception.getMessage());
+        assertEquals("Not found user 100", exception.getMessage());
     }
 
     @AfterEach
